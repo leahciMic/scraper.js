@@ -1,0 +1,43 @@
+{
+  "name": "scraper.js",
+  "version": "0.0.1",
+  "description": "scraper.js - screen scrape using webdriver",
+  "main": "main.js",
+  "scripts": {
+    "test": "node --harmony --harmony_arrow_functions ./node_modules/.bin/jasmine "
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel": "^5.8.12",
+    "bluebird": "^2.9.34",
+    "broadway": "^2.0.1",
+    "lodash.assign": "^3.2.0",
+    "mkdirp": "^0.5.1",
+    "mkdirp-then": "^1.0.1",
+    "node-uuid": "^1.4.3",
+    "redis": "^0.12.1",
+    "sanitize-filename": "^1.3.0",
+    "selenium-webdriver": "^2.46.1"
+  },
+  "devDependencies": {
+    "babel-jest": "^5.3.0",
+    "jasmine": "^2.3.1",
+    "jest-cli": "^0.4.17",
+    "proxyquire": "^1.6.0"
+  },
+  "jest": {
+    "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
+    "testFileExtensions": [
+      "es6",
+      "js"
+    ],
+    "moduleFileExtensions": [
+      "es6",
+      "js"
+    ],
+    "unmockedModulePathPatterns": [
+      "node_modules/.*"
+    ]
+  }
+}
