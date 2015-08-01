@@ -16,7 +16,7 @@ class Scraper {
   constructor(config) {
     // lexical scoping (fat arrows) does not quite work properly in iojs 2.5.0
     // @todo remove this when v8 supports fat arrows and it's on by default
-    let self = this;
+    let _this = this;
 
     this.config = config;
     this.workQueue = new WorkQueue({
@@ -24,7 +24,7 @@ class Scraper {
     });
 
     webdriver.promise.createFlow(() => {
-      self.browser = getBrowser();
+      _this.browser = getBrowser();
     });
   }
 
@@ -72,7 +72,7 @@ class Scraper {
   }
 
   next() {
-    let self = this;
+    let _this = this;
 
     return this.workQueue.next().then((queueItem) => {
       // the queue is empty
@@ -83,9 +83,9 @@ class Scraper {
       }
 
       // redirect browser there and wait
-      return self.browser.get(queueItem.url).then(() => {
+      return _this.browser.get(queueItem.url).then(() => {
         // call the function with the metadata specified
-        if (!self.config[queueItem.fn]) {
+        if (!_this.config[queueItem.fn]) {
           throw new Error(
             'the function \'' + queueItem.fn + '\' does not exist on the scraper'
           );
@@ -96,10 +96,11 @@ class Scraper {
 
         // expose $ (our made up jQuery like interface)
         // and scraper. Please see original POC for $ jQuery like behaviour
-        return self.config[queueItem.fn]($, self);
+        return _this.config[queueItem.fn]($, _this);
       }).then(() => {
-        self.next();
+        _this.next();
       });
+
     });
   }
 }

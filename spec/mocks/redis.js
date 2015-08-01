@@ -4,9 +4,11 @@ const bluebird = require('bluebird');
 
 module.exports = {
   createClient() {
-    const memory = {
-      hashes: {},
-      lists: {}
+    const memory = {};
+
+    const reset = () => {
+      memory.hashes = {};
+      memory.lists = {};
     };
 
     const getHash = (key) => {
@@ -25,7 +27,10 @@ module.exports = {
       return memory.lists[key];
     };
 
+    afterEach(reset);
+
     return {
+      reset: reset,
       hsetnxAsync(key, attr, value) {
         const hash = getHash(key);
 
