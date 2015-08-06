@@ -4,7 +4,7 @@
   "description": "scraper.js - screen scrape using webdriver",
   "main": "main.js",
   "scripts": {
-    "test": "node --harmony --harmony_arrow_functions ./node_modules/.bin/jasmine "
+    "test": "node --es-staging --harmony --harmony_arrow_functions ./node_modules/.bin/jasmine "
   },
   "author": "",
   "license": "ISC",

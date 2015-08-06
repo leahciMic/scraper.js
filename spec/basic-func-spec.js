@@ -8,16 +8,29 @@ describe('Scraper', () => {
   let scraperConf;
 
   beforeEach(() => {
-    scraperConf = jasmine.createSpyObj('scraper', ['init', 'empty']);
+    scraperConf = jasmine.createSpyObj('scraper', ['init', 'empty', 'test']);
+    spyOn(Scraper.prototype, 'getBrowser').and.callFake(() => {
+      const browser = jasmine.createSpyObj('browser', [
+        'get'
+      ]);
+
+      browser.get.and.callFake(() => {
+        return bluebird.resolve();
+      });
+
+      return bluebird.resolve(browser);
+    });
   });
 
   it('should throw on missing empty queue function', () => {
-    expect(Scraper).toThrowError(/missing empty function/);
+    expect(() => {
+      new Scraper();
+    }).toThrowError(/missing empty function/);
   });
 
   it('should complain if init function does not return a promise', () => {
-    let scraper = Scraper(scraperConf);
-
+    let scraper = new Scraper(scraperConf);
+    scraper.browser = true;
     expect(scraper.run.bind(scraper)).toThrowError(/init must return a thenable/);
   });
 
@@ -30,7 +43,7 @@ describe('Scraper', () => {
         return scraper.workQueue.push('foo', 'bar', {foo: 'bar'});
       });
 
-      scraper = Scraper(scraperConf);
+      scraper = new Scraper(scraperConf);
 
       // prevent next from running by default
       spyOn(scraper, 'next');
@@ -65,8 +78,54 @@ describe('Scraper', () => {
       });
     });
 
-    // should pull next item
-    // should navigate to next queue item
+    xit('should establish a webdriver connection', () => {
+
+    });
+
+    it('should keep cycling items until done', (done) => {
+      spyOn(scraper, 'processItem').and.callFake(
+        bluebird.resolve.bind(bluebird, true)
+      );
+
+      scraper.next.and.callThrough();
+
+      bluebird.join(
+        scraper.workQueue.push('foo1', 'bar', {}),
+        scraper.workQueue.push('foo2', 'bar', {})
+      )
+        .then(scraper.next.bind(scraper))
+        .then((result) => {
+          expect(scraper.next.calls.count()).toBe(3);
+          expect(scraper.processItem.calls.count()).toBe(2);
+          expect(result).toBe(true);
+          done();
+        });
+    });
+
+    describe('when processing an item', () => {
+      it('should navigate the browser to the url', (done) => {
+        scraper.browser = jasmine.createSpyObj('browser', [
+          'get'
+        ]);
+
+        scraper.browser.get.and.callFake(() => {
+          return bluebird.resolve();
+        });
+
+        let queueItem = {
+          url: 'http://foo.bar',
+          fn: 'test',
+          meta: {}
+        };
+
+        scraper.processItem(queueItem).then(() => {
+          expect(this.browser.get).toHaveBeenCalled();
+          expect(scraperConf.test).toHaveBeenCalled();
+          done();
+        });
+      });
+    });
+
     // should be able to query data from the page
     // should be able to queue more things
     // should not have issues with large queues (stack overflows, ever growing promise chains etc)
