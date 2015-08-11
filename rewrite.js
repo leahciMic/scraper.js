@@ -2,9 +2,10 @@
 
 const bluebird = require('bluebird');
 const EventEmitter = require('events').EventEmitter;
-const webdriver = require('selenium-webdriver');
 const WorkQueue = require('./lib/work-queue.js');
+const Store = require('./lib/store.js');
 const uuid = require('node-uuid');
+const webdriverio = require('webdriverio-jquery');
 
 class Scraper {
   constructor(config) {
@@ -22,44 +23,34 @@ class Scraper {
     this.workQueue = new WorkQueue({
       id: config.name || 'anonymous-' + uuid()
     });
-
-    this.browserReady = new bluebird.Promise(function(resolve, reject) {
-      webdriver.promise.createFlow(() => {
-        resolve(_this.getBrowser());
-      });
-    });
+    this.store = new Store();
   }
 
-  getBrowser() {
-    return new webdriver.Builder()
-      .withCapabilities(webdriver.Capabilities.firefox())
-      .build();
-  }
-
-  run() {
-    // do the init
-    let promise = bluebird.resolve();
-
-    if (!this.browser) {
-      return this.browserReady.bind(this).then(function(browser) {
-        this.browser = browser;
-        return this.run();
-      });
-    }
+  init() {
+    console.log('init');
+    let options = { desiredCapabilities: { browserName: 'firefox' } };
+    this.client = webdriverio(options);
 
     if (this.config.init) {
-      promise = this.config.init();
+      let promise = this.config();
 
       if (!promise || !promise.then) {
         throw new Error('init must return a thenable');
       }
+      return promise;
     }
 
-    // check if the queue is empty
-    promise = promise.bind(this)
+    return bluebird.resolve();
+  }
+
+  checkForEmptyQueue() {
+    console.log('check for empty queue');
+    return bluebird
+      .bind(this)
       .return(this.workQueue)
       .call('length')
       .then((length) => {
+        console.log(length);
         if (length === 0) {
           var promise = this.config.empty();
           if (!promise || !promise.then) {
@@ -79,72 +70,45 @@ class Scraper {
             });
         }
       });
+  }
+
+  run() {
+    return bluebird.join(this.init())
+      .bind(this)
+      .then(this.checkForEmptyQueue)
+      .then(this.next)
+      .then(this.client.end.bind(this.client))
+      .then(this.workQueue.end.bind(this.workQueue));
+  }
+
+    // do the init
+
+
+    // check if the queue is empty
 
     // run the next task
-    return promise.then(() => {
-      return this.next();
-    });
-  }
 
   processItem(queueItem) {
     // the queue is empty
     // redirect browser there and wait
+    let _this = this;
 
-    return this.browser.get(queueItem.url)
-      .bind(this)
+    console.log('visit', queueItem.url);
+
+    let self = this;
+
+    return this.client.then(() => {}).url(queueItem.url)
       .then(function() {
         // call the function with the metadata specified
-        if (!this.config[queueItem.fn]) {
+        if (!self.config[queueItem.fn]) {
           throw new Error(
             'the function \'' + queueItem.fn + '\' does not exist on the scraper'
           );
         }
 
-        // jQuery like interface
-        var $ = this.build$Interface(this.browser);
-
-        // expose $ (our made up jQuery like interface)
-        // and scraper. Please see original POC for $ jQuery like behaviour
-        return this.config[queueItem.fn]($, this);
+        let $ = self.client.find.bind(self.client);
+        return self.config[queueItem.fn]($, queueItem.meta);
       });
-  }
-
-  build$Interface(base) {
-    let _this = this;
-    return (selector) => {
-      return {
-        text: () => {
-          return base.findElements(By.css(selector)).then((elements) => {
-            if (!elements.length) {
-              return undefined;
-            }
-
-            return elements[0].getText();
-          });
-        },
-        attr: (name) => {
-          return base.findElements(By.css(selector)).then((elements) => {
-            if (!elements.length) {
-              return undefined;
-            }
-
-            return elements[0].getAttribute(name);
-          });
-        },
-        map: (fn) => {
-          return base.findElements(By.css(selector)).then((elements) => {
-            return bluebird.map(elements, (webElement) => {
-              var ret = fn(_this.build$Interface(webElement));
-              if (!ret.then) {
-                return bluebird.props(ret);
-              } else {
-                return ret;
-              }
-            }).all();
-          });
-        }
-      };
-    };
   }
 
   next() {
