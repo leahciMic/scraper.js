@@ -28,6 +28,7 @@ module.exports = {
     };
 
     afterEach(reset);
+    reset();
 
     return {
       reset: reset,

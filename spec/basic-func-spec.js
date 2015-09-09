@@ -1,6 +1,6 @@
 'use strict';
 
-const Scraper = require('../rewrite.js');
+const Scraper = require('../main.js');
 const bluebird = require('bluebird');
 const noop = function() {};
 
@@ -9,17 +9,6 @@ describe('Scraper', () => {
 
   beforeEach(() => {
     scraperConf = jasmine.createSpyObj('scraper', ['init', 'empty', 'test']);
-    spyOn(Scraper.prototype, 'getBrowser').and.callFake(() => {
-      const browser = jasmine.createSpyObj('browser', [
-        'get'
-      ]);
-
-      browser.get.and.callFake(() => {
-        return bluebird.resolve();
-      });
-
-      return bluebird.resolve(browser);
-    });
   });
 
   it('should throw on missing empty queue function', () => {
@@ -30,8 +19,8 @@ describe('Scraper', () => {
 
   it('should complain if init function does not return a promise', () => {
     let scraper = new Scraper(scraperConf);
-    scraper.browser = true;
-    expect(scraper.run.bind(scraper)).toThrowError(/init must return a thenable/);
+    spyOn(scraper, 'createClient');
+    expect(scraper.init.bind(scraper)).toThrowError(/init must return a thenable/);
   });
 
   describe('after init', () => {
@@ -46,10 +35,15 @@ describe('Scraper', () => {
       scraper = new Scraper(scraperConf);
 
       // prevent next from running by default
+      spyOn(scraper, 'createClient').and.callFake(function() {
+        scraper.client = jasmine.createSpyObj('client', ['end']);
+      });
       spyOn(scraper, 'next');
     });
 
     it('should call init function on run', (done) => {
+      spyOn(scraper, 'checkForEmptyQueue');
+      scraper.createClient();
       expect(scraperConf.init).not.toHaveBeenCalled();
       scraper.run().then(function() {
         expect(scraperConf.init).toHaveBeenCalled();
@@ -104,13 +98,17 @@ describe('Scraper', () => {
 
     describe('when processing an item', () => {
       it('should navigate the browser to the url', (done) => {
-        scraper.browser = jasmine.createSpyObj('browser', [
-          'get'
-        ]);
-
-        scraper.browser.get.and.callFake(() => {
+        var fakeClient = jasmine.createSpyObj(
+          'fake client', ['url', 'then', 'find']
+        );
+        fakeClient.url.and.callFake(() => {
           return bluebird.resolve();
         });
+        fakeClient.then.and.callFake(() => {
+          return fakeClient;
+        });
+
+        scraper.client = fakeClient;
 
         let queueItem = {
           url: 'http://foo.bar',
@@ -119,7 +117,7 @@ describe('Scraper', () => {
         };
 
         scraper.processItem(queueItem).then(() => {
-          expect(this.browser.get).toHaveBeenCalled();
+          expect(fakeClient.url).toHaveBeenCalled();
           expect(scraperConf.test).toHaveBeenCalled();
           done();
         });

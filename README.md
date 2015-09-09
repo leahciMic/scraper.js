@@ -4,13 +4,11 @@ An extensible web scraping tool written in JavaScript utilizing WebDriver.
 
 ## About ES6
 
-This codebase has been written with the assumption that it will be used with:
+It has been written with Node v4.0.0 in mind but it could probably work with older
+versions of node and iojs with the following flags (YMMV):
 ```node --harmony --harmony_arrow_functions```.
 
-It has been tested with iojs 2.5.0, and I'd expect it to work in node as well
-with the appropriate flags.
-
-However the published version you'll find on npm has been converted to ES5 using
+However the published version you'll find on npm have been converted to ES5 using
 babel to maximize compatibility.
 
 One day we'll live in a world where we can write, test, and distribute ES6 code,
