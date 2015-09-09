@@ -1,11 +1,22 @@
 {
   "name": "scraper.js",
   "version": "0.1.0",
-  "description": "scraper.js - screen scrape using webdriver",
+  "description": "scraper.js - screen scrape using selenium and webdriverio",
   "main": "scraper.js",
   "scripts": {
     "test": "node --es-staging --harmony --harmony_arrow_functions ./node_modules/.bin/jasmine "
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leahciMic/scraper.js"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "keywords": [
+    "scraper", "web scraper", "selenium", "webdriver", "webdriverio",
+    "data", "data mining", "mining", "browser scraping"
+  ],
   "author": "Michael Leaney <leahcimic@gmail.com>",
   "license": "ISC",
   "dependencies": {
