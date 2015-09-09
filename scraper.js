@@ -36,7 +36,7 @@ class Scraper {
   }
 
   init() {
-    let options = { desiredCapabilities: { browserName: 'chrome' } };
+    let options = { desiredCapabilities: { browserName: 'firefox' } };
     this.createClient(options);
 
     if (this.config.init) {
