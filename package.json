@@ -1,6 +1,6 @@
 {
   "name": "scraper.js",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "scraper.js - screen scrape using selenium and webdriverio",
   "main": "scraper.js",
   "scripts": {
