@@ -109,6 +109,12 @@ class Scraper {
     debug('waiting for client, then navigating to', queueItem.url);
 
     return this.client.then(() => {}).url(queueItem.url)
+      .catch(function(err) {
+        error('Could not transition to url');
+        error(err.message);
+        error(err.stack);
+        throw err;
+      })
       .then(function() {
         debug('finished loading', queueItem.url);
         // call the function with the metadata specified
@@ -120,7 +126,13 @@ class Scraper {
         }
         debug('calling', queueItem.fn, 'with jQuery like interface');
         let $ = self.client.find.bind(self.client);
-        return self.config[queueItem.fn]($, queueItem.meta);
+        return self.config[queueItem.fn]($, queueItem.meta)
+          .catch(function(err) {
+            error('An error occurred with ' + queueItem.fn);
+            error(err.message);
+            error(err.stack);
+            throw err;
+          });
       });
   }
 
