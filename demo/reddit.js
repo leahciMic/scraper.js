@@ -11,7 +11,14 @@ export default class RedditScraper extends Scraper {
     });
   }
   comments($) {
-
+    $('.comment .entry')
+      .each((i, e) => {
+        this.data({
+          content: $(e).find('.usertext-body').text(),
+          author: $(e).find('.author').text(),
+          score: $(e).find('.unvoted').text(),
+        });
+      });
   }
 }
 RedditScraper.timeBetween = ONE_DAY;

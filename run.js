@@ -21,6 +21,12 @@ function startQueue(scraper) {
   const scraperLog = debug('scraperjs ' + scraper.name);
   scraperLog('queue starting');
   const queueRef = rootRef.child(scraper.name);
+  const dataRef = rootRef.child(scraper.name).child('data');
+
+  // oh we probably need to index this data by url, so how are we going to get that property?
+  scraper.on('data', (data) => {
+    dataRef.push(data);
+  });
 
   scraper.on('queue', (queueItem) => {
     scraperLog('requested to queue', queueItem);
@@ -45,11 +51,19 @@ function startQueue(scraper) {
       browser.navigate(data.url);
       browser.injectJQuery();
       browser.runInContextOfJquery(scraper[data.method]).then((stuff) => {
-        scraperLog('Got back', stuff.queue);
+        scraperLog('Got back', stuff);
         scraperLog(stuff.queue.forEach);
-        stuff.queue.forEach(function(args) {
+        stuff.queue.forEach((args) => {
           scraper.queue(...args);
         });
+
+        scraper.data({
+          url: data.url,
+          method: data.method,
+          timestamp: Firebase.ServerValue.TIMESTAMP,
+          data: stuff.data.map(x => x[0]),
+        });
+
         resolve();
       });
     };
