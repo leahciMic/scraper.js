@@ -1,19 +1,17 @@
 import bluebird from 'bluebird';
-import path from 'path';
-import matchExtension from './lib/matchExtension.js';
 import _ from 'lodash/fp';
 import fs from 'fs';
-import Firebase from 'firebase';
-import FirebaseQueue from 'firebase-queue';
 import createBrowser from './lib/browser.js';
 import sha256 from './lib/sha256.js';
 import debug from 'debug';
 import lruCache from 'lru-cache';
+import getScrapers from './getScrapers.js';
+import processItem from './processItem.js';
+import Firebase from 'firebase';
+import FirebaseQueue from 'firebase-queue';
+const rootRef = new Firebase(process.env.FIREBASE_URL);
 
 const urlCache = lruCache(200000);
-const ONE_HOUR = 3600000;
-
-const rootRef = new Firebase(process.env.FIREBASE_URL);
 
 bluebird.promisifyAll(fs);
 
@@ -58,46 +56,24 @@ function startQueue(scraper) {
   createBrowser().then((browser) => {
     scraperLog('Started browser');
     // other args are progress, resolve, reject
-    const processItem = (queueItem, progress, resolve) => {
-      scraperLog('Processing item from queue', queueItem.url, queueItem.method);
-      browser.navigate(queueItem.url);
-      browser.injectJQuery();
-      browser.runInContextOfJquery(scraper[queueItem.method]).then(({ queue, data }) => {
-        _.uniq(queue).forEach((args) => {
-          scraper.queue(...args);
-        });
-
-        if (data.length) {
-          scraper.data({
-            url: queueItem.url,
-            method: queueItem.method,
-            timestamp: Firebase.ServerValue.TIMESTAMP,
-            data: data.length === 1 ? data[0][0] : data.map(x => x[0]),
-          });
-        }
-        resolve();
-      });
-    };
-
-    const queue = new FirebaseQueue(queueRef, processItem); // eslint-disable-line no-unused-vars
+    // scraperLog('Processing item from queue', queueItem.url, queueItem.method);
+    // eslint-disable-next-line no-unused-vars
+    const queueManager = new FirebaseQueue(queueRef, (queueItem, progress, resolve) => {
+      processItem(browser, queueItem.url, scraper[queueItem.method])
+        .then(({ queue, data }) => {
+          queue.forEach(args => scraper.queue(...args));
+          if (data.length) {
+            scraper.data({
+              url: queueItem.url,
+              method: queueItem.method,
+              timestamp: Firebase.ServerValue.TIMESTAMP,
+              data: data.length === 1 ? data[0][0] : data.map(x => x[0]),
+            });
+          }
+        })
+        .then(resolve);
+    }); // eslint-disable-line no-unused-vars
   });
 }
 
-const SCRAPERS_DIR = path.resolve('./demo');
-
-fs.readdirAsync(SCRAPERS_DIR)
-  .then(_.filter(matchExtension('.js')))
-  // eslint-disable-next-line global-require
-  .then(_.map((file) => require(path.join(SCRAPERS_DIR, file))))
-  .then(_.map(Class => Class.default || Class))
-  .then(_.map((Class) => {
-    const obj = new Class();
-    if (!obj.name) {
-      obj.name = Class.name;
-    }
-    if (!obj.timeBetween) {
-      obj.timeBetween = Class.timeBetween || ONE_HOUR;
-    }
-    return obj;
-  }))
-  .then(_.forEach(startQueue));
+getScrapers.then(_.forEach(startQueue));

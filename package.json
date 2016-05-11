@@ -11,6 +11,7 @@
   "dependencies": {
     "babel-generator": "^6.7.7",
     "babel-helpers": "^6.6.0",
+    "bull": "^1.0.0-rc1",
     "debug": "^2.2.0",
     "eslint-config-airbnb-base": "^1.0.4",
     "eslint-plugin-import": "^1.6.1",
