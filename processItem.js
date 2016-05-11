@@ -1,6 +1,6 @@
 import _ from 'lodash/fp';
 
-export function processItem(browser, url, fn) {
+export default function processItem(browser, url, fn) {
   browser.navigate(url);
   browser.injectJQuery();
   return browser.runInContextOfJquery(fn)

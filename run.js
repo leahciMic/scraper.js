@@ -1,79 +1,80 @@
-import bluebird from 'bluebird';
 import _ from 'lodash/fp';
 import fs from 'fs';
 import createBrowser from './lib/browser.js';
 import sha256 from './lib/sha256.js';
 import debug from 'debug';
-import lruCache from 'lru-cache';
 import getScrapers from './getScrapers.js';
 import processItem from './processItem.js';
-import Firebase from 'firebase';
-import FirebaseQueue from 'firebase-queue';
-const rootRef = new Firebase(process.env.FIREBASE_URL);
+import createQueue from 'bull';
+import bluebird from 'bluebird';
+import cacheManager from 'cache-manager';
+import redisStore from 'cache-manager-redis';
 
-const urlCache = lruCache(200000);
+const redisCache = cacheManager.caching({
+  store: redisStore,
+  db: 0,
+  ttl: 86400,
+});
 
+bluebird.promisifyAll(redisCache);
 bluebird.promisifyAll(fs);
 
 function startQueue(scraper) {
   const scraperLog = debug(`scraperjs:${scraper.name}`);
-  scraperLog('queue starting');
-  const queueRef = rootRef.child(scraper.name);
-  const dataRef = rootRef.child(scraper.name).child('data');
+  const scraperQueue = createQueue(`scraperjs:${scraper.name}`);
 
-  // oh we probably need to index this data by url, so how are we going to get that property?
+  scraperLog('queue starting');
+
   scraper.on('data', (data) => {
-    dataRef.push(data);
+    console.log('TODO we should be saving DATA!!!', data);
   });
 
   scraper.on('queue', (queueItem) => {
     const urlHash = sha256(queueItem.url);
-    const cacheResult = urlCache.get(urlHash);
 
-    const addQueueItem = (timestamp) => {
-      if (+new Date() > timestamp + scraper.timeBetween) {
-        urlCache.set(urlHash, +new Date());
-        queueRef.child('lastAdded').child(urlHash).set(Firebase.ServerValue.TIMESTAMP);
-        scraperLog('Added to queue', queueItem);
-        queueRef.child('tasks').push(queueItem);
+    scraperLog('adding ', queueItem);
+
+    redisCache.getAsync(urlHash).then((timestamp) => {
+      if (timestamp === null) {
+        scraperLog('did add item!');
+        scraperQueue.add({
+          url: queueItem.url,
+          method: queueItem.method,
+        });
       } else {
-        urlCache.set(urlHash, timestamp);
+        scraperLog('item already in queue');
       }
-    };
-
-    if (cacheResult === undefined) {
-      scraperLog('Cache miss!', queueItem.url);
-      queueRef.child('lastAdded').child(urlHash).once('value', (ref) => {
-        addQueueItem(ref.val() || 0);
-      });
-    } else {
-      addQueueItem(cacheResult);
-    }
+      // update TTL ?
+      redisCache.set(urlHash, +new Date(), scraper.timeBetween);
+    });
   });
 
   scraper.start();
 
   createBrowser().then((browser) => {
     scraperLog('Started browser');
-    // other args are progress, resolve, reject
-    // scraperLog('Processing item from queue', queueItem.url, queueItem.method);
-    // eslint-disable-next-line no-unused-vars
-    const queueManager = new FirebaseQueue(queueRef, (queueItem, progress, resolve) => {
-      processItem(browser, queueItem.url, scraper[queueItem.method])
-        .then(({ queue, data }) => {
-          queue.forEach(args => scraper.queue(...args));
-          if (data.length) {
-            scraper.data({
-              url: queueItem.url,
-              method: queueItem.method,
-              timestamp: Firebase.ServerValue.TIMESTAMP,
-              data: data.length === 1 ? data[0][0] : data.map(x => x[0]),
-            });
-          }
-        })
-        .then(resolve);
-    }); // eslint-disable-line no-unused-vars
+
+    scraperQueue.process((job) => {
+      const queueItem = job.data;
+      scraperLog('Got a job to do!', queueItem, scraper[queueItem.method]);
+      return processItem(
+        browser,
+        queueItem.url,
+        scraper[queueItem.method]
+      ).then(({ queue, data }) => {
+        scraperLog('processItem finished');
+        queue.forEach(args => scraper.queue(...args));
+        if (data.length) {
+          scraper.data({
+            url: queueItem.url,
+            method: queueItem.method,
+            timestamp: +new Date(),
+            data: data.length === 1 ? data[0][0] : data.map(x => x[0]),
+          });
+        }
+      });
+    });
   });
 }
 
-getScrapers.then(_.forEach(startQueue));
+getScrapers().then(_.forEach(startQueue));
