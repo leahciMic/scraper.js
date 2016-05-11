@@ -63,7 +63,7 @@ function startQueue(scraper) {
       browser.navigate(queueItem.url);
       browser.injectJQuery();
       browser.runInContextOfJquery(scraper[queueItem.method]).then(({ queue, data }) => {
-        queue.forEach((args) => {
+        _.uniq(queue).forEach((args) => {
           scraper.queue(...args);
         });
 
@@ -79,7 +79,7 @@ function startQueue(scraper) {
       });
     };
 
-    const queue = new FirebaseQueue(queueRef, processItem);
+    const queue = new FirebaseQueue(queueRef, processItem); // eslint-disable-line no-unused-vars
   });
 }
 
