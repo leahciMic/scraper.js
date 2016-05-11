@@ -8,9 +8,9 @@ import FirebaseQueue from 'firebase-queue';
 import createBrowser from './lib/browser.js';
 import sha256 from './lib/sha256.js';
 import debug from 'debug';
+import lruCache from 'lru-cache';
 
-const log = debug('scraperjs');
-
+const urlCache = lruCache(200000);
 const ONE_HOUR = 3600000;
 
 const rootRef = new Firebase(process.env.FIREBASE_URL);
@@ -18,7 +18,7 @@ const rootRef = new Firebase(process.env.FIREBASE_URL);
 bluebird.promisifyAll(fs);
 
 function startQueue(scraper) {
-  const scraperLog = debug('scraperjs ' + scraper.name);
+  const scraperLog = debug(`scraperjs:${scraper.name}`);
   scraperLog('queue starting');
   const queueRef = rootRef.child(scraper.name);
   const dataRef = rootRef.child(scraper.name).child('data');
@@ -29,16 +29,28 @@ function startQueue(scraper) {
   });
 
   scraper.on('queue', (queueItem) => {
-    scraperLog('requested to queue', queueItem);
     const urlHash = sha256(queueItem.url);
-    queueRef.child('lastAdded').child(urlHash).once('value', (value) => {
-      if (value.val() === null || +new Date() > value.val() + scraper.timeBetween) {
-        value.ref().set(Firebase.ServerValue.TIMESTAMP);
+    const cacheResult = urlCache.get(urlHash);
+
+    const addQueueItem = (timestamp) => {
+      if (+new Date() > timestamp + scraper.timeBetween) {
+        urlCache.set(urlHash, +new Date());
+        queueRef.child('lastAdded').child(urlHash).set(Firebase.ServerValue.TIMESTAMP);
+        scraperLog('Added to queue', queueItem);
         queueRef.child('tasks').push(queueItem);
       } else {
-        scraperLog('Ignorining request to queue an item we saw not long ago', queueItem.url);
+        urlCache.set(urlHash, timestamp);
       }
-    });
+    };
+
+    if (cacheResult === undefined) {
+      scraperLog('Cache miss!', queueItem.url);
+      queueRef.child('lastAdded').child(urlHash).once('value', (ref) => {
+        addQueueItem(ref.val() || 0);
+      });
+    } else {
+      addQueueItem(cacheResult);
+    }
   });
 
   scraper.start();
@@ -46,24 +58,23 @@ function startQueue(scraper) {
   createBrowser().then((browser) => {
     scraperLog('Started browser');
     // other args are progress, resolve, reject
-    const processItem = (data, progress, resolve) => {
-      scraperLog('Processing item from queue', data.url, data.method);
-      browser.navigate(data.url);
+    const processItem = (queueItem, progress, resolve) => {
+      scraperLog('Processing item from queue', queueItem.url, queueItem.method);
+      browser.navigate(queueItem.url);
       browser.injectJQuery();
-      browser.runInContextOfJquery(scraper[data.method]).then((stuff) => {
-        scraperLog('Got back', stuff);
-        scraperLog(stuff.queue.forEach);
-        stuff.queue.forEach((args) => {
+      browser.runInContextOfJquery(scraper[queueItem.method]).then(({ queue, data }) => {
+        queue.forEach((args) => {
           scraper.queue(...args);
         });
 
-        scraper.data({
-          url: data.url,
-          method: data.method,
-          timestamp: Firebase.ServerValue.TIMESTAMP,
-          data: stuff.data.map(x => x[0]),
-        });
-
+        if (data.length) {
+          scraper.data({
+            url: queueItem.url,
+            method: queueItem.method,
+            timestamp: Firebase.ServerValue.TIMESTAMP,
+            data: data.length === 1 ? data[0][0] : data.map(x => x[0]),
+          });
+        }
         resolve();
       });
     };
