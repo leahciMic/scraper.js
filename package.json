@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublish": "babel -d ./dist ./src"
+    "prepublish": "rm -rf ./dist && babel -d ./dist ./src"
   },
   "files": [
     "./dist"
