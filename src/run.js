@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import _ from 'lodash/fp';
 import fs from 'fs';
 import createBrowser from './lib/browser.js';
@@ -10,7 +12,7 @@ import program from 'commander';
 import path from 'path';
 
 program
-  .version(require('./package.json').version)
+  .version(require('../package.json').version)
   .option('-q, --queue <file>', 'Use this queue plugin [memory]')
   .option('-d, --data <file>', 'Use this data plugin')
   .option('-c, --cache <file>', 'Use this url cache provider')
