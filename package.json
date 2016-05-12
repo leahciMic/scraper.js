@@ -10,6 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepublish": "rm -rf ./dist && babel -d ./dist ./src"
   },
+  "repository": "leahcimic/scraper.js",
   "files": [
     "./dist"
   ],
