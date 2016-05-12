@@ -1,4 +1,4 @@
-import { Scraper } from '../index.js';
+import { Scraper } from '../';
 const ONE_DAY = 86400000;
 
 export default class RedditScraper extends Scraper {
@@ -21,4 +21,5 @@ export default class RedditScraper extends Scraper {
       });
   }
 }
+
 RedditScraper.timeBetween = ONE_DAY;

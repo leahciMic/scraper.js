@@ -1,28 +1,25 @@
-import bluebird from 'bluebird';
-import fs from 'fs';
-import path from 'path';
 import _ from 'lodash/fp';
-import matchExtension from './lib/matchExtension.js';
+import filesParser from './lib/filesParser.js';
 const ONE_HOUR = 3600000;
 
-const SCRAPERS_DIR = path.resolve('./demo');
+const initializeScraper = (Class) => {
+  const obj = new Class();
+  obj.name = obj.name || Class.name;
+  obj.timeBetween = Class.timeBetween || ONE_HOUR;
+  if (!obj.name) {
+    throw new Error('name must exist');
+  }
 
-bluebird.promisifyAll(fs);
+  if (typeof obj.timeBetween !== 'number') {
+    throw new Error('timeBetween was not a number');
+  }
 
-export default function getScrapers() {
-  return fs.readdirAsync(SCRAPERS_DIR)
-    .then(_.filter(matchExtension('.js')))
-    // eslint-disable-next-line global-require
-    .then(_.map((file) => require(path.join(SCRAPERS_DIR, file))))
+  return obj;
+};
+
+export default function getScrapers(files) {
+  return filesParser(files)
+    .then(_.map(file => require(file))) // eslint-disable-line global-require
     .then(_.map(Class => Class.default || Class))
-    .then(_.map((Class) => {
-      const obj = new Class();
-      if (!obj.name) {
-        obj.name = Class.name;
-      }
-      if (!obj.timeBetween) {
-        obj.timeBetween = Class.timeBetween || ONE_HOUR;
-      }
-      return obj;
-    }));
+    .then(_.map(initializeScraper));
 }

@@ -1,73 +1,76 @@
 import _ from 'lodash/fp';
 import fs from 'fs';
 import createBrowser from './lib/browser.js';
-import sha256 from './lib/sha256.js';
 import debug from 'debug';
 import getScrapers from './getScrapers.js';
 import processItem from './processItem.js';
-import createQueue from 'bull';
 import bluebird from 'bluebird';
-import cacheManager from 'cache-manager';
-import redisStore from 'cache-manager-redis';
+import requireES6 from './lib/requireES6.js';
+import program from 'commander';
+import path from 'path';
 
-const redisCache = cacheManager.caching({
-  store: redisStore,
-  db: 0,
-  ttl: 86400,
-});
+program
+  .version(require('./package.json').version)
+  .option('-q, --queue <file>', 'Use this queue plugin [memory]')
+  .option('-d, --data <file>', 'Use this data plugin')
+  .option('-c, --cache <file>', 'Use this url cache provider')
+  .parse(process.argv);
 
-bluebird.promisifyAll(redisCache);
+if (!program.queue || !program.data || !program.cache) {
+  program.help();
+}
+
+const dataPlugin = requireES6(path.resolve(program.data));
+const queuePlugin = requireES6(path.resolve(program.queue));
+const cachePlugin = requireES6(path.resolve(program.cache));
+
 bluebird.promisifyAll(fs);
 
 function startQueue(scraper) {
   const scraperLog = debug(`scraperjs:${scraper.name}`);
-  const scraperQueue = createQueue(`scraperjs:${scraper.name}`);
+  const scraperQueue = queuePlugin(`scraperjs:${scraper.name}`);
 
   scraperLog('queue starting');
 
   scraper.on('data', (data) => {
-    console.log('TODO we should be saving DATA!!!', data);
+    // console.log('TODO we should be saving DATA!!!', data);
+    dataPlugin(data);
   });
 
   scraper.on('queue', (queueItem) => {
-    const urlHash = sha256(queueItem.url);
-
-    scraperLog('adding ', queueItem);
-
-    redisCache.getAsync(urlHash).then((timestamp) => {
-      if (timestamp === null) {
-        scraperLog('did add item!');
+    cachePlugin.get(queueItem.url).then((value) => {
+      if (value === null) {
+        scraperLog('adding ', queueItem);
         scraperQueue.add({
           url: queueItem.url,
           method: queueItem.method,
         });
       } else {
-        scraperLog('item already in queue');
+        scraperLog('skipping ', queueItem.url);
       }
-      // update TTL ?
-      redisCache.set(urlHash, +new Date(), scraper.timeBetween);
+      cachePlugin.set(queueItem.url, true, scraper.timeBetween);
     });
   });
 
   scraper.start();
 
   createBrowser().then((browser) => {
-    scraperLog('Started browser');
-    scraperQueue.process((job) => {
-      const queueItem = job.data;
-      scraperLog('Got a job to do!', queueItem, scraper[queueItem.method]);
+    scraperLog('browser process started');
+    scraperQueue.process((queueItem) => {
+      scraperLog('process', queueItem.url);
       return processItem(
         browser,
         queueItem.url,
         scraper[queueItem.method]
-      ).then(({ queue, data }) => {
-        scraperLog('processItem finished');
+      ).then(({ queue, data, url }) => {
+        scraperLog('process', queueItem.url, 'finished');
         const promises = [
           queue.map(args => scraper.queue(...args)),
         ];
         if (data.length) {
           promises.push(scraper.data({
             url: queueItem.url,
+            finalUrl: url,
             method: queueItem.method,
             timestamp: +new Date(),
             data: data.length === 1 ? data[0][0] : data.map(x => x[0]),
@@ -79,4 +82,4 @@ function startQueue(scraper) {
   });
 }
 
-getScrapers().then(_.forEach(startQueue));
+getScrapers(program.args).then(_.forEach(startQueue));
