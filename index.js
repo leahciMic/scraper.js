@@ -3,13 +3,23 @@ import _ from 'lodash/fp';
 import nodeUrl from 'url';
 
 export class Scraper extends EventEmitter {
+  constructor({ queue, store } = {}) {
+    if (!queue) {
+      throw new Error('Scraper expects a queue');
+    }
+    if (!store) {
+      throw new Error('Scraper expects a store');
+    }
+    this._queue = queue;
+    this._store = store;
+  }
   queue(url, method) {
     const queueItem = { url, method };
     const filteredUrl = this.filterQueueItem ? this.filterQueueItem(queueItem) : undefined;
     if (filteredUrl !== undefined) {
       queueItem.url = filteredUrl;
     }
-    this.emit('queue', queueItem);
+    return this._queue(this.name, url, method);
   }
   data(data) {
     this.emit('data', data);

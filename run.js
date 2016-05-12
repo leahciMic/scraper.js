@@ -53,7 +53,6 @@ function startQueue(scraper) {
 
   createBrowser().then((browser) => {
     scraperLog('Started browser');
-
     scraperQueue.process((job) => {
       const queueItem = job.data;
       scraperLog('Got a job to do!', queueItem, scraper[queueItem.method]);
@@ -63,15 +62,18 @@ function startQueue(scraper) {
         scraper[queueItem.method]
       ).then(({ queue, data }) => {
         scraperLog('processItem finished');
-        queue.forEach(args => scraper.queue(...args));
+        const promises = [
+          queue.map(args => scraper.queue(...args)),
+        ];
         if (data.length) {
-          scraper.data({
+          promises.push(scraper.data({
             url: queueItem.url,
             method: queueItem.method,
             timestamp: +new Date(),
             data: data.length === 1 ? data[0][0] : data.map(x => x[0]),
-          });
+          }));
         }
+        return bluebird.all(promises);
       });
     });
   });
