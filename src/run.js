@@ -94,7 +94,7 @@ function startQueue(scraper) {
         cheerio,
       })
         .catch((err) => {
-          console.error('blah error', err);
+          console.error('error processing item', err);
           throw err;
         });
       scraper.log(queue, data, finalUrl);
@@ -160,8 +160,8 @@ async function start() {
     while (true) { // eslint-disable-line no-constant-condition
       if (i >= scrapers.length) { i = 0; }
       log('nextScraper', i);
-      i += 1;
       yield scrapers[i];
+      i += 1;
     }
   }
 

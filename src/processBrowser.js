@@ -117,7 +117,6 @@ export default async function processBrowser({ browser, queueItem, scraper }) {
   try {
     scraper.log(`navigate to ${queueItem.url}`);
     await browser.navigate(queueItem.url);
-
     scraper.log('ensure promise support');
     await ensurePromises(browser);
     scraper.log('inject jquery');
