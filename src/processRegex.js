@@ -1,4 +1,4 @@
-import request from 'request';
+import request from 'request-promise';
 import queueUtil from './lib/queue-util.js';
 import dataUtil from './lib/data-util.js';
 
@@ -24,7 +24,7 @@ export default async function processRegex({ queueItem, scraper }) {
       finalUrl: content.request.href,
     };
   } catch (error) {
-    scraper.error('BIGERR: ', error);
+    scraper.error('BIGERR: An error occurred processing an item', error, 'from url: ', queueItem.url);
     throw error;
   }
 }

@@ -124,10 +124,9 @@ export default async function processBrowser({ browser, queueItem, scraper }) {
     scraper.log('fix jquery click function');
     await fixClickHandlers(browser);
     data = await runWithUtils(browser, scraper[queueItem.method], constructUtils());
-    scraper.log('process data', data);
     return data;
   } catch (error) {
-    scraper.error('BIGERR: An error occurred processing an item', error);
+    scraper.error('BIGERR: An error occurred processing an item', error, 'from url: ', queueItem.url);
     throw error;
   }
 }

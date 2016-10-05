@@ -2,7 +2,7 @@ import request from 'request-promise';
 import queueUtil from './lib/queue-util.js';
 import dataUtil from './lib/data-util.js';
 
-export default async function processCheerio({ cheerio, queueItem, scraper }) {
+export default async function processCheerio({ cheerio, queueItem, scraper, switchUse }) {
   try {
     const content = await request({
       uri: queueItem.url,
@@ -18,17 +18,19 @@ export default async function processCheerio({ cheerio, queueItem, scraper }) {
 
     const utils = {
       $,
-      // _queueItem => {
-      //   // is this still needed?
-      //   queue.push(
-      //     Object.assign({}, _queueItem, { url: url.resolve(baseHref, _queueItem.url) }),
-      //   );
-      // }
       queue: queueUtil(),
       data: dataUtil(),
+      queueItem,
+      use: method => switchUse(method),
     };
 
-    scraper[queueItem.method](utils);
+    const data = await scraper[queueItem.method](utils);
+
+    if (data && data.finalUrl) {
+      // looks like they used switch
+      console.log('Looks like they switched methods');
+      return data;
+    }
 
     return {
       queue: utils.queue.getQueue(),
@@ -36,7 +38,7 @@ export default async function processCheerio({ cheerio, queueItem, scraper }) {
       finalUrl: content.request.href,
     };
   } catch (error) {
-    scraper.error('BIGERR: An error occurred processing an item', error);
+    scraper.error('BIGERR: An error occurred processing an item', error, 'from url: ', queueItem.url);
   }
   return [];
 }

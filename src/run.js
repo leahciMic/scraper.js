@@ -70,11 +70,11 @@ function startQueue(scraper) {
       return;
     }
 
-    if ((scraper.use || 'browser') === 'browser') {
+    // if ((scraper.use || 'browser') === 'browser') {
       scraper.log('starting browser');
       browser = await createBrowser();
       scraper.log('browser started');
-    }
+    // }
 
     scraperQueue.process(async (queueItem) => {
       itemsCompleted += 1;
@@ -97,9 +97,7 @@ function startQueue(scraper) {
           console.error('error processing item', err);
           throw err;
         });
-      scraper.log(queue, data, finalUrl);
       scraper.log('finished!', queueItem.url);
-      scraper.log('queue length', JSON.stringify(queue), JSON.stringify(data));
 
       let promises = [];
 
@@ -168,21 +166,16 @@ async function start() {
   await promiseEach(
     nextScraper(),
     async (scraper) => {
-      let result;
       scraper.log('start processing queue');
-
       try {
-        result = startQueue(scraper);
+        const result = await startQueue(scraper);
         scraper.log('finished processing queue');
+        return result;
       } catch (error) {
         scraper.error('BIGERR: A caught error below');
         scraper.error(error);
         scraper.error(error.stack);
       }
-      result.then(() => {
-        scraper.log('definitely finished');
-      });
-      return result;
     },
     { concurrency: program.concurrency }
   );
