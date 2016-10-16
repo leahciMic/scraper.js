@@ -15,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.4.6",
+    "browserify": "^13.1.0",
     "cheerio": "github:leahcimic/cheerio#add-baseHref-option-and-have-prop-resolve-src-and-href",
     "commander": "^2.9.0",
     "debug": "^2.2.0",
@@ -29,7 +30,8 @@
     "request": "^2.74.0",
     "request-promise": "^4.1.1",
     "resolve": "^1.1.7",
-    "selenium-webdriver": "^3.0.0-beta-2"
+    "sanitize-html": "^1.13.0",
+    "selenium-webdriver": "^3.0.0-beta-2",
   },
   "devDependencies": {
     "babel-eslint": "^6.1.2",
