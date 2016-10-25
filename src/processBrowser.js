@@ -1,12 +1,19 @@
+/* globals bot */
+/* eslint-disable no-underscore-dangle */
+
 import _ from 'lodash';
 import fs from 'fs';
 import bluebird from 'bluebird';
+import path from 'path';
+
 import wrapFunctionWithBabelHelpers from './lib/wrapFunctionWithBabelHelpers.js';
 import Injectable from './lib/Injectable.js';
 import queueUtil from './lib/queue-util.js';
 import dataUtil from './lib/data-util.js';
 import within from './lib/within.js';
 import during from './lib/during.js';
+
+const atomsSrc = fs.readFileSync(path.join(__dirname, './lib/atoms.js'), 'utf8');
 
 const getSourceForModule = _.memoize(
   moduleName => fs.readFileSync(require.resolve(moduleName), 'utf8')
@@ -20,20 +27,29 @@ async function ensurePromises(browser) {
 }
 
 async function injectJQuery(browser) {
+  await browser.executeScript(() => {
+    window.__SCRAPERJS_BEFORE = {
+      $: window.$,
+      jQuery: window.jQuery,
+    };
+  });
   await browser.executeScript(getSourceForModule('jquery'));
   await browser.executeScript(() => {
     window.__SCRAPERJS_JQUERY = window.jQuery; // eslint-disable-line no-underscore-dangle
-    window.jQuery.noConflict();
+    window.$ = window.__SCRAPERJS_BEFORE.$;
+    window.jQuery = window.__SCRAPERJS_BEFORE.jQuery;
   });
+}
+
+async function injectAtoms(browser) {
+  await browser.executeScript(`${atomsSrc}; window.bot = bot;`);
 }
 
 async function fixClickHandlers(browser) {
   await browser.executeScript(() => {
-    // click should simulate a real click, not just for things built with jQuery.
     window.__SCRAPERJS_JQUERY.fn.extend({ // eslint-disable-line no-underscore-dangle
       click() {
-        this.get(0).click();
-        // this.get(0).dispatchEvent(new MouseEvent('click'));
+        bot.action.click(this.get(0));
       },
     });
   });
@@ -111,22 +127,50 @@ async function runWithUtils(browser, origFn, injectable) {
   )))[0];
 }
 
+async function addToolsToBrowser(browser, log) {
+  log('ensure promise support');
+  await ensurePromises(browser);
+  log('inject jquery');
+  await injectJQuery(browser);
+  log('inject atoms');
+  await injectAtoms(browser);
+  log('fix jquery click function');
+  await fixClickHandlers(browser);
+}
+
 export default async function processBrowser({ browser, queueItem, scraper }) {
   let data = [];
 
+  scraper.log(`navigate to ${queueItem.url}`);
+  await browser.navigate(queueItem.url);
+
   try {
-    scraper.log(`navigate to ${queueItem.url}`);
-    await browser.navigate(queueItem.url);
-    scraper.log('ensure promise support');
-    await ensurePromises(browser);
-    scraper.log('inject jquery');
-    await injectJQuery(browser);
-    scraper.log('fix jquery click function');
-    await fixClickHandlers(browser);
+    await addToolsToBrowser(browser, scraper.log);
     data = await runWithUtils(browser, scraper[queueItem.method], constructUtils());
     return data;
-  } catch (error) {
-    scraper.error('BIGERR: An error occurred processing an item', error, 'from url: ', queueItem.url);
-    throw error;
+  } catch (err) {
+    if (err.toString().match(/Document was unloaded during execution/)) {
+      scraper.log('retry');
+      // page was probably redirected... lets try again?
+      try {
+        await addToolsToBrowser(browser, scraper.log);
+        await browser.executeAsyncScript((callback) => {
+          if (document.readyState === 'complete') {
+            callback();
+          } else {
+            window.__SCRAPERJS_JQUERY(window).on('load', () => {
+              callback();
+            });
+          }
+        });
+        data = await runWithUtils(browser, scraper[queueItem.method], constructUtils());
+        return data;
+      } catch (errs) {
+        scraper.error('BIGERR: An error occurred processing an item', errs, 'from url: ', queueItem.url);
+        throw errs;
+      }
+    }
+    scraper.error('BIGERR: An error occurred processing an item', err, 'from url: ', queueItem.url);
+    throw err;
   }
 }

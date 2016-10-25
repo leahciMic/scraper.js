@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "NODE_ENV=test mocha --reporter spec --compilers js:babel-core/register",
-    "prepublish": "rm -rf ./dist && babel -d ./dist ./src"
+    "prepublish": "rm -rf ./dist && babel -d ./dist ./src && cp ./src/lib/atoms.js ./dist/lib/atoms.js"
   },
   "repository": "leahcimic/scraper.js",
   "author": "Michael Leaney <leahcimic@gmail.com>",
