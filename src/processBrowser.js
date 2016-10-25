@@ -147,7 +147,10 @@ export default async function processBrowser({ browser, queueItem, scraper }) {
     data = await runWithUtils(browser, scraper[queueItem.method], constructUtils());
     return data;
   } catch (err) {
-    if (err.toString().match(/Document was unloaded during execution/)) {
+    if (
+      err.toString().match(/Document was unloaded during execution/) ||
+      err.toString().match(/document unloaded while waiting for result/)
+    ) {
       scraper.log('retry');
       // page was probably redirected... lets try again?
       try {
