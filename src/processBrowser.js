@@ -27,18 +27,16 @@ async function ensurePromises(browser) {
 }
 
 async function injectJQuery(browser) {
-  await browser.executeScript(() => {
-    window.__SCRAPERJS_BEFORE = {
-      $: window.$,
-      jQuery: window.jQuery,
-    };
-  });
-  await browser.executeScript(getSourceForModule('jquery'));
-  await browser.executeScript(() => {
-    window.__SCRAPERJS_JQUERY = window.jQuery; // eslint-disable-line no-underscore-dangle
-    window.$ = window.__SCRAPERJS_BEFORE.$;
-    window.jQuery = window.__SCRAPERJS_BEFORE.jQuery;
-  });
+  await browser.executeScript(
+    `
+      var _old$ = window.$;
+      var _oldjQuery = window.jQuery;
+      ${getSourceForModule('jquery')};
+      window.__SCRAPERJS_JQUERY = window.jQuery;
+      window.$ = _old$;
+      window.jQuery = _oldjQuery;
+    `
+  );
 }
 
 async function injectAtoms(browser) {
