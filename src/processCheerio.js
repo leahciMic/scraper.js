@@ -1,4 +1,5 @@
 import request from 'request-promise';
+import cloneDeep from 'lodash/cloneDeep';
 import queueUtil from './lib/queue-util.js';
 import dataUtil from './lib/data-util.js';
 
@@ -8,7 +9,7 @@ export default async function processCheerio({ cheerio, queueItem, scraper, swit
       uri: queueItem.url,
       resolveWithFullResponse: true,
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.59 Safari/537.36',
+        'User-Agent': queueItem.userAgent || 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.59 Safari/537.36',
       },
     });
 
@@ -21,9 +22,9 @@ export default async function processCheerio({ cheerio, queueItem, scraper, swit
 
     const utils = {
       $,
+      queueItem: cloneDeep(queueItem),
       queue: queueUtil(),
       data: dataUtil(),
-      queueItem,
       use: method => switchUse(method),
     };
 
