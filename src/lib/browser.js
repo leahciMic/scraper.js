@@ -1,6 +1,7 @@
 /* eslint-env browser */
 
 import webdriver from 'selenium-webdriver';
+import bluebird from 'bluebird';
 
 // const { By, until } = webdriver;
 
@@ -16,13 +17,13 @@ class Browser {
   }
   navigate(url) {
     this._currentUrl = url;
-    return this.driver.get(url);
+    return bluebird.join(this.driver.get(url));
   }
   executeScript(script) {
-    return this.driver.executeScript(script);
+    return bluebird.join(this.driver.executeScript(script));
   }
   executeAsyncScript(...args) {
-    return this.driver.executeAsyncScript(...args);
+    return bluebird.join(this.driver.executeAsyncScript(...args));
   }
   quit() {
     this.driver.quit();

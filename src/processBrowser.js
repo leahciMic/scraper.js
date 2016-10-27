@@ -118,11 +118,11 @@ async function runWithUtils(browser, origFn, injectable) {
     }
     return undefined;
   };
-  return (await bluebird.join(browser.executeAsyncScript(
+  return (await browser.executeAsyncScript(
     wrapFunctionWithBabelHelpers(runTheFunction),
     fn.toString(),
     injectable.build()
-  )))[0];
+  ))[0];
 }
 
 async function addToolsToBrowser(browser, log) {
