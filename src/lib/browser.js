@@ -7,7 +7,7 @@ import bluebird from 'bluebird';
 
 const getNewBrowser = () => webdriver.promise.createFlow(controlFlow => new webdriver.Builder()
   .setControlFlow(controlFlow)
-  .forBrowser(process.env.HEADLESS ? 'phantomjs' : 'chrome')
+  .forBrowser(process.env.HEADLESS ? 'phantomjs' : process.env.BROWSER || 'chrome')
   .build());
 
 class Browser {

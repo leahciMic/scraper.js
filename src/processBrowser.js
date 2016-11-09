@@ -3,7 +3,6 @@
 
 import _ from 'lodash';
 import fs from 'fs';
-import bluebird from 'bluebird';
 import path from 'path';
 
 import wrapFunctionWithBabelHelpers from './lib/wrapFunctionWithBabelHelpers.js';
