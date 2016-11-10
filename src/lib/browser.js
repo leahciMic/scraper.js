@@ -13,7 +13,9 @@ const getNewBrowser = () => webdriver.promise.createFlow(controlFlow => new webd
 class Browser {
   constructor(driver) {
     this.driver = driver;
-    driver.manage().timeouts().setScriptTimeout(45 * 1000);
+    // @todo make this configurable, 15 minutes is too long for most things,
+    // and probably not enough for all use cases.
+    driver.manage().timeouts().setScriptTimeout(15 * 60 * 1000);
   }
   navigate(url) {
     this._currentUrl = url;

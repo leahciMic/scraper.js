@@ -56,7 +56,7 @@ function startQueue(scraper) {
 
     scraper.log('Add start item to the queue');
 
-    await addToQueue(scraper.start);
+    await addToQueue(filterQueueItems(scraper.start));
 
     scraper.log('Check queue count');
     const queueCount = await scraperQueue.count();
@@ -150,7 +150,7 @@ async function start() {
       process.exit();
     }
     itemsCompleted = 0;
-  }, 60000);
+  }, 15 * 60000); // 15 minutes...
 
   function* nextScraper() {
     let i = 0;
