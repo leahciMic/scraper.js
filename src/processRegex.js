@@ -1,12 +1,15 @@
 import request from 'request-promise';
+import cloneDeep from 'lodash/cloneDeep';
+
 import queueUtil from './lib/queue-util.js';
 import dataUtil from './lib/data-util.js';
 
 export default async function processRegex({ queueItem, scraper }) {
   try {
     scraper.log('Downloading page');
+    const noop = x => x;
     const content = await request({
-      uri: queueItem.url,
+      uri: (scraper.filterUrl || noop)(queueItem.url),
       resolveWithFullResponse: true,
       headers: {
         'User-Agent': queueItem.userAgent || 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.59 Safari/537.36',
@@ -17,6 +20,7 @@ export default async function processRegex({ queueItem, scraper }) {
       body: content.body,
       queue: queueUtil(),
       data: dataUtil(),
+      queueItem: cloneDeep(queueItem),
     };
     scraper.log('Calling user function');
     scraper[queueItem.method](utils);

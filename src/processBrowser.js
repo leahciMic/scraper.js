@@ -137,9 +137,9 @@ async function addToolsToBrowser(browser, log) {
 
 export default async function processBrowser({ browser, queueItem, scraper }) {
   let data = [];
-
+  const noop = x => x;
   scraper.log(`navigate to ${queueItem.url}`);
-  await browser.navigate(queueItem.url);
+  await browser.navigate((scraper.filterUrl || noop)(queueItem.url));
 
   try {
     await addToolsToBrowser(browser, scraper.log);
@@ -147,8 +147,8 @@ export default async function processBrowser({ browser, queueItem, scraper }) {
     return data;
   } catch (err) {
     if (
-      err.toString().match(/Document was unloaded during execution/) ||
-      err.toString().match(/document unloaded while waiting for result/)
+      err.message.toString().match(/Document was unloaded during execution/) ||
+      err.message.toString().match(/document unloaded while waiting for result/)
     ) {
       scraper.log('retry');
       // page was probably redirected... lets try again?

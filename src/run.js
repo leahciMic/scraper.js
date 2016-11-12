@@ -71,6 +71,7 @@ function startQueue(scraper) {
     }
 
     // if ((scraper.use || 'browser') === 'browser') {
+      // @todo create browser JIT
       scraper.log('starting browser');
       browser = await createBrowser();
       scraper.log('browser started');

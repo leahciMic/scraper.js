@@ -5,8 +5,9 @@ import dataUtil from './lib/data-util.js';
 
 export default async function processCheerio({ cheerio, queueItem, scraper, switchUse }) {
   try {
+    const noop = x => x;
     const content = await request({
-      uri: queueItem.url,
+      uri: (scraper.filterUrl || noop)(queueItem.url),
       resolveWithFullResponse: true,
       headers: {
         'User-Agent': queueItem.userAgent || 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.59 Safari/537.36',
@@ -39,6 +40,7 @@ export default async function processCheerio({ cheerio, queueItem, scraper, swit
     return {
       queue: utils.queue.getQueue(),
       data: utils.data.getData(),
+      // this is the actual updated url.
       finalUrl: content.request.href,
     };
   } catch (error) {
