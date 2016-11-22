@@ -2,7 +2,7 @@ import processBrowser from './processBrowser.js';
 import processCheerio from './processCheerio.js';
 import processRegex from './processRegex.js';
 
-export default function process({ browser, cheerio, queueItem, scraper }) {
+export default function process({ browser, whacko, cheerio, queueItem, scraper }) {
   // browser, url, fn
   // @todo move the url filtering logic here so it's shared amongst the different
   // process functions
@@ -12,6 +12,8 @@ export default function process({ browser, cheerio, queueItem, scraper }) {
       case 'browser':
       default:
         return processBrowser({ browser, queueItem, scraper });
+      case 'whacko':
+        return processCheerio({ cheerio, queueItem, scraper, switchUse });
       case 'cheerio':
         return processCheerio({ cheerio, queueItem, scraper, switchUse });
       case 'regex':

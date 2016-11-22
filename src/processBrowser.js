@@ -5,7 +5,6 @@ import _ from 'lodash';
 import fs from 'fs';
 import path from 'path';
 
-import wrapFunctionWithBabelHelpers from './lib/wrapFunctionWithBabelHelpers.js';
 import Injectable from './lib/Injectable.js';
 import queueUtil from './lib/queue-util.js';
 import dataUtil from './lib/data-util.js';
@@ -52,9 +51,10 @@ async function fixClickHandlers(browser) {
   });
 }
 
-function constructUtils() {
+function constructUtils(queueItem) {
   const injectable = new Injectable();
-
+  // @todo we might have to white list some fields here...
+  injectable.register({ queueItem });
   injectable.register({ queue: queueUtil });
   injectable.register({ data: dataUtil });
   injectable.register({ within });
@@ -66,10 +66,8 @@ function constructUtils() {
   return injectable;
 }
 
-async function runWithUtils(browser, origFn, injectable) {
-  const fn = wrapFunctionWithBabelHelpers(origFn);
-
-  const runTheFunction = (userFnStr, utilsStr, callback) => {
+async function runWithUtils(browser, constructScraper, injectable) {
+  const runTheFunction = (constructScraperStr, utilsStr, callback) => {
     const utils = eval(utilsStr); // eslint-disable-line no-eval
 
     try {
@@ -78,10 +76,12 @@ async function runWithUtils(browser, origFn, injectable) {
         return new Function(args.split(','), body); // eslint-disable-line no-new-func
       };
 
+      const scraper = fnFromString(constructScraperStr)();
+
       let result;
 
       try {
-        result = fnFromString(userFnStr)(utils); // eslint-disable-line no-undef
+        result = scraper[utils.queueItem.method](utils); // eslint-disable-line no-undef
       } catch (error) {
         return callback({
           error, from: 'user function', message: error.message,
@@ -117,9 +117,10 @@ async function runWithUtils(browser, origFn, injectable) {
     }
     return undefined;
   };
+
   return (await browser.executeAsyncScript(
-    wrapFunctionWithBabelHelpers(runTheFunction),
-    fn.toString(),
+    runTheFunction,
+    constructScraper.toString(),
     injectable.build()
   ))[0];
 }
@@ -143,7 +144,7 @@ export default async function processBrowser({ browser, queueItem, scraper }) {
 
   try {
     await addToolsToBrowser(browser, scraper.log);
-    data = await runWithUtils(browser, scraper[queueItem.method], constructUtils());
+    data = await runWithUtils(browser, scraper.construct, constructUtils(queueItem));
     return data;
   } catch (err) {
     if (
@@ -163,7 +164,7 @@ export default async function processBrowser({ browser, queueItem, scraper }) {
             });
           }
         });
-        data = await runWithUtils(browser, scraper[queueItem.method], constructUtils());
+        data = await runWithUtils(browser, scraper[queueItem.method], constructUtils(queueItem));
         return data;
       } catch (errs) {
         scraper.error('BIGERR: An error occurred processing an item', errs, 'from url: ', queueItem.url);

@@ -35,6 +35,17 @@ describe('injectable', () => {
     expect(injected.called).to.equal(true);
   });
 
+  it('should be easy to inject plain old js objects', () => {
+    const injected = sinon.spy(({ foobar }) => {
+      expect(foobar).to.deep.equal({ foo: 'bar' });
+    });
+    injectable.register({
+      foobar: { foo: 'bar' },
+    });
+    injected(eval(injectable.build())); // eslint-disable-line no-eval
+    expect(injected.called).to.equal(true);
+  });
+
   it('should be able to evaluate it and get a constructed object', () => {
     const injected = sinon.spy(({ foobar }) => {
       expect(foobar).to.equal('hello world');

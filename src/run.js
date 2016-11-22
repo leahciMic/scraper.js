@@ -6,11 +6,13 @@ import program from 'commander';
 import path from 'path';
 import promiseEach from 'promise-each-concurrency';
 import cheerio from 'cheerio';
+import whacko from 'whacko';
 
 import createBrowser from './lib/browser.js';
 import getScrapers from './getScrapers.js';
 import processItem from './process.js';
 import requireES6 from './lib/requireES6.js';
+import timeout from './lib/timeout.js';
 
 const log = debug('scraperjs:log');
 log.error = debug('scraperjs:error');
@@ -34,11 +36,10 @@ if (!program.queue || !program.data) {
 const dataPlugin = requireES6(path.resolve(program.data));
 const queuePlugin = requireES6(path.resolve(program.queue));
 
-let itemsCompleted = 0;
-
 function startQueue(scraper) {
   return new Promise(async function processQueue(resolve) {
     let browser;
+
     const scraperQueue = queuePlugin(`scraperjs:${scraper.name}`);
 
     // @todo maybe the scraper queue should be instantiated with expiry
@@ -55,37 +56,28 @@ function startQueue(scraper) {
     };
 
     scraper.log('Add start item to the queue');
-
     await addToQueue(filterQueueItems(scraper.start));
 
-    scraper.log('Check queue count');
-    const queueCount = await scraperQueue.count();
+    scraper.log('Waiting for 1 seconds');
+    await timeout(1000);
 
-    if (queueCount === 0) {
-      scraper.log('Finishing up as there is nothing in the queue');
-      setTimeout(() => {
-        scraperQueue.close();
-        resolve();
-      }, 10000);
-      return;
-    }
+    // @todo create browser JIT
+    // scraper.log('starting browser');
+    // browser = await createBrowser();
 
-    // if ((scraper.use || 'browser') === 'browser') {
-      // @todo create browser JIT
-      scraper.log('starting browser');
-      browser = await createBrowser();
-      scraper.log('browser started');
-    // }
+    let finishedTimeout;
 
     scraperQueue.process(async (queueItem) => {
-      itemsCompleted += 1;
+      if (finishedTimeout) {
+        clearTimeout(finishedTimeout);
+        finishedTimeout = undefined;
+      }
 
       scraper.log('process', queueItem.url);
 
-      if (queueItem.use === 'browser' && !browser) {
+      if ((queueItem.use || scraper.use || 'browser') === 'browser' && !browser) {
         scraper.log('starting browser');
         browser = await createBrowser();
-        scraper.log('browser started');
       }
 
       const { queue, data, finalUrl } = await processItem({
@@ -93,12 +85,16 @@ function startQueue(scraper) {
         queueItem,
         scraper,
         cheerio,
+        whacko,
       })
         .catch((err) => {
-          console.error('error processing item', err);
+          scraper.error('error processing item', err);
           throw err;
         });
-      scraper.log('finished!', queueItem.url);
+
+      scraper.log('finished', queueItem.url);
+
+      scraper.log(queue, data);
 
       let promises = [];
 
@@ -109,7 +105,7 @@ function startQueue(scraper) {
         )
           .filter(({ url }) => {
             if (!url.match(/:\/\//)) {
-              log.error('ignoring invalid url queue attempt', url);
+              scraper.error('ignoring invalid url queue attempt', url);
               return false;
             }
             return true;
@@ -129,29 +125,17 @@ function startQueue(scraper) {
       }
 
       await Promise.all(promises);
-
-      const count = await scraperQueue.count();
-
-      if (count === 0) {
+      finishedTimeout = setTimeout(() => {
         scraperQueue.close();
         browser.quit();
         resolve();
-      }
+      }, 5000);
     });
   });
 }
 
 async function start() {
   const scrapers = await getScrapers(program.args);
-
-  setInterval(() => {
-    log.warn('Checking items', itemsCompleted);
-    if (itemsCompleted === 0) {
-      log.warn('Exiting due to 0 items being completed');
-      process.exit();
-    }
-    itemsCompleted = 0;
-  }, 15 * 60000); // 15 minutes...
 
   function* nextScraper() {
     let i = 0;

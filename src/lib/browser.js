@@ -3,8 +3,6 @@
 import webdriver from 'selenium-webdriver';
 import bluebird from 'bluebird';
 
-// const { By, until } = webdriver;
-
 const getNewBrowser = () => webdriver.promise.createFlow(controlFlow => new webdriver.Builder()
   .setControlFlow(controlFlow)
   .forBrowser(process.env.HEADLESS ? 'phantomjs' : process.env.BROWSER || 'chrome')

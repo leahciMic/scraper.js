@@ -1,3 +1,3 @@
-export default function (data) {
+module.exports = function (data) {
   console.log('DATA', data);
 }

@@ -1,2 +1,6 @@
 #!/bin/bash
-DEBUG=scraper*,promise* babel-node ../src/run.js --concurrency 10 --queue scraper.js-queue-bull --data data.js ./reddit.js
+redis-cli FLUSHALL
+cd ..
+npm run prepublish
+cd -
+BROWSER=firefox DEBUG=scraper* node ../dist/run.js --concurrency 2 --queue scraper.js-queue-bull --data data.js ./reddit.js

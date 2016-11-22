@@ -7,6 +7,13 @@ function indent(str, spaces = 2) {
     .join('\n');
 }
 
+function fixObjectShorthandMethods(str) {
+  if (typeof str === 'function') {
+    return str.toString().replace(/^([^() ]*)\s*\(([^)]*)\)\s*{/, 'function $1 ($2) {');
+  }
+  return `function() { return ${JSON.stringify(str)}; }`;
+}
+
 export default class Injectable {
   constructor() {
     this.dependencies = [];
@@ -20,7 +27,7 @@ export default class Injectable {
   registerDependency({ name, constructor }) {
     this.dependencies.push({
       name,
-      constructor: `(${constructor.toString()})`,
+      constructor: `(${fixObjectShorthandMethods(constructor)})`,
     });
   }
   build() {

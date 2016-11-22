@@ -1,28 +1,33 @@
 import _ from 'lodash/fp';
-import filesParser from './lib/filesParser.js';
 import debug from 'debug';
+
+import filesParser from './lib/filesParser.js';
 
 const ONE_HOUR = 3600000;
 
 const initializeScraper = (scraper) => {
-  // eslint-disable-next-line no-param-reassign
-  scraper.timeBetween = scraper.timeBetween || ONE_HOUR;
+  const scraperInstance = scraper();
 
-  if (!scraper.name) {
+  scraperInstance.construct = scraper;
+
+  // eslint-disable-next-line no-param-reassign
+  scraperInstance.timeBetween = scraperInstance.timeBetween || ONE_HOUR;
+
+  if (!scraperInstance.name) {
     throw new Error('name must exist');
   }
 
-  if (typeof scraper.timeBetween !== 'number') {
+  if (typeof scraperInstance.timeBetween !== 'number') {
     throw new Error('timeBetween must be a number');
   }
 
   /* eslint-disable no-param-reassign, no-console */
-  scraper.log = debug(`scraperjs ${scraper.name}:log`);
-  scraper.warn = debug(`scraperjs ${scraper.name}:warn`);
-  scraper.error = debug(`scraperjs ${scraper.name}:error`);
+  scraperInstance.log = debug(`scraperjs ${scraper.name}:log`);
+  scraperInstance.warn = debug(`scraperjs ${scraper.name}:warn`);
+  scraperInstance.error = debug(`scraperjs ${scraper.name}:error`);
   /* eslint-enable no-param-reassign, no-console */
 
-  return scraper;
+  return scraperInstance;
 };
 
 export default function getScrapers(files) {
