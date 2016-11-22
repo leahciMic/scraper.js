@@ -61,11 +61,20 @@ function startQueue(scraper) {
     scraper.log('Waiting for 1 seconds');
     await timeout(1000);
 
-    // @todo create browser JIT
-    // scraper.log('starting browser');
-    // browser = await createBrowser();
-
     let finishedTimeout;
+
+    function resetFinishTimeout() {
+      finishedTimeout = setTimeout(() => {
+        console.log('no work in 5 seconds, quitting');
+        scraperQueue.close();
+        if (browser) {
+          browser.quit();
+        }
+        resolve();
+      }, 1000);
+    }
+
+    resetFinishTimeout();
 
     scraperQueue.process(async (queueItem) => {
       if (finishedTimeout) {
@@ -125,11 +134,7 @@ function startQueue(scraper) {
       }
 
       await Promise.all(promises);
-      finishedTimeout = setTimeout(() => {
-        scraperQueue.close();
-        browser.quit();
-        resolve();
-      }, 5000);
+      resetFinishTimeout();
     });
   });
 }
