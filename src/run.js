@@ -76,7 +76,7 @@ function startQueue(scraper) {
 
     resetFinishTimeout();
 
-    scraperQueue.process(async (queueItem) => {
+    scraperQueue.process({ rateLimit: scraper.rateLimit }, async (queueItem) => {
       if (finishedTimeout) {
         clearTimeout(finishedTimeout);
         finishedTimeout = undefined;
