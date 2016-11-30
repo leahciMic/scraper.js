@@ -71,7 +71,7 @@ function startQueue(scraper) {
           browser.quit();
         }
         resolve();
-      }, 1000);
+      }, 5000);
     }
 
     resetFinishTimeout();
@@ -102,8 +102,7 @@ function startQueue(scraper) {
         });
 
       scraper.log('finished', queueItem.url);
-
-      scraper.log(queue, data);
+      // scraper.debug(queue, data);
 
       let promises = [];
 
