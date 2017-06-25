@@ -1,10 +1,10 @@
-import request from 'request-promise';
-import cloneDeep from 'lodash/cloneDeep';
+const request = require('request-promise');
+const cloneDeep = require('lodash/cloneDeep');
 
-import queueUtil from './lib/queue-util.js';
-import dataUtil from './lib/data-util.js';
+const queueUtil = require('./lib/queue-util.js');
+const dataUtil = require('./lib/data-util.js');
 
-export default async function processRegex({ queueItem, scraper }) {
+module.exports = async function processRegex({ queueItem, scraper }) {
   try {
     scraper.log('Downloading page');
     const noop = x => x;
@@ -34,4 +34,4 @@ export default async function processRegex({ queueItem, scraper }) {
     scraper.error('BIGERR: An error occurred processing an item', error, 'from url: ', queueItem.url);
     throw error;
   }
-}
+};

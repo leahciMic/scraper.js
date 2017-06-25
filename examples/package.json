@@ -12,7 +12,6 @@
   "dependencies": {
     "babel-preset-stage-0": "^6.5.0",
     "request-promise": "^3.0.0",
-    "scraper.js-queue-bull": "^1.0.1",
-    "scraper.js-urlcache-redis": "^0.1.0"
+    "scraper.js-queue-bull": "^3.0.1"
   }
 }

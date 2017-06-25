@@ -1,12 +1,3 @@
-import { babelHelpers } from './babelHelpers.js';
-
-function indent(str, spaces = 2) {
-  return str
-    .split('\n')
-    .map(x => ' '.repeat(spaces) + x)
-    .join('\n');
-}
-
 function fixObjectShorthandMethods(str) {
   if (typeof str === 'function') {
     return str.toString().replace(/^([^() ]*)\s*\(([^)]*)\)\s*{/, 'function $1 ($2) {');
@@ -14,7 +5,7 @@ function fixObjectShorthandMethods(str) {
   return `function() { return ${JSON.stringify(str)}; }`;
 }
 
-export default class Injectable {
+module.exports = class Injectable {
   constructor() {
     this.dependencies = [];
   }
@@ -35,14 +26,13 @@ export default class Injectable {
 
     return [
       '(function() {',
-      indent(babelHelpers, 2),
       '  var ret = {};',
     ]
     .concat(
       this.dependencies.map(
         dependency =>
           `  ret[${encode(dependency.name)}] = eval(${encode(dependency.constructor)})();`
-      )
+      ),
     )
     .concat([
       '  return ret;',

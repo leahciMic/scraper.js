@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   use: 'cheerio',
   start: { url: 'http://reddit.com/', method: 'home', use: 'cheerio' },
   name: 'Reddit',

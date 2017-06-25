@@ -1,7 +1,7 @@
 /* eslint-env browser */
 
-import webdriver from 'selenium-webdriver';
-import bluebird from 'bluebird';
+const webdriver = require('selenium-webdriver');
+const bluebird = require('bluebird');
 
 const getNewBrowser = () => webdriver.promise.createFlow(controlFlow => new webdriver.Builder()
   .setControlFlow(controlFlow)
@@ -30,4 +30,4 @@ class Browser {
   }
 }
 
-export default () => getNewBrowser().then(driver => new Browser(driver));
+module.exports = () => getNewBrowser().then(driver => new Browser(driver));

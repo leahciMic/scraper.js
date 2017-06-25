@@ -1,11 +1,11 @@
-import bluebird from 'bluebird';
-import fs from 'fs';
-import path from 'path';
-import _ from 'lodash/fp';
+const bluebird = require('bluebird');
+const fs = require('fs');
+const path = require('path');
+const _ = require('lodash/fp');
 
 bluebird.promisifyAll(fs);
 
-export default function filesParser(files) {
+module.exports = function filesParser(files) {
   return bluebird.all(files.map(file => fs.statAsync(file).then((stats) => {
     if (stats.isFile()) {
       return path.resolve(file);

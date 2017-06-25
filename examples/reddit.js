@@ -1,5 +1,9 @@
 module.exports = function redditScraper() {
   return {
+    rateLimit: {
+      max: 1,
+      duration: 1000,
+    },
     start: { url: 'https://www.reddit.com/', method: 'home' },
     name: 'Reddit',
     home({ $, queue }) {

@@ -1,8 +1,8 @@
-import { expect } from 'chai';
-import sinon from 'sinon';
+const { expect } = require('chai');
+const sinon = require('sinon');
 
-import dataUtil from '../src/lib/data-util.js';
-import Injectable from '../src/lib/Injectable.js';
+const dataUtil = require('../src/lib/data-util.js');
+const Injectable = require('../src/lib/Injectable.js');
 
 describe('Data utility', () => {
   it('should be able to set and retrieve data', () => {

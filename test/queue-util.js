@@ -1,8 +1,8 @@
-import { expect } from 'chai';
-import sinon from 'sinon';
+const { expect } = require('chai');
+const sinon = require('sinon');
 
-import queueUtil from '../src/lib/queue-util.js';
-import Injectable from '../src/lib/Injectable.js';
+const queueUtil = require('../src/lib/queue-util.js');
+const Injectable = require('../src/lib/Injectable.js');
 
 describe('Queue utility', () => {
   it('should be able to add to the queue and retrieve the queue', () => {

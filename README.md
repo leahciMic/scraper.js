@@ -40,7 +40,7 @@ Write a data manager:
 
 ```js
 // save as data.js
-export default function(data) {
+module.exports = function(data) {
   console.log(data);
 };
 ```

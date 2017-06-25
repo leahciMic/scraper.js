@@ -1,4 +1,4 @@
-export default function withinFactory() {
+module.exports = function withinFactory() {
   return function within(
     expression,
     timeout = 45500,

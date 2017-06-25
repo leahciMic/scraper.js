@@ -1,5 +1,5 @@
-import within from './within.js';
-import during from './during.js';
+const within = require('./within.js');
+const during = require('./during.js');
 
 /*
  * The difference between within and during
@@ -8,7 +8,7 @@ import during from './during.js';
  * during - the expression remains true during the delay
  */
 
-export default {
+module.exports = {
   // visibleWithin the jQuery element is visible within timeout
   visibleWithin: ($, timeout = 100) =>
     within(() => $.is(':visible'), timeout, 30, `Was not visibile within ${timeout}ms`),

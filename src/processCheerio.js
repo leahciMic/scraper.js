@@ -1,9 +1,9 @@
-import request from 'request-promise';
-import cloneDeep from 'lodash/cloneDeep';
-import queueUtil from './lib/queue-util.js';
-import dataUtil from './lib/data-util.js';
+const request = require('request-promise');
+const cloneDeep = require('lodash/cloneDeep');
+const queueUtil = require('./lib/queue-util.js');
+const dataUtil = require('./lib/data-util.js');
 
-export default async function processCheerio({ cheerio, queueItem, scraper, switchUse }) {
+module.exports = async function processCheerio({ cheerio, queueItem, scraper, switchUse }) {
   try {
     const noop = x => x;
     const content = await request({
@@ -33,7 +33,6 @@ export default async function processCheerio({ cheerio, queueItem, scraper, swit
 
     if (data && data.finalUrl) {
       // looks like they used switch
-      console.log('Looks like they switched methods');
       return data;
     }
 

@@ -1,7 +1,7 @@
-import _ from 'lodash/fp';
-import debug from 'debug';
+const _ = require('lodash/fp');
+const debug = require('debug');
 
-import filesParser from './lib/filesParser.js';
+const filesParser = require('./lib/filesParser.js');
 
 const ONE_HOUR = 3600000;
 
@@ -35,9 +35,10 @@ const initializeScraper = ([scraper, file]) => {
   return scraperInstance;
 };
 
-export default function getScrapers(files) {
+module.exports = function getScrapers(files) {
   return filesParser(files)
-  .then(_.map(file => [require(file), file])) // eslint-disable-line global-require
+    // eslint-disable-next-line global-require, import/no-dynamic-require
+    .then(_.map(file => [require(file), file]))
     .then(_.map(([scraper, file]) => [scraper.default || scraper, file]))
     .then(_.map(initializeScraper));
-}
+};

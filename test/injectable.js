@@ -1,6 +1,6 @@
-import Injectable from '../src/lib/Injectable.js';
-import { expect } from 'chai';
-import sinon from 'sinon';
+const Injectable = require('../src/lib/Injectable.js');
+const { expect } = require('chai');
+const sinon = require('sinon');
 
 const foobarFixture = {
   name: 'foobar',

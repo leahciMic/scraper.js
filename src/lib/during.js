@@ -1,4 +1,4 @@
-export default function duringFactory() {
+module.exports = function duringFactory() {
   return function during(
     expression,
     delay = 100,

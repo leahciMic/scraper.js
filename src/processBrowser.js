@@ -1,15 +1,15 @@
 /* globals bot */
 /* eslint-disable no-underscore-dangle */
 
-import _ from 'lodash';
-import fs from 'fs';
-import path from 'path';
+const _ = require('lodash');
+const fs = require('fs');
+const path = require('path');
 
-import Injectable from './lib/Injectable.js';
-import queueUtil from './lib/queue-util.js';
-import dataUtil from './lib/data-util.js';
-import within from './lib/within.js';
-import during from './lib/during.js';
+const Injectable = require('./lib/Injectable.js');
+const queueUtil = require('./lib/queue-util.js');
+const dataUtil = require('./lib/data-util.js');
+const within = require('./lib/within.js');
+const during = require('./lib/during.js');
 
 const atomsSrc = fs.readFileSync(path.join(__dirname, './lib/atoms.js'), 'utf8');
 
@@ -33,7 +33,7 @@ async function injectJQuery(browser) {
       window.__SCRAPERJS_JQUERY = window.jQuery;
       window.$ = _old$;
       window.jQuery = _oldjQuery;
-    `
+    `,
   );
 }
 
@@ -68,9 +68,8 @@ function constructUtils(queueItem) {
 
 async function runWithUtils(browser, constructScraper, injectable) {
   const runTheFunction = (constructScraperStr, utilsStr, callback) => {
-    const utils = eval(utilsStr); // eslint-disable-line no-eval
-
     try {
+      const utils = eval(utilsStr); // eslint-disable-line no-eval
       const fnFromString = (fnStr) => {
         const [, args, body] = fnStr.match(/^function[^(]*\(([^)]*)\) {((?:.|\s)*)}$/);
         return new Function(args.split(','), body); // eslint-disable-line no-new-func
@@ -115,6 +114,7 @@ async function runWithUtils(browser, constructScraper, injectable) {
     } catch (error) {
       callback({ error, message: error.message, from: 'runTheFunction code' });
     }
+
     return undefined;
   };
 
@@ -136,7 +136,7 @@ async function addToolsToBrowser(browser, log) {
   await fixClickHandlers(browser);
 }
 
-export default async function processBrowser({ browser, queueItem, scraper }) {
+module.exports = async function processBrowser({ browser, queueItem, scraper }) {
   let data = [];
   const noop = x => x;
   scraper.log(`navigate to ${queueItem.url}`);
@@ -174,4 +174,4 @@ export default async function processBrowser({ browser, queueItem, scraper }) {
     scraper.error('BIGERR: An error occurred processing an item', err, 'from url: ', queueItem.url);
     throw err;
   }
-}
+};

@@ -1,5 +1,5 @@
-export default function timeout(timeoutMs) {
+module.exports = function timeout(timeoutMs) {
   return new Promise((resolve) => {
     setTimeout(resolve, timeoutMs);
   });
-}
+};

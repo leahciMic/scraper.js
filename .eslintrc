@@ -1,13 +1,12 @@
 {
   "extends": "airbnb-base",
-  "parser": "babel-eslint",
   "env": {
     "browser": true
   },
   "rules": {
-    "generator-star-spacing": ["off"],
-    "no-underscore-dangle": ["error", { "allowAfterThis": true }],
-    "no-unsafe-negation": ["error"],
+    // "generator-star-spacing": ["off"],
+    // "no-underscore-dangle": ["error", { "allowAfterThis": true }],
+    // "no-unsafe-negation": ["error"],
     "import/no-extraneous-dependencies": ["error", {"devDependencies": ['test/**/*.js']}]
   }
 }

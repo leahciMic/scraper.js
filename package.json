@@ -1,14 +1,13 @@
 {
   "name": "scraper.js",
-  "version": "0.15.0",
+  "version": "0.16.0",
   "description": "A scraping platform",
-  "main": "dist/index.js",
+  "main": "./src/index.js",
   "bin": {
     "scraperjs": "dist/run.js"
   },
   "scripts": {
-    "test": "NODE_ENV=test mocha --reporter spec --compilers js:babel-core/register",
-    "prepublish": "rm -rf ./dist && babel -d ./dist ./src && cp ./src/lib/atoms.js ./dist/lib/atoms.js"
+    "test": "NODE_ENV=test mocha --reporter spec"
   },
   "repository": "leahcimic/scraper.js",
   "author": "Michael Leaney <leahcimic@gmail.com>",
@@ -31,8 +30,7 @@
     "request-promise": "^4.1.1",
     "resolve": "^1.1.7",
     "sanitize-html": "^1.13.0",
-    "selenium-webdriver": "^3.0.1",
-    "whacko": "^0.19.1"
+    "selenium-webdriver": "^3.0.1"
   },
   "devDependencies": {
     "babel-core": "^6.18.2",

@@ -1,18 +1,17 @@
 #!/usr/bin/env node
 
-import _ from 'lodash/fp';
-import debug from 'debug';
-import program from 'commander';
-import path from 'path';
-import promiseEach from 'promise-each-concurrency';
-import cheerio from 'cheerio';
-import whacko from 'whacko';
+const _ = require('lodash/fp');
+const debug = require('debug');
+const program = require('commander');
+const path = require('path');
+const promiseEach = require('promise-each-concurrency');
+const cheerio = require('cheerio');
+const whacko = require('whacko');
 
-import createBrowser from './lib/browser.js';
-import getScrapers from './getScrapers.js';
-import processItem from './process.js';
-import requireES6 from './lib/requireES6.js';
-import timeout from './lib/timeout.js';
+const createBrowser = require('./lib/browser.js');
+const getScrapers = require('./getScrapers.js');
+const processItem = require('./process.js');
+const timeout = require('./lib/timeout.js');
 
 const log = debug('scraperjs:log');
 log.error = debug('scraperjs:error');
@@ -33,8 +32,8 @@ if (!program.queue || !program.data) {
   program.help();
 }
 
-const dataPlugin = requireES6(path.resolve(program.data));
-const queuePlugin = requireES6(path.resolve(program.queue));
+const dataPlugin = path.resolve(program.data);
+const queuePlugin = path.resolve(program.queue);
 
 function startQueue(scraper) {
   return new Promise(async function processQueue(resolve) {
@@ -107,18 +106,21 @@ function startQueue(scraper) {
       let promises = [];
 
       if (queue && queue.length) {
-        promises = _.uniqBy('url')(
-          queue
-            .map(filterQueueItems)
-        )
-          .filter(({ url }) => {
-            if (!url.match(/:\/\//)) {
-              scraper.error('ignoring invalid url queue attempt', url);
-              return false;
-            }
-            return true;
-          })
-          .map(_queueItem => addToQueue(_queueItem));
+        try {
+          promises = _.uniqBy('url')(queue.map(filterQueueItems))
+            .filter(({ url }) => {
+              if (!url.match(/:\/\//)) {
+                scraper.error('ignoring invalid url queue attempt', url);
+                return false;
+              }
+              return true;
+            })
+            .map(_queueItem => addToQueue(_queueItem));
+        } catch (error) {
+          scraper.error('an error occured in filterQueueItem');
+          scraper.error(error);
+          throw error;
+        }
       }
 
       if (data) {
@@ -131,7 +133,6 @@ function startQueue(scraper) {
           data,
         }));
       }
-
       await Promise.all(promises);
       resetFinishTimeout();
     });
