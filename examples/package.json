@@ -10,8 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "babel-preset-stage-0": "^6.5.0",
-    "request-promise": "^3.0.0",
-    "scraper.js-queue-bull": "^3.0.1"
+    "babel-preset-stage-0": "^6.24.1",
+    "request-promise": "^4.2.1",
+    "scraper.js-queue-bull": "^4.0.8"
   }
 }

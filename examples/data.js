@@ -1,3 +1,3 @@
 module.exports = function (data) {
-  console.log('DATA', data);
-}
+  // console.log('DATA', data);
+};

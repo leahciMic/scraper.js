@@ -6,7 +6,34 @@ const program = require('commander');
 const path = require('path');
 const promiseEach = require('promise-each-concurrency');
 const cheerio = require('cheerio');
-const whacko = require('whacko');
+const requireES6 = require('./lib/requireES6.js');
+const blessed = require('blessed');
+
+const screen = blessed.screen({
+  smartCSR: true,
+  width: '100%',
+  height: '100%',
+});
+
+screen.title = 'Scraper.js';
+
+const layout = blessed.layout({
+  top: 'center',
+  left: 'center',
+  width: '100%',
+  height: '100%',
+  border: 'line',
+  layout: 'grid',
+  style: {
+    bg: '#aaa',
+    border: {
+      bg: '#eef',
+    },
+  },
+});
+
+screen.append(layout);
+screen.render();
 
 const createBrowser = require('./lib/browser.js');
 const getScrapers = require('./getScrapers.js');
@@ -32,18 +59,42 @@ if (!program.queue || !program.data) {
   program.help();
 }
 
-const dataPlugin = path.resolve(program.data);
-const queuePlugin = path.resolve(program.queue);
+const dataPlugin = requireES6(path.resolve(program.data));
+const { createQueue } = requireES6(path.resolve(program.queue));
 
 function startQueue(scraper) {
+  const queueLayout = blessed.layout({
+    width: 60,
+    height: 15,
+    border: 'line',
+  });
+  layout.append(queueLayout);
+  queueLayout.append(blessed.text({
+    width: queueLayout.width - 2,
+    height: 1,
+    content: scraper.name,
+  }));
+  const statusText = blessed.text({
+    width: queueLayout.width - 2,
+    height: 1,
+    content: 'Waiting for jobs',
+  });
+  queueLayout.append(statusText);
+  const logScroll = blessed.log({
+    width: queueLayout.width - 2,
+    height: 11,
+    scrollback: 50,
+  });
+  queueLayout.append(logScroll);
+  screen.render();
   return new Promise(async function processQueue(resolve) {
     let browser;
 
-    const scraperQueue = queuePlugin(`scraperjs:${scraper.name}`);
+    const scraperQueue = createQueue(`scraperjs:${scraper.name}`);
 
     // @todo maybe the scraper queue should be instantiated with expiry
     const addToQueue = queueItem => scraperQueue.add(
-      _.assign({ expiry: scraper.timeBetween }, queueItem)
+      _.assign({ expiry: scraper.timeBetween }, queueItem),
     );
 
     const filterQueueItems = (queueItem) => {
@@ -64,36 +115,50 @@ function startQueue(scraper) {
 
     function resetFinishTimeout() {
       finishedTimeout = setTimeout(() => {
-        console.log('no work in 5 seconds, quitting');
         scraperQueue.close();
         if (browser) {
           browser.quit();
         }
+
+        statusText.content = 'No jobs, finishing';
+        screen.render();
+        setTimeout(() => {
+          queueLayout.destroy();
+          screen.render();
+        }, 2500);
+
         resolve();
       }, 5000);
     }
 
     resetFinishTimeout();
 
-    scraperQueue.process({ rateLimit: scraper.rateLimit }, async (queueItem) => {
+    scraperQueue.process(async (queueItem) => {
       if (finishedTimeout) {
         clearTimeout(finishedTimeout);
         finishedTimeout = undefined;
       }
 
       scraper.log('process', queueItem.url);
+      statusText.content = 'Received job';
+      logScroll.log(queueItem.url);
+      screen.render();
 
       if ((queueItem.use || scraper.use || 'browser') === 'browser' && !browser) {
         scraper.log('starting browser');
+        statusText.content = 'Starting browser';
+        screen.render();
         browser = await createBrowser();
       }
+
+      statusText.content = 'Processing job';
+      screen.render();
 
       const { queue, data, finalUrl } = await processItem({
         browser,
         queueItem,
         scraper,
         cheerio,
-        whacko,
       })
         .catch((err) => {
           scraper.error('error processing item', err);
@@ -101,6 +166,9 @@ function startQueue(scraper) {
         });
 
       scraper.log('finished', queueItem.url);
+      statusText.content = 'Finished job';
+      screen.render();
+
       // scraper.debug(queue, data);
 
       let promises = [];
@@ -152,6 +220,15 @@ async function start() {
       i += 1;
     }
   }
+
+
+  // Array.from(new Array(+program.concurrency)).forEach(() => {
+
+  // });
+
+
+
+  // console.log('ok');
 
   await promiseEach(
     nextScraper(),

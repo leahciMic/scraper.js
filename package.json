@@ -1,10 +1,10 @@
 {
   "name": "scraper.js",
-  "version": "0.16.0",
+  "version": "0.18.0",
   "description": "A scraping platform",
   "main": "./src/index.js",
   "bin": {
-    "scraperjs": "dist/run.js"
+    "scraperjs": "./src/run.js"
   },
   "scripts": {
     "test": "NODE_ENV=test mocha --reporter spec"
@@ -13,6 +13,7 @@
   "author": "Michael Leaney <leahcimic@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "blessed": "^0.1.81",
     "bluebird": "^3.4.6",
     "browserify": "^13.1.1",
     "cheerio": "github:leahcimic/cheerio#add-baseHref-option-and-have-prop-resolve-src-and-href",
