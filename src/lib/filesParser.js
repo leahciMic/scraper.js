@@ -1,22 +1,25 @@
-const bluebird = require('bluebird');
-const fs = require('fs');
+const fs = require('mz/fs');
 const path = require('path');
 const _ = require('lodash/fp');
 
-bluebird.promisifyAll(fs);
+const recurseFiles = async (file) => {
+  const stats = await fs.stat(file);
+
+  if (stats.isFile()) {
+    return path.resolve(file);
+  }
+
+  if (stats.isDirectory()) {
+    const files = await fs.readdir(file);
+    return files
+      .filter(x => x.match(/\.js$/))
+      .map(basename => path.resolve(file, basename));
+  }
+
+  return undefined;
+};
 
 module.exports = function filesParser(files) {
-  return bluebird.all(files.map(file => fs.statAsync(file).then((stats) => {
-    if (stats.isFile()) {
-      return path.resolve(file);
-    }
-
-    if (stats.isDirectory()) {
-      return fs.readdirAsync(file)
-        .then(_.filter(x => x.match(/\.js$/)))
-        .then(_.map(basename => path.resolve(file, basename)));
-    }
-
-    return undefined;
-  }))).then(_.flatten);
-}
+  return Promise.all(files.map(recurseFiles))
+    .then(_.flatten);
+};

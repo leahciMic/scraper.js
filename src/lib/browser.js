@@ -1,33 +1,38 @@
 /* eslint-env browser */
 
-const webdriver = require('selenium-webdriver');
-const bluebird = require('bluebird');
+const puppeteer = require('puppeteer');
 
-const getNewBrowser = () => webdriver.promise.createFlow(controlFlow => new webdriver.Builder()
-  .setControlFlow(controlFlow)
-  .forBrowser(process.env.HEADLESS ? 'phantomjs' : process.env.BROWSER || 'chrome')
-  .build());
+const browserPromise = puppeteer.launch({ headless: false });
+
+const getNewBrowser = async () => {
+  const browser = await browserPromise;
+  return await browser.newPage();
+};
 
 class Browser {
-  constructor(driver) {
-    this.driver = driver;
-    // @todo make this configurable, 15 minutes is too long for most things,
-    // and probably not enough for all use cases.
-    driver.manage().timeouts().setScriptTimeout(15 * 60 * 1000);
+  constructor(page) {
+    this.page = page;
+    // @todo expose these events...
+    this.page.on('error', (err) => {
+      console.error('Error', err);
+    });
+    this.page.on('pageerror', (err) => {
+      console.error('Page error:', err);
+    });
+    this.page.on('console', (...args) => {
+      console.log('log', ...args);
+    });
   }
   navigate(url) {
     this._currentUrl = url;
-    return bluebird.join(this.driver.get(url));
+    return this.page.goto(url);
   }
-  executeScript(script) {
-    return bluebird.join(this.driver.executeScript(script));
-  }
-  executeAsyncScript(...args) {
-    return bluebird.join(this.driver.executeAsyncScript(...args));
+  evaluate(...args) {
+    return this.page.evaluate(...args);
   }
   quit() {
-    this.driver.quit();
+    this.page.close();
   }
 }
 
-module.exports = () => getNewBrowser().then(driver => new Browser(driver));
+module.exports = () => getNewBrowser().then(page => new Browser(page));
