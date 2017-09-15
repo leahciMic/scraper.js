@@ -26,18 +26,17 @@ module.exports = class Injectable {
 
     return [
       '(function() {',
-      '  var ret = {};',
     ]
-    .concat(
-      this.dependencies.map(
-        dependency =>
-          `  ret[${encode(dependency.name)}] = eval(${encode(dependency.constructor)})();`
-      ),
-    )
-    .concat([
-      '  return ret;',
-      '})()',
-    ])
-    .join('\n');
+      .concat(
+        this.dependencies.map(
+          dependency =>
+            `  var ${dependency.name} = eval(${encode(dependency.constructor)})();`,
+        ),
+      )
+      .concat([
+        `  return { ${this.dependencies.map(x => x.name).join(', ')} };`,
+        '})()',
+      ])
+      .join('\n');
   }
 }

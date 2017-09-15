@@ -10,19 +10,15 @@ const queueUtil = require('./lib/queue-util.js');
 const dataUtil = require('./lib/data-util.js');
 const within = require('./lib/within.js');
 const during = require('./lib/during.js');
+const createPool = require('./lib/browser.js');
+
+let futurePool = createPool({ min: 0, max: 20 });
 
 const atomsSrc = fs.readFileSync(path.join(__dirname, './lib/atoms.js'), 'utf8');
 
 const getSourceForModule = _.memoize(
   moduleName => fs.readFileSync(require.resolve(moduleName), 'utf8')
 );
-
-async function ensurePromises(browser) {
-  if (process.env.HEADLESS) {
-    // phantomjs does not support promises yet (24-05-2016)
-    await browser.evaluate(getSourceForModule('es6-promise'));
-  }
-}
 
 async function injectJQuery(browser) {
   await browser.evaluate(
@@ -59,7 +55,26 @@ function constructUtils(queueItem) {
   injectable.register({ data: dataUtil });
   injectable.register({ within });
   injectable.register({ during });
-
+  injectable.register({
+    timeout() {
+      return function timeout(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      };
+    },
+  });
+  injectable.register({
+    queueAll() {
+      return function queueAll($els, conf = {}) {
+        if (typeof $els === 'string') {
+          $els = $($els);
+        }
+        $els
+          .map((i, x) => $(x).prop('href')).get() // eslint-disable-line no-undef
+          // eslint-disable-next-line no-undef
+          .forEach(href => queue(Object.assign({ url: href }, conf)));
+      };
+    },
+  });
   injectable.register({
     $() { return window.__SCRAPERJS_JQUERY; }, // eslint-disable-line no-underscore-dangle
   });
@@ -114,7 +129,11 @@ function runWithUtils(browser, constructScraper, injectable) {
         data: utils.data.getData(),
         finalUrl: window.location.href,
       });
-    });
+    })
+      .catch((e) => {
+        console.error('An error occurred', e);
+        throw e;
+      });
   };
 
   return browser.evaluate(
@@ -125,8 +144,6 @@ function runWithUtils(browser, constructScraper, injectable) {
 }
 
 async function addToolsToBrowser(browser, log) {
-  log('ensure promise support');
-  await ensurePromises(browser);
   log('inject jquery');
   await injectJQuery(browser);
   log('inject atoms');
@@ -135,42 +152,68 @@ async function addToolsToBrowser(browser, log) {
   await fixClickHandlers(browser);
 }
 
-module.exports = async function processBrowser({ browser, queueItem, scraper }) {
+//(node:53474) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 2): Error: Navigation Timeout Exceeded: 30000ms exceeded
+
+module.exports = async function processBrowser({ queueItem, scraper }) {
+  const currentPool = futurePool;
+  const pool = await currentPool;
+  const browser = await pool.acquire();
+
   let data = [];
   const noop = x => x;
-  scraper.log(`navigate to ${queueItem.url}`);
-  await browser.navigate((scraper.filterUrl || noop)(queueItem.url));
 
   try {
+    scraper.log(`navigate to ${queueItem.url}`);
+
+    await browser.goto((scraper.filterUrl || noop)(queueItem.url));
     await addToolsToBrowser(browser, scraper.log);
+
     data = await runWithUtils(browser, scraper.construct, constructUtils(queueItem));
+
+    try {
+      await pool.release(browser);
+    } catch (e) {
+      console.error('could not release browser', e);
+    }
+
     return data;
   } catch (err) {
-    // if (
-    //   err.message.toString().match(/Document was unloaded during execution/) ||
-    //   err.message.toString().match(/document unloaded while waiting for result/)
-    // ) {
-    //   scraper.log('retry');
-    //   // page was probably redirected... lets try again?
-    //   try {
-    //     await addToolsToBrowser(browser, scraper.log);
-    //     await browser.executeAsyncScript((callback) => {
-    //       if (document.readyState === 'complete') {
-    //         callback();
-    //       } else {
-    //         window.__SCRAPERJS_JQUERY(window).on('load', () => {
-    //           callback();
-    //         });
-    //       }
-    //     });
-    //     data = await runWithUtils(browser, scraper[queueItem.method], constructUtils(queueItem));
-    //     return data;
-    //   } catch (errs) {
-    //     scraper.error('BIGERR: An error occurred processing an item', errs, 'from url: ', queueItem.url);
-    //     throw errs;
-    //   }
-    // }
-    // scraper.error('BIGERR: An error occurred processing an item', err, 'from url: ', queueItem.url);
+    console.log(err);
+    try {
+      await pool.release(browser);
+    } catch (e) {
+      console.error('could not release browser', e);
+    }
+
+    if (err.message.match(/Promise was collected/)) {
+      console.log('Promise was collected???', err);
+      throw err;
+    }
+
+    if (err.message.match(/^Navigation Timeout Exceeded/)) {
+      console.log('Retrying because of navigation error');
+      return processBrowser({ queueItem, scraper });
+    }
+
+    if (
+      err.message.match(/^Protocol error \([^)]*\):/)
+    ) {
+      console.log('Probable browser crash', err.message);
+
+      if (currentPool === futurePool) {
+        console.log('create new pool');
+        futurePool = createPool({ min: 0, max: 20 });
+        console.log('kill and create a new pool');
+        pool.kill();
+      } else {
+        console.log('pool already changed, just retry');
+      }
+
+      return processBrowser({ queueItem, scraper });
+    }
+
+    console.log('rethrow err', err);
+
     throw err;
   }
 };

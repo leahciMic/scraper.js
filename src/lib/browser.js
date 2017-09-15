@@ -1,38 +1,72 @@
-/* eslint-env browser */
-
 const puppeteer = require('puppeteer');
-
-const browserPromise = puppeteer.launch({ headless: false });
-
-const getNewBrowser = async () => {
-  const browser = await browserPromise;
-  return await browser.newPage();
-};
+const genericPool = require('generic-pool');
+const memoize = require('lodash/memoize');
 
 class Browser {
   constructor(page) {
     this.page = page;
-    // @todo expose these events...
-    this.page.on('error', (err) => {
-      console.error('Error', err);
-    });
-    this.page.on('pageerror', (err) => {
-      console.error('Page error:', err);
-    });
-    this.page.on('console', (...args) => {
-      console.log('log', ...args);
-    });
+    // this.page.on('error', console.error.bind(console));
+    this.page.on('pageerror', console.error.bind(console));
+    // this.page.on('console', console.log.bind(console));
   }
-  navigate(url) {
-    this._currentUrl = url;
+  goto(url) {
     return this.page.goto(url);
   }
   evaluate(...args) {
     return this.page.evaluate(...args);
   }
-  quit() {
-    this.page.close();
+  close() {
+    return this.page.close();
   }
 }
+const launchBrowser = () => puppeteer.launch({
+  headless: false,
+  ignoreHTTPSErrors: true,
+});
 
-module.exports = () => getNewBrowser().then(page => new Browser(page));
+const instantiatePool = async ({ min, max }) => {
+  const browser = await launchBrowser();
+
+  const factory = {
+    async create() {
+      // hopefully we can catch the errors here, and launch a new browser.
+      const page = await browser.newPage();
+      // await page.setRequestInterceptionEnabled(true);
+
+      // page.on('request', async (interceptedRequest) => {
+      //   try {
+      //     if (interceptedRequest.url.match(/\.(png|jpg|mp4|gif)$/)) {
+      //       await interceptedRequest.abort();
+      //     } else {
+      //       await interceptedRequest.continue();
+      //     }
+      //   } catch (e) {
+      //     console.log('could not intercept request', e);
+      //   }
+      // });
+
+      return new Browser(page);
+    },
+    destroy() {
+      return browser.close();
+    },
+  };
+
+  const pool = genericPool.createPool(factory, { min, max });
+
+  pool.kill = async () => {
+    try {
+      console.log('draining client connections');
+      await pool.drain();
+      console.log('closing browser');
+      await browser.close();
+    } catch(e) {
+      console.log('error killing', e);
+    }
+  };
+
+  return pool;
+};
+
+module.exports = instantiatePool;
+

@@ -35,6 +35,18 @@ describe('injectable', () => {
     expect(injected.called).to.equal(true);
   });
 
+  it('should dependencies should be able to depend on other dependencies', () => {
+    const injected = sinon.spy(({ foobar }) => {
+      expect(foobar()).to.deep.equal({ foo: 'bar' });
+    });
+    injectable.register({
+      foobar() { return () => baz; },
+      baz: { foo: 'bar' },
+    });
+    injected(eval(injectable.build())); // eslint-disable-line no-eval
+    expect(injected.called).to.equal(true);
+  });
+
   it('should be easy to inject plain old js objects', () => {
     const injected = sinon.spy(({ foobar }) => {
       expect(foobar).to.deep.equal({ foo: 'bar' });
