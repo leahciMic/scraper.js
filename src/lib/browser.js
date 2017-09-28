@@ -1,12 +1,11 @@
 const puppeteer = require('puppeteer');
 const genericPool = require('generic-pool');
-const memoize = require('lodash/memoize');
 
 class Browser {
   constructor(page) {
     this.page = page;
     // this.page.on('error', console.error.bind(console));
-    this.page.on('pageerror', console.error.bind(console));
+    // this.page.on('pageerror', console.error.bind(console));
     // this.page.on('console', console.log.bind(console));
   }
   goto(url) {
