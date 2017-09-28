@@ -7,9 +7,14 @@ program
   .option('-c, --concurrency <number>', 'How many browser instances to use', x => Number(x), 1)
   .parse(process.argv);
 
-if (!program.queue || !program.data) {
-  program.help();
-  process.exit();
+if (!program.queue) {
+  console.warn('--queue not specified, defaulting to pre-installed scraper.js-queue-bull');
+  program.queue = 'scraper.js-queue-bull';
+}
+
+if (!program.data) {
+  console.warn('--data not specified, defaulting to ./data.js');
+  program.data = './data.js';
 }
 
 module.exports = program;

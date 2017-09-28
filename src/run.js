@@ -8,6 +8,24 @@ const getScrapers = require('./getScrapers.js');
 const processItem = require('./process.js');
 const timeout = require('./lib/timeout.js');
 const log = require('./lib/log.js');
+const createStatsD = require('uber-statsd-client');
+
+let sdc;
+
+if (process.env.STATSD) {
+  sdc = createStatsD({
+    prefix: 'scraperjs',
+    host: process.env.STATSD_HOST,
+    port: process.env.STATSD_PORT,
+  });
+} else {
+  sdc = {
+    increment() {},
+    decrement() {},
+    gauge() {},
+    timing() {},
+  };
+}
 
 const program = require('./lib/parse-cli-options.js');
 
@@ -17,9 +35,17 @@ const { createQueue } = requireES6(path.resolve(program.queue));
 function loadScraper(scraper) {
   const scraperQueue = createQueue(`scraperjs:${scraper.name}`);
 
-  const addToQueue = queueItem => scraperQueue.add(
-    _.assign({ expiry: scraper.timeBetween }, queueItem),
-  );
+  const addToQueue = (queueItem) => {
+    // @todo queueTotal could be wrong, as the queue will not add items that
+    // already exist.
+    sdc.increment(`queueTotal.${scraper.name}`);
+    sdc.increment(`queueItems.${scraper.name}`);
+    return scraperQueue.add(Object.assign(
+      { expiry: scraper.timeBetween },
+      queueItem,
+    ));
+  };
+
   const filterQueueItems = (queueItem) => {
     if (scraper.filterQueueItem) {
       // eslint-disable-next-line no-param-reassign
@@ -41,12 +67,18 @@ function loadScraper(scraper) {
     async processQueueItem(queueItem) {
       let data;
 
+      sdc.decrement(`queueItems.${scraper.name}`);
+      const startTime = new Date();
       try {
         data = await processItem({ queueItem, scraper });
+        sdc.increment(`processItem.${scraper.name}`);
       } catch (e) {
+        sdc.increment(`processItemFail.${scraper.name}`);
         console.error('Fatal processItem unhandled error', e);
         console.error(queueItem, scraper);
         throw e;
+      } finally {
+        sdc.timing(`processItemTime.${scraper.name}`, startTime);
       }
 
       return data;
@@ -124,7 +156,7 @@ async function startQueue(scraper) {
       }
 
       scraper.log({ name: data.name, price: data.price });
-
+      const startTime = new Date();
       await dataPlugin({
         url: queueItem.url,
         finalUrl,
@@ -133,6 +165,7 @@ async function startQueue(scraper) {
         timestamp: +new Date(),
         data,
       });
+      sdc.timing(`dataSaveTime.${scraper.name}`, startTime);
     } else {
       scraper.log('No data received');
     }
