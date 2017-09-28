@@ -16,9 +16,8 @@ let futurePool = createPool({ min: 0, max: 20 });
 
 const atomsSrc = fs.readFileSync(path.join(__dirname, './lib/atoms.js'), 'utf8');
 
-const getSourceForModule = _.memoize(
-  moduleName => fs.readFileSync(require.resolve(moduleName), 'utf8')
-);
+const getSourceForModule = _.memoize(moduleName =>
+  fs.readFileSync(require.resolve(moduleName), 'utf8'));
 
 async function injectJQuery(browser) {
   await browser.evaluate(
@@ -158,6 +157,10 @@ module.exports = async function processBrowser({ queueItem, scraper }) {
   const currentPool = futurePool;
   const pool = await currentPool;
   const browser = await pool.acquire();
+
+  if (!queueItem.url.match(/^https?/)) {
+    throw new Error(`refusing to navigate to ${queueItem.url}`);
+  }
 
   let data = [];
   const noop = x => x;

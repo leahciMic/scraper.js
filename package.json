@@ -1,6 +1,6 @@
 {
   "name": "scraper.js",
-  "version": "0.20.1",
+  "version": "1.0.0",
   "description": "A scraping platform",
   "main": "./src/index.js",
   "bin": {
