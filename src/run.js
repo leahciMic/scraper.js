@@ -38,6 +38,7 @@ function loadScraper(scraper) {
   const addToQueue = (queueItem) => {
     // @todo queueTotal could be wrong, as the queue will not add items that
     // already exist.
+    sdc.increment(`queued.${scraper.name.replace('.', '-')}.count`);
     sdc.increment(`queueTotal.${scraper.name}`);
     sdc.increment(`queueItems.${scraper.name}`);
     return scraperQueue.add(Object.assign(
@@ -67,18 +68,21 @@ function loadScraper(scraper) {
     async processQueueItem(queueItem) {
       let data;
 
-      sdc.decrement(`queueItems.${scraper.name}`);
+      sdc.decrement(`queueItems.${scraper.name}.count`);
       const startTime = new Date();
+
       try {
         data = await processItem({ queueItem, scraper });
         sdc.increment(`processItem.${scraper.name}`);
+        sdc.increment(`processed.${scraper.name.replace('.', '-')}.count`);
       } catch (e) {
         sdc.increment(`processItemFail.${scraper.name}`);
+        sdc.increment(`failed.${scraper.name.replace('.', '-')}.count`);
         console.error('Fatal processItem unhandled error', e);
         console.error(queueItem, scraper);
         throw e;
       } finally {
-        sdc.timing(`processItemTime.${scraper.name}`, startTime);
+        sdc.timing(`processItemTime.${scraper.name.replace('.', '-')}`, startTime);
       }
 
       return data;
@@ -86,14 +90,19 @@ function loadScraper(scraper) {
   };
 }
 
+process.on('SIGINT', () => {
+  console.log('Shutting down...');
+  process.exit();
+});
+
 async function startQueue(scraper) {
   const scraperAPI = loadScraper(scraper);
 
   scraper.log('Add start item to the queue');
   await scraperAPI.addStartItem();
 
-  scraper.log('Waiting for 1 seconds');
-  await timeout(1000);
+  scraper.log('Waiting for 100ms');
+  await timeout(100);
 
   let end;
   let finishedTimeout;
@@ -103,6 +112,7 @@ async function startQueue(scraper) {
 
   function resetFinishTimeout() {
     finishedTimeout = setTimeout(() => {
+      scraper.log('hit finishedTimeout');
       scraperAPI.close();
       end();
     }, 5000);
@@ -116,10 +126,12 @@ async function startQueue(scraper) {
 
     scraper.log('process', queueItem.url);
 
-    const { queue, data, finalUrl } = await scraperAPI.processQueueItem(queueItem);
+    // wrap this and catch errors!
+    const { queue, data, finalUrl } = await scraperAPI.processQueueItem(queueItem)
+
     scraper.log('finished', queueItem.url);
 
-    let promises = [];
+    // let promises = [];
 
     if (queue && queue.length) {
       const refinedQueue = _.uniqBy('url')(queue.map(scraperAPI.filterQueueItems))
@@ -134,7 +146,7 @@ async function startQueue(scraper) {
       scraper.log(`Adding ${refinedQueue.length} queue items`);
       // screen.render();
 
-      for (let qi of refinedQueue) {
+      for (const qi of refinedQueue) {
         await scraperAPI.addToQueue(qi);
       }
     } else {
@@ -165,7 +177,7 @@ async function startQueue(scraper) {
         timestamp: +new Date(),
         data,
       });
-      sdc.timing(`dataSaveTime.${scraper.name}`, startTime);
+      sdc.timing(`dataSaveTime.${scraper.name.replace('.', '-')}`, startTime);
     } else {
       scraper.log('No data received');
     }

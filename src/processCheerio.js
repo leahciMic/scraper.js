@@ -1,9 +1,10 @@
+const cheerio = require('cheerio');
 const request = require('request-promise');
 const cloneDeep = require('lodash/cloneDeep');
 const queueUtil = require('./lib/queue-util.js');
 const dataUtil = require('./lib/data-util.js');
 
-module.exports = async function processCheerio({ cheerio, queueItem, scraper, switchUse }) {
+module.exports = async function processCheerio({ queueItem, scraper, switchUse }) {
   try {
     const noop = x => x;
     const content = await request({
@@ -46,4 +47,4 @@ module.exports = async function processCheerio({ cheerio, queueItem, scraper, sw
     scraper.error('BIGERR: An error occurred processing an item', error, 'from url: ', queueItem.url);
   }
   return [];
-}
+};

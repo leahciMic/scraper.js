@@ -19,7 +19,7 @@ class Browser {
   }
 }
 const launchBrowser = () => puppeteer.launch({
-  headless: false,
+  headless: process.env.HEADLESS,
   ignoreHTTPSErrors: true,
 });
 
@@ -30,6 +30,9 @@ const instantiatePool = async ({ min, max }) => {
     async create() {
       // hopefully we can catch the errors here, and launch a new browser.
       const page = await browser.newPage();
+
+      // this currently causes a lot of chrome crashes
+
       // await page.setRequestInterceptionEnabled(true);
 
       // page.on('request', async (interceptedRequest) => {
@@ -68,4 +71,3 @@ const instantiatePool = async ({ min, max }) => {
 };
 
 module.exports = instantiatePool;
-

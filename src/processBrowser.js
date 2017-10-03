@@ -20,16 +20,14 @@ const getSourceForModule = _.memoize(moduleName =>
   fs.readFileSync(require.resolve(moduleName), 'utf8'));
 
 async function injectJQuery(browser) {
-  await browser.evaluate(
-    `
-      var _old$ = window.$;
-      var _oldjQuery = window.jQuery;
-      ${getSourceForModule('jquery')};
-      window.__SCRAPERJS_JQUERY = window.jQuery;
-      window.$ = _old$;
-      window.jQuery = _oldjQuery;
-    `,
-  );
+  await browser.evaluate(`
+    var _old$ = window.$;
+    var _oldjQuery = window.jQuery;
+    ${getSourceForModule('jquery')};
+    window.__SCRAPERJS_JQUERY = window.jQuery;
+    window.$ = _old$;
+    window.jQuery = _oldjQuery;
+  `);
 }
 
 async function injectAtoms(browser) {
@@ -48,7 +46,7 @@ async function fixClickHandlers(browser) {
 
 function constructUtils(queueItem) {
   const injectable = new Injectable();
-  // @todo we might have to white list some fields here...
+
   injectable.register({ queueItem });
   injectable.register({ queue: queueUtil });
   injectable.register({ data: dataUtil });
@@ -63,10 +61,15 @@ function constructUtils(queueItem) {
   });
   injectable.register({
     queueAll() {
-      return function queueAll($els, conf = {}) {
-        if (typeof $els === 'string') {
-          $els = $($els);
+      return function queueAll(firstParam, conf = {}) {
+        let $els;
+
+        if (typeof firstParam === 'string') {
+          $els = $(firstParam); // eslint-disable-line no-undef
+        } else {
+          $els = firstParam;
         }
+
         $els
           .map((i, x) => $(x).prop('href')).get() // eslint-disable-line no-undef
           // eslint-disable-next-line no-undef
@@ -83,8 +86,9 @@ function constructUtils(queueItem) {
 function runWithUtils(browser, constructScraper, injectable) {
   // @todo clean this confusion up
   const runTheFunction = (constructScraperStr, utilsStr) => {
-    return new Promise((resolve, reject) => {
+    const main = async function main() {
       const utils = eval(utilsStr); // eslint-disable-line no-eval
+
       const fnFromString = (fnStr) => {
         const [, args, body] = fnStr.match(/^function[^(]*\(([^)]*)\) {((?:.|\s)*)}$/);
         return new Function(args.split(','), body); // eslint-disable-line no-new-func
@@ -92,47 +96,20 @@ function runWithUtils(browser, constructScraper, injectable) {
 
       const scraper = fnFromString(constructScraperStr)();
 
-      let result;
-
       try {
-        result = scraper[utils.queueItem.method](utils); // eslint-disable-line no-undef
-      } catch (error) {
-        return reject({
-          error,
-          from: 'user function',
-          message: error.message,
-        });
-      }
-
-      if (result && result.then && typeof result.then === 'function') {
-        const curryCallback = () => resolve({
+        await scraper[utils.queueItem.method](utils); // eslint-disable-line no-undef
+        return {
           queue: utils.queue.getQueue(),
           data: utils.data.getData(),
           finalUrl: window.location.href,
-        });
-        result.then(
-          curryCallback,
-          error => reject({
-            error,
-            message: error.message,
-            from: 'user function promise',
-            err: JSON.stringify(error),
-            stack: error.stack,
-          })
-        );
-        return undefined;
+        };
+      } catch (error) {
+        error.from = 'user function';
+        throw error;
       }
+    };
 
-      return resolve({
-        queue: utils.queue.getQueue(),
-        data: utils.data.getData(),
-        finalUrl: window.location.href,
-      });
-    })
-      .catch((e) => {
-        console.error('An error occurred', e);
-        throw e;
-      });
+    return main();
   };
 
   return browser.evaluate(
@@ -143,24 +120,23 @@ function runWithUtils(browser, constructScraper, injectable) {
 }
 
 async function addToolsToBrowser(browser, log) {
-  log('inject jquery');
+  log('Injecting jQuery...');
   await injectJQuery(browser);
-  log('inject atoms');
+  log('Injecting Selenium Atoms...');
   await injectAtoms(browser);
-  log('fix jquery click function');
+  log('Fixing $.click()');
   await fixClickHandlers(browser);
 }
-
-//(node:53474) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 2): Error: Navigation Timeout Exceeded: 30000ms exceeded
 
 module.exports = async function processBrowser({ queueItem, scraper }) {
   const currentPool = futurePool;
   const pool = await currentPool;
-  const browser = await pool.acquire();
 
   if (!queueItem.url.match(/^https?/)) {
     throw new Error(`refusing to navigate to ${queueItem.url}`);
   }
+
+  const browser = await pool.acquire();
 
   let data = [];
   const noop = x => x;
