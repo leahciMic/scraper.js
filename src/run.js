@@ -10,6 +10,33 @@ const timeout = require('./lib/timeout.js');
 const log = require('./lib/log.js');
 const createStatsD = require('uber-statsd-client');
 
+// const express = require('express');
+// const fs = require('fs');
+// const httpolyglot = require('httpolyglot');
+
+// const app = express();
+// const httpProxy = require('http-proxy');
+
+// const proxy = httpProxy.createProxyServer({
+//   ws: true,
+// });
+
+// app.use((req, res) => {
+//   proxy.web(req, res, { target: req.url });
+//   console.log('proxy this', req.url);
+// });
+
+// const server = httpolyglot.createServer({
+//   key: fs.readFileSync(path.join(__dirname, '../cert.key'), 'utf8'),
+//   cert: fs.readFileSync(path.join(__dirname, '../cert.crt'), 'utf8'),
+// }, app);
+
+
+// app.listen(4113);
+// server.listen(4113, () => {
+//   console.log('Proxy listening on 4113');
+// });
+
 let sdc;
 
 if (process.env.STATSD) {
@@ -33,7 +60,7 @@ const dataPlugin = requireES6(path.resolve(program.data));
 const { createQueue } = requireES6(path.resolve(program.queue));
 
 function loadScraper(scraper) {
-  const scraperQueue = createQueue(`scraperjs:${scraper.name}`);
+  const scraperQueue = createQueue(`scraperjs:${scraper.name}`, { expiry: scraper.timeBetween });
 
   const addToQueue = (queueItem) => {
     // @todo queueTotal could be wrong, as the queue will not add items that
@@ -41,10 +68,7 @@ function loadScraper(scraper) {
     sdc.increment(`queued.${scraper.name.replace('.', '-')}.count`);
     sdc.increment(`queueTotal.${scraper.name}`);
     sdc.increment(`queueItems.${scraper.name}`);
-    return scraperQueue.add(Object.assign(
-      { expiry: scraper.timeBetween },
-      queueItem,
-    ));
+    return scraperQueue.add(queueItem);
   };
 
   const filterQueueItems = (queueItem) => {

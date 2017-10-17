@@ -58,6 +58,13 @@ function constructUtils(queueItem) {
         return new Promise(resolve => setTimeout(resolve, ms));
       };
     },
+    onRedirect() {
+      const onRedirect = (method) => {
+        onRedirect.redirectMethod = method;
+      };
+      onRedirect.redirectMethod = undefined;
+      return onRedirect;
+    },
   });
   injectable.register({
     queueAll() {
@@ -102,6 +109,7 @@ function runWithUtils(browser, constructScraper, injectable) {
           queue: utils.queue.getQueue(),
           data: utils.data.getData(),
           finalUrl: window.location.href,
+          onRedirect: utils.onRedirect.redirectMethod,
         };
       } catch (error) {
         error.from = 'user function';
@@ -149,6 +157,15 @@ module.exports = async function processBrowser({ queueItem, scraper }) {
 
     data = await runWithUtils(browser, scraper.construct, constructUtils(queueItem));
 
+    console.log(data);
+    if (data.onRedirect) {
+      console.log('waiting for navigation');
+      await browser.waitForNavigation();
+      console.log('Changing the method to', data.onRedirect);
+      queueItem.method = data.onRedirect;
+      data = await runWithUtils(browser, scraper.construct, constructUtils(queueItem));
+    }
+
     try {
       await pool.release(browser);
     } catch (e) {
@@ -157,7 +174,14 @@ module.exports = async function processBrowser({ queueItem, scraper }) {
 
     return data;
   } catch (err) {
+    if (err.message.match(/Execution context was destroyed/)) {
+      // page redirected whilst executing function, this is all good
+      console.log('Page redirected');
+      return { queue: [], data: undefined, finalUrl: queueItem.url };
+    }
+
     console.log(err);
+
     try {
       await pool.release(browser);
     } catch (e) {
