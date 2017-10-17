@@ -1,0 +1,49 @@
+<div id="signin-panel">
+	<div class="row align-center">
+		<div class="small-8 columns">
+			<div id="login-email">
+				<label for="login-input-email">
+					<%= t('email_field_label') %><span class="asterisk">*</span>
+					<input id="login-input-email" type="text" name="email" pattern=".{1,}" autocomplete="off">
+				</label>
+				<p class="warning"><%= t('invalid_email_login') %></p>
+			</div>
+			<div id="login-password">
+				<label for="login-input-password">
+					<%= t('password_field_label') %><span class="asterisk">*</span>
+					<input id="login-input-password" type="password" name="password" pattern=".{1,}">
+				</label>
+				<p class="warning"><%= t('password_field_label_required') %></p>
+			</div>
+			<div class="account-signin-buttons-container row">
+				<div class="small-6 columns text-center">
+					<a href="#/dashboard" class="cancel button hollow">
+						<%= t("button_cancel") %>
+					</a>
+				</div>
+				<div class="small-6 columns text-center">
+					<div id="signin-button" class="button">
+						<%= t("panel_menu_signin") %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="account-panel-action row">
+		<div class="small-6 columns text-center">
+			<a href="#/forgot-password"><%= t("panel_forgot_password") %></a>
+		</div>
+		<div class="small-6 columns text-center">
+			<a href="#/create-account"><%= t("panel_create_account") %></a>
+		</div>
+	</div>
+	<div class="row align-center footer-row">
+		<div class="small-10 columns">
+			<div class="account-panel-footer">
+				<span>
+					<%= t("account_signin_privacy_statement") %>
+				</span>
+			</div>
+		</div>
+	</div>
+</div>

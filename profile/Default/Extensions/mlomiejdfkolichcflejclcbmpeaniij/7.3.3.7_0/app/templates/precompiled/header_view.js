@@ -1,0 +1,1 @@
+module.exports=function(a){var d="";return d+='<div class="top-bar flex align-middle align-justify">\n\t<div class="header-back"></div>\n\t<a href="#/dashboard" class="header-logo"></a>\n\t<div class="flex-fill"></div>\n\t<div class="header-helper-text"></div>\n\t<div class="header-kebab" data-toggle="header-dropdown"></div>\n</div>\n'};

@@ -1,0 +1,91 @@
+<div id="create-account-panel">
+	<div class="row align-center">
+		<div class="small-11 columns">
+			<div class="row">
+				<div class="small-8 columns">
+					<div id="create-account-email">
+						<label class='create-account-label' id='create-email-label' for="create-input-email">
+							<%= t('email_field_label') %><span class="asterisk">*</span>
+							<input class='create-account-input' id="create-input-email" type="text" name="email" pattern=".{1,}" autocomplete="off" required>
+						</label>
+						<p id="email-invalid" class="warning">
+							<%= t('invalid_email_create') %>
+						</p>
+					</div>
+					<div id="create-account-email-confirm">
+						<label class='create-account-label' id='create-email-confirm-label' for="create-input-email-confirm">
+							<%= t('email_confirm_field_label') %><span class="asterisk">*</span>
+							<input class='create-account-input' id="create-input-email-confirm" type="text" name="emailConfirm" pattern=".{1,}" autocomplete="off" required>
+						</label>
+						<p class="warning"><%= t('invalid_email_confirmation') %></p>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="small-6 columns">
+					<div id="create-account-first-name">
+						<label class='create-account-label' id='create-first-name-label' for="create-input-first-name">
+							<%= t("first_name_field_label") %>
+							<input class='create-account-input' id="create-input-first-name" type="text" name="firstName" pattern=".{1,}" required>
+						</label>
+					</div>
+				</div>
+				<div class="small-6 columns">
+					<div id="create-account-last-name">
+						<label class='create-account-label' id='create-last-name-label' for="create-input-last-name">
+							<%= t("last_name_field_label") %>
+							<input class='create-account-input' id="create-input-last-name" type="text" name="lastName" pattern=".{1,}" required>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="small-12 columns">
+					<div id="create-account-password">
+						<div class="row">
+							<div class="small-8 columns">
+								<label class='create-account-label' id='create-password-label' for="create-input-password">
+									<%= t('create_password_field_label') %><span class="asterisk">*</span>
+									<input class='create-account-input' id="create-input-password" type="password" name="password" pattern=".{1,}" required>
+								</label>
+							</div>
+						</div>
+						<p class="warning">
+							<span id="password-length-requirement">
+								<%= t('password_requirements') %>
+							</span>
+							<span id='password-characters-requirement'>
+								<%= t('password_characters_requirements') %>
+							</span>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="small-12 columns">
+					<div id='create-account-privacy-container'>
+						<label for="accept-privacy" id="accept-privacy-label">
+							<input id="accept-privacy" type="checkbox" checked>
+							<%= t('account_creation_privacy_statement') %>
+						</label>
+						<p id='accept-privacy-requirement' class="warning">
+							<%= t('consent_privacy') %>
+						</p>
+					</div>
+					<div id="account-creation-buttons" class="row align-center">
+						<div class="small-4 columns text-center">
+							<a href="#/dashboard" id='create-account-cancel' class="cancel button hollow">
+								<%= t("button_cancel") %>
+							</a>
+						</div>
+						<div class="small-4 columns text-center">
+							<div id="create-account-button" class="button">
+								<%= t("panel_title_create_account") %>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

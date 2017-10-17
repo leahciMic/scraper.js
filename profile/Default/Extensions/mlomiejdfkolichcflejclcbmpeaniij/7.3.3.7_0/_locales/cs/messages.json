@@ -1,0 +1,1407 @@
+{
+   "account_creation_privacy_statement": {
+      "message": "Vyjadřuji souhlas se zásadami využívání dat službou Ghostery, které se nachází v příslušném $LINK_PS_START$Prohlášení o soukromí$LINK_PS_END$, a s podmínkami v příslušné $LINK_UA_START$Licenční smlouvě$LINK_UA_END$.",
+      "placeholders": {
+         "link_ps_end": {
+            "content": "\u003C/a>"
+         },
+         "link_ps_start": {
+            "content": "\u003Ca target=\"_blank\" href=\"https://www.ghostery.com/about-us/privacy-statements/ghostery-browser-extension/ghostery-browser-extension-privacy-statement/\">"
+         },
+         "link_ua_end": {
+            "content": "\u003C/a>"
+         },
+         "link_ua_start": {
+            "content": "\u003Ca target=\"_blank\" href=\"https://www.ghostery.com/about-us/privacy-statements/ghostery-browser-extension/ghostery-browser-extension-end-user-license-agreem/\">"
+         }
+      }
+   },
+   "account_signin_privacy_statement": {
+      "message": "Váš účet vám zpřístupňuje pokročilé funkce a není propojen s žádnými údaji z trackerů, které jste se s námi rozhodli sdílet. Bližší informace o způsobu využívání údajů z účtu najdete v naší sekci $LINK_FAQ_START$Nejčastější dotazy$LINK_FAQ_END$.",
+      "placeholders": {
+         "link_faq_end": {
+            "content": "\u003C/a>"
+         },
+         "link_faq_start": {
+            "content": "\u003Ca target=\"_blank\" href=\"https://www.ghostery.com/support/faq/ghostery-add-on/\">"
+         }
+      }
+   },
+   "all": {
+      "description": "Default setting in the 'filter by type' dropdown for the tag browser. Doesn't filter anything out. Should read as 'Show all'.",
+      "message": "vše"
+   },
+   "banner_check_your_email_title": {
+      "message": "Za chvíli ve svém e-mailu najdete odkaz na obnovení svého hesla."
+   },
+   "banner_no_such_account_message": {
+      "message": "Vypadá to, že tuhle kombinaci uživatelského jména a hesla nemůžeme nalézt. Zkuste to znovu."
+   },
+   "blacklist_error_duplicate_url": {
+      "message": "Přístup k tomuto webu je už omezen."
+   },
+   "blacklist_error_whitelist_url": {
+      "message": "Tento web byl odstraněn ze seznamu Důvěryhodných webů a přidán na seznam Nepřístupných webů"
+   },
+   "blocked": {
+      "description": "Select this to show only blocked (checked) tags in the tag browser. Should read as 'Show blocked'.",
+      "message": "blokováno"
+   },
+   "blocked_redirect_action_always_title": {
+      "description": "Title for the 'Allow always and reload' button on the blocked redirect page.",
+      "message": "Vždy povolit a znovu načíst."
+   },
+   "blocked_redirect_action_through_once_title": {
+      "description": "Title for the 'Allow once' button on the blocked redirect page.",
+      "message": "Povoluje tagy až do dosažení konečného cíle."
+   },
+   "blocked_redirect_page_title": {
+      "description": "Page title for blocked_redirect.html which appears when a redirect is blocked.",
+      "message": "Služba Ghostery zabránila přesměrování."
+   },
+   "blocked_redirect_prevent": {
+      "description": "Text appearing on block_redirect.html when a redirect is blocked. Should appear inside \"redirect-prevent\" div.",
+      "message": "Služba Ghostery zamezila přesměrování z adresy $BREAK$ $SP_O_START$$ORIGIN$$SP_END$ na $SP_D_START$$DESTINATION$$SP_END$, $BREAK$která je součástí $A_START$$APP$$A_END$. $BREAK$",
+      "placeholders": {
+         "a_end": {
+            "content": "\u003C/a>"
+         },
+         "a_start": {
+            "content": "\u003Ca id=\"name\" href=\"$4\" target=\"_blank\">"
+         },
+         "app": {
+            "content": "$3",
+            "example": "DoubleClick"
+         },
+         "break": {
+            "content": "\u003Cbr>"
+         },
+         "destination": {
+            "content": "$2"
+         },
+         "origin": {
+            "content": "$1"
+         },
+         "sp_d_start": {
+            "content": "\u003Cspan id=\"destination\">"
+         },
+         "sp_end": {
+            "content": "\u003C/span>"
+         },
+         "sp_o_start": {
+            "content": "\u003Cspan id=\"origin\">"
+         }
+      }
+   },
+   "blocked_redirect_url_content": {
+      "description": "Text appearing on block_redirect.html when a redirect is blocked and a final 'destination' URL is successfully found.",
+      "message": "Zdá se, že tento tag přesměrovává na adresu $BREAK$ $A_START$$REDIRECT_URL$$A_END$ Pokud tento odkaz nevypadá, že je v pořádku a chcete pokračovat, klikněte na ikonu níže k povolení $APP$ a opětovnému načtení.",
+      "placeholders": {
+         "a_end": {
+            "content": "\u003C/a>"
+         },
+         "a_start": {
+            "content": "\u003Ca href=\"$1\" class=\"ellipsis\" title=\"$1\">"
+         },
+         "app": {
+            "content": "$2",
+            "example": "DoubleClick"
+         },
+         "break": {
+            "content": "\u003Cbr>"
+         },
+         "redirect_url": {
+            "content": "$1"
+         }
+      }
+   },
+   "blocking_block_all": {
+      "message": "Blokovat vše"
+   },
+   "blocking_block_shown": {
+      "message": "Blokování zobrazeno"
+   },
+   "blocking_category_blocked": {
+      "description": "as in '5 (trackers) BLOCKED'",
+      "message": "Blokováno"
+   },
+   "blocking_category_tracker": {
+      "message": "Tracker"
+   },
+   "blocking_category_trackers": {
+      "message": "Trackery"
+   },
+   "blocking_options_blocked": {
+      "message": "Blokováno"
+   },
+   "blocking_options_blocked_all": {
+      "message": "Všechny trackery v kategorii jsou blokovány"
+   },
+   "blocking_options_trackers": {
+      "message": "Trackery"
+   },
+   "blocking_trackers": {
+      "message": "Trackery"
+   },
+   "box_dismiss_0s": {
+      "message": "Neodmítat $SPAN_START$nikdy$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan>"
+         }
+      }
+   },
+   "box_dismiss_15s": {
+      "message": "Odmítnout $SPAN_START$po 15 sekundách$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan>"
+         }
+      }
+   },
+   "box_dismiss_30s": {
+      "message": "Odmítnout $SPAN_START$po 30 sekundách$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan>"
+         }
+      }
+   },
+   "box_dismiss_5s": {
+      "message": "Odmítnout $SPAN_START$po 5 sekundách$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan>"
+         }
+      }
+   },
+   "box_display_bl": {
+      "message": "Zobrazovat $SPAN_START$vlevo dole$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan>"
+         }
+      }
+   },
+   "box_display_br": {
+      "message": "Zobrazovat $SPAN_START$vpravo dole$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan>"
+         }
+      }
+   },
+   "box_display_tl": {
+      "message": "Zobrazovat $SPAN_START$vlevo nahoře$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan>"
+         }
+      }
+   },
+   "box_display_tr": {
+      "message": "Zobrazovat $SPAN_START$vpravo nahoře$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan>"
+         }
+      }
+   },
+   "box_hide": {
+      "message": "Skrýt pole"
+   },
+   "box_hide_expanded": {
+      "message": "Skrýt fialové pole"
+   },
+   "box_looking": {
+      "message": "Hledání"
+   },
+   "box_options_expanded": {
+      "message": "Možnosti"
+   },
+   "box_settings": {
+      "message": "Nastavení"
+   },
+   "box_settings_expanded": {
+      "message": "Mé nastavení služby Ghostery"
+   },
+   "box_tracker": {
+      "message": "Tracker"
+   },
+   "box_trackers": {
+      "message": "Trackery"
+   },
+   "box_warning_compatibility": {
+      "message": "Trackery na narušené stránce"
+   },
+   "box_warning_nonsecure": {
+      "message": "Nezabezpečené trackery"
+   },
+   "box_warning_slow": {
+      "message": "Pomalé trackery"
+   },
+   "browse_button_label": {
+      "message": "Procházet..."
+   },
+   "browser_button_tooltip": {
+      "description": "Ghostery's browser button tooltip.",
+      "message": "Zobrazit zjištění služby Ghostery"
+   },
+   "button_cancel": {
+      "description": "Part of a confirmation dialog. Clicking this cancels the action.",
+      "message": "Zrušit"
+   },
+   "category_advertising": {
+      "description": "Ghostery organizes tags by category. This is one of several tag categories.",
+      "message": "Reklama"
+   },
+   "category_advertising_desc": {
+      "description": "User-facing description for the Advertising tag category.",
+      "message": "Zajišťuje reklamní či s reklamou související služby, jako je sběr dat, behaviorální analýza nebo přesměrování."
+   },
+   "category_audio_video_player": {
+      "description": "Ghostery organizes tags by category. This is one of several tag categories.",
+      "message": "Přehrávač audia/videa"
+   },
+   "category_audio_video_player_desc": {
+      "description": "User-facing description for the Audio/Video Player tag category.",
+      "message": "Umožňuje zveřejňování, distribuci a optimalizaci audiovizuálního obsahu."
+   },
+   "category_comments": {
+      "description": "Ghostery organizes tags by category. This is one of several tag categories.",
+      "message": "Komentáře"
+   },
+   "category_comments_desc": {
+      "description": "User-facing description for the Comments tag category.",
+      "message": "Zapíná sekce komentářů u článků a recenzí produktů."
+   },
+   "category_customer_interaction": {
+      "description": "Ghostery organizes tags by category. This is one of several tag categories.",
+      "message": "Interakce zákazníků"
+   },
+   "category_customer_interaction_desc": {
+      "description": "User-facing description for the Customer Interaction tag category.",
+      "message": "Zahrnuje chat, e-mailové zprávy, zákaznickou podporu a další nástroje pro interakci."
+   },
+   "category_essential": {
+      "description": "Ghostery organizes tags by category. This is one of several tag categories.",
+      "message": "Základní"
+   },
+   "category_essential_desc": {
+      "description": "User-facing description for the Essential tag category.",
+      "message": "Zahrnuje nástroje pro správu značek, oznámení týkající se ochrany osobních údajů a technologie, které jsou důležité pro funkčnost webové stránky."
+   },
+   "category_pornvertising": {
+      "description": "Ghostery organizes tags by category. This is one of several tag categories.",
+      "message": "Reklama pro dospělé"
+   },
+   "category_pornvertising_desc": {
+      "description": "User-facing description for the Adult Advertising tag category.",
+      "message": "Zajišťuje inzertní technologii určenou specificky pro stránky s obsahem pro dospělé."
+   },
+   "category_site_analytics": {
+      "description": "Ghostery organizes tags by category. This is one of several tag categories.",
+      "message": "Webová analytika"
+   },
+   "category_site_analytics_desc": {
+      "description": "User-facing description for the Site Analytics tag category.",
+      "message": "Stará se o sběr a analýzu dat souvisejících s používáním a výsledky stránky."
+   },
+   "category_social_media": {
+      "description": "Ghostery organizes tags by category. This is one of several tag categories.",
+      "message": "Sociální média"
+   },
+   "category_social_media_desc": {
+      "description": "User-facing description for the Social Media tag category.",
+      "message": "Slouží k integraci funkcí souvisejících se sociálními sítěmi."
+   },
+   "category_uncategorized": {
+      "message": "Nezařazeno"
+   },
+   "category_uncategorized_desc": {
+      "message": "Tyto trackery dosud nebyly zařazeny."
+   },
+   "click2play_allow_always_tooltip": {
+      "description": "Tooltip that appears over the 'allow always' click2play button.",
+      "message": "Povolit a znovu načíst."
+   },
+   "click2play_allow_once_button_tooltip": {
+      "description": "Tooltip that appears over the click2play replacement for 'social' buttons.",
+      "message": "Služba Ghostery zablokovala aplikaci $APP_NAME$. Klikněte zde, pokud tento prvek chcete pro tuhle chvíli načíst.",
+      "placeholders": {
+         "app_name": {
+            "content": "$1",
+            "example": "Twitter Button"
+         }
+      }
+   },
+   "click2play_allow_once_tooltip": {
+      "description": "Tooltip that appears over the 'allow once' click2play button.",
+      "message": "Povolit jednou a znovu načíst."
+   },
+   "click2play_blocked": {
+      "message": "Služba Ghostery zablokovala aplikaci $APP_NAME$.",
+      "placeholders": {
+         "app_name": {
+            "content": "$1",
+            "example": "SoundCloud"
+         }
+      }
+   },
+   "click2play_comment_form": {
+      "message": "Služba Ghostery zablokovala komentáře od $NAME$.",
+      "placeholders": {
+         "name": {
+            "content": "$1",
+            "example": "Disqus"
+         }
+      }
+   },
+   "click2play_review_form": {
+      "message": "Služba Ghostery zablokovala hodnocení od $NAME$.",
+      "placeholders": {
+         "name": {
+            "content": "$1",
+            "example": "Disqus"
+         }
+      }
+   },
+   "click2play_survey_form": {
+      "message": "Služba Ghostery zablokovala průzkum od $NAME$.",
+      "placeholders": {
+         "name": {
+            "content": "$1",
+            "example": "Disqus"
+         }
+      }
+   },
+   "click2play_video_form": {
+      "message": "Služba Ghostery zablokovala přehrávač videa od $NAME$.",
+      "placeholders": {
+         "name": {
+            "content": "$1",
+            "example": "Disqus"
+         }
+      }
+   },
+   "consent_privacy": {
+      "message": "Je požadován souhlas."
+   },
+   "copyright": {
+      "description": "Copyright message, shown in page footers.",
+      "message": "$C$ $YEAR$ $GHOSTERY$, součást $COMPANY_ADDRESS$",
+      "placeholders": {
+         "c": {
+            "content": "&copy;"
+         },
+         "company_address": {
+            "content": "$1",
+            "example": "GHOSTERY, Inc., Such-and-such Street, Such-and-such Floor, New York, NY, Zip Code"
+         },
+         "ghostery": {
+            "content": "\u003Ca href='https://www.ghostery.com' target='_blank'>Ghostery\u003C/a>"
+         },
+         "year": {
+            "content": "2015"
+         }
+      }
+   },
+   "create_password_field_label": {
+      "message": "Heslo:"
+   },
+   "dismiss": {
+      "description": "Text for a button or link to close a notification.",
+      "message": "Odmítnout"
+   },
+   "email_address_in_use": {
+      "message": "Tato e-mailová adresa je již obsazená. Vyberte prosím jinou."
+   },
+   "email_confirm_field_label": {
+      "message": "Potvrzení e-mailu:"
+   },
+   "email_field_label": {
+      "message": "E-mail:"
+   },
+   "error_email_forgot": {
+      "message": "Hmm, tenhle e-mail nemůžu najít. Možná byste mohli zkusit jiný."
+   },
+   "file_was_not_selected": {
+      "message": "Soubor nebyl vybrán"
+   },
+   "first_name_field_label": {
+      "message": "Křestní jméno (nepovinné):"
+   },
+   "forgot_password_message": {
+      "message": "Zapomněli jste své heslo? To je v pořádku, to se může stát každému. Pokyny k obnovení hesla vám zašleme e-mailem."
+   },
+   "invalid_email_confirmation": {
+      "message": "Vaše e-maily nesouhlasí."
+   },
+   "invalid_email_create": {
+      "message": "Prosím, zadejte platný e-mail."
+   },
+   "invalid_email_forgot": {
+      "message": "Omlouváme se, ale musíte zadat skutečnou e-mailovou adresu."
+   },
+   "invalid_email_login": {
+      "message": "Omlouváme se, ale musíte zadat skutečnou e-mailovou adresu."
+   },
+   "last_name_field_label": {
+      "message": "Příjmení (nepovinné):"
+   },
+   "library_never_updated": {
+      "description": "Text shown in the case when no tag library updates have yet happened.",
+      "message": "Důrazně doporučujeme zapnout automatické aktualizace."
+   },
+   "library_update_already_updated": {
+      "description": "Text shown in the case when the tag library did not need to be updated from remote servers since it's already the latest copy.",
+      "message": "Knihovna je již aktuální."
+   },
+   "library_update_failed": {
+      "description": "Tag library update action failed.",
+      "message": "Je nám líto, nahrávání selhalo. Zkuste to znovu později."
+   },
+   "library_update_in_progress": {
+      "description": "Indicates an update is in progress (might have a spinner graphic next to it).",
+      "message": "Probíhá aktualizace..."
+   },
+   "library_update_now_link": {
+      "message": "Aktualizovat nyní."
+   },
+   "library_update_successful": {
+      "description": "Tag library update action completed successfully.",
+      "message": "Dokončeno!"
+   },
+   "library_updated_on": {
+      "description": "Text shown when a tag library update has happened at least once.",
+      "message": "Knihovna trackerů byla naposledy synchronizována $DATE$",
+      "placeholders": {
+         "date": {
+            "content": "$1",
+            "example": "Wed Oct 12 2011"
+         }
+      }
+   },
+   "none": {
+      "description": "Used to say that this item does not belong to any of the groups, as in \"Groups: None\" (as opposed to \"Groups: Group A, Group B, Group C\").",
+      "message": "Nevyplněno"
+   },
+   "not_http_page": {
+      "message": "Nezapomeňte na současné kartě otevřít stránku http nebo https"
+   },
+   "notification_reminder1": {
+      "description": "First line of the walkthrough reminder/notification. Sentence continued on next line.",
+      "message": "Bližší informace o některých klíčových funkcích služby Ghostery najdete v návodu na konfiguraci služby Ghostery."
+   },
+   "notification_reminder2": {
+      "description": "Second line of the walkthrough reminder/notification. Continues the sentence from previous line.",
+      "message": "kde naleznete podrobnější informace o některých klíčových funkcích služby Ghostery."
+   },
+   "notification_reminder_link": {
+      "description": "Link to the walkthrough/configuration wizard, part of the walkthrough reminder/notification.",
+      "message": "Nastavit službu Ghostery"
+   },
+   "notification_update": {
+      "message": "Odhalili jsme nějaké nové trackery a přidali je do databáze služby Ghostery."
+   },
+   "notification_update_link": {
+      "message": "Přečtěte si, co je nového"
+   },
+   "notification_upgrade": {
+      "message": "Náš oddaný a neobyčejně atraktivní tým tvrdě pracoval na vydání nové verze Ghostery."
+   },
+   "notification_upgrade_link": {
+      "message": "Podívej se, jaké bezva nové funkce a opravy vad tato nová verze přináší."
+   },
+   "panel_blocking_verify_account_message": {
+      "message": "Za účelem synchronizace nastavení a přístupu k úžasným funkcím služby Ghostery laskavě zkontrolujte svůj e-mail a ověřte účet."
+   },
+   "panel_blocking_verify_account_title": {
+      "message": "Neověřený účet"
+   },
+   "panel_create_account": {
+      "message": "Vytvořit účet"
+   },
+   "panel_email_verification_sent": {
+      "message": "$BOLD_HTML_STARTS$ Podařilo se! $BOLD_HTML_END$ Na e-mail $EMAIL$ byla zaslána zpráva k ověření účtu.",
+      "placeholders": {
+         "bold_html_end": {
+            "content": "\u003C/strong>"
+         },
+         "bold_html_starts": {
+            "content": "\u003Cstrong>"
+         },
+         "email": {
+            "content": "$1",
+            "example": "info@ghostery.com"
+         }
+      }
+   },
+   "panel_forgot_password": {
+      "message": "Zapomenuté heslo?"
+   },
+   "panel_header_sign_in": {
+      "message": "Přihlásit se"
+   },
+   "panel_header_verify_account": {
+      "message": "Ověřit účet"
+   },
+   "panel_help_contact_header": {
+      "message": "Jak nás kontaktovat"
+   },
+   "panel_help_faq": {
+      "message": "Nejčastější dotazy"
+   },
+   "panel_help_feedback": {
+      "message": "Zúčastněte se našeho průzkumu"
+   },
+   "panel_help_license": {
+      "message": "Licenční smlouva"
+   },
+   "panel_help_panel_header": {
+      "message": "Nápověda pro rozšíření prohlížeče služby Ghostery"
+   },
+   "panel_help_privacy_statement": {
+      "message": "Prohlášení o zásadách ochrany osobních údajů"
+   },
+   "panel_help_questions_header": {
+      "message": "Otázky a komentáře"
+   },
+   "panel_help_support": {
+      "message": "Podpora"
+   },
+   "panel_help_version_header": {
+      "message": "Služba Ghostery pro $BROWSER$ verze $VERSION$",
+      "placeholders": {
+         "browser": {
+            "content": "$1",
+            "example": "Firefox"
+         },
+         "version": {
+            "content": "$2",
+            "example": "6.4"
+         }
+      }
+   },
+   "panel_human_web_learn_more_p1": {
+      "message": "Webová stránka Human Web využívá přední postupy pro ochranu soukromí na míru. Tím se zajišťuje, že veškeré shromažďování dat probíhá zcela anonymně a nefigurují v něm žádné osobně identifikovatelné informace.  V rámci toho webová stránka Human Web implementuje dvě základní komponenty: rámec shromažďování dat a příslušnou proxy síť."
+   },
+   "panel_human_web_learn_more_p2": {
+      "message": "Rámec shromažďování dat webovou stránkou Human Web vyžaduje, aby se datové body získané uživateli vyhodnocovaly jako jednotlivé, agregované události, a tyto signály se oddělují od osobně identifikovatelných informací, jako jsou časové značky a uživatelská ID.  Navíc webová stránka Human Web filtruje citlivé a osobní údaje z URL, která jsou považována za nebezpečná (např. $SPAN_START$twitter.com/username$SPAN_END$), a která lze použít k identifikaci jednotlivce.  Nejsme tedy schopni kombinovat data z více záznamů ani z více návštěv webových stránek ani tyto informace spojovat s osobními údaji, jako jsou e-mailové adresy nebo uživatelská ID, která lze použít k identifikaci jednotlivců.",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_human_web_learn_more_p3": {
+      "message": "V rámci dalšího bezpečnostního opatření se tyto informace odesílají přes proxy síť webové stránky Human Web, což je řada proxy serverů ve stylu peer-to-peer (P2P), které odstraňují například uživatelské IP adresy, a tím prakticky znemožňují stanovit od koho a odkud tyto údaje pocházejí. Samotná proxy síť je vůči obsahu odesílaných dat slepá, a tím do celého procesu přináší další bezpečnostní opatření. Všechny shromážděné údaje jsou díky tomu prakticky neidentifikovatelné kýmkoli, i námi. Kdyby tedy naše zabezpečení prolomil hacker zvenčí, neexistuje způsob, jak by mohl získané údaje propojit s jednotlivými osobami."
+   },
+   "panel_human_web_learn_more_p4": {
+      "message": "Mezi konkrétní údaje shromážděné webovou stránkou Human Web patří:"
+   },
+   "panel_menu_advanced_settings": {
+      "message": "Pokročilé blokování"
+   },
+   "panel_menu_help": {
+      "message": "Nápověda"
+   },
+   "panel_menu_report_broken_site": {
+      "message": "Nahlásit chybovou stránku"
+   },
+   "panel_menu_settings": {
+      "message": "Nastavení"
+   },
+   "panel_menu_signin": {
+      "message": "Přihlásit se"
+   },
+   "panel_menu_signout": {
+      "message": "Odhlásit se"
+   },
+   "panel_menu_submit_tracker": {
+      "message": "Přijmout nový tracker"
+   },
+   "panel_modal_account_button_create_account": {
+      "message": "Vytvořit účet"
+   },
+   "panel_modal_account_button_maybe_later": {
+      "message": "Možná později. Začínáme."
+   },
+   "panel_modal_account_button_sign_in": {
+      "message": "Máte účet? Přihlaste se"
+   },
+   "panel_modal_account_subtitle_1": {
+      "message": "Váš účet služby Ghostery vám umožňuje synchronizovat nastavení napříč prohlížeči a zařízeními a není propojen s žádnými údaji z trackerů, které jste se s námi rozhodli sdílet."
+   },
+   "panel_modal_account_subtitle_2": {
+      "message": "Stačí vám k tomu e-mail a heslo."
+   },
+   "panel_modal_account_title": {
+      "message": "Vytvořit účet"
+   },
+   "panel_modal_ghostrank_opt_in": {
+      "message": "Ano, budu je sdílet."
+   },
+   "panel_modal_ghostrank_opt_out": {
+      "message": "Ne, díky."
+   },
+   "panel_modal_ghostrank_p1": {
+      "message": "Služba Ghostery je zdarma, protože někteří naši uživatelé se rozhodli anonymně a dobrovolně sdílet údaje o stránkách a trackerech, na které prohlížeč narazí."
+   },
+   "panel_modal_ghostrank_p2": {
+      "message": "Společnost Ghostery využívá tyto údaje ke zlepšování svých produktů, které pomáhají budovat nerušený, rychlejší a bezpečnější web. $LINK_START$Více informací$LINK_END$",
+      "placeholders": {
+         "link_end": {
+            "content": "\u003C/a>"
+         },
+         "link_start": {
+            "content": "\u003Ca class='modal-learn-more'>"
+         }
+      }
+   },
+   "panel_modal_ghostrank_p3": {
+      "message": "Chcete sdílet údaje o trackerech se službou Ghostery?"
+   },
+   "panel_modal_ghostrank_title": {
+      "message": "Vítá vás služba Ghostery!"
+   },
+   "panel_modal_ghostrank_vc_header": {
+      "message": "Pomozte zlepšit službu Ghostery"
+   },
+   "panel_modal_ghostrank_vc_p1": {
+      "message": "Každý den se pro vás usilovně snažíme zlepšovat službu Ghostery."
+   },
+   "panel_modal_ghostrank_vc_p2": {
+      "message": "Na jedné straně nám v tom pomáhá shromažďování anonymní analytiky používání, která nám umožňuje pochopit, jak uživatelé službu Ghostery používají, a na základě toho pak určit, které funkce se jim líbí a které nikoli. Pokud například kliknete na tlačítko pauzy, dozvíme se, že jste tuto funkci použili. Tato analytika je zcela anonymní a není spojena s vaším účtem ani osobními údaji."
+   },
+   "panel_modal_ghostrank_vc_p3": {
+      "message": "Chcete sdílet údaje analytiky používání se službou Ghostery?"
+   },
+   "panel_modal_human_web_learn_more_bullet_1": {
+      "message": "Nesoukromé URL"
+   },
+   "panel_modal_human_web_learn_more_bullet_2": {
+      "message": "Dotazy vyhledávání a stránky s výsledky z vyhledávačů"
+   },
+   "panel_modal_human_web_learn_more_bullet_3": {
+      "message": "Podezřelé URL, které představují potenciální webové stránky pro phishing"
+   },
+   "panel_modal_human_web_learn_more_bullet_4": {
+      "message": "Informace spojené s bezpečnými a nebezpečnými trackery"
+   },
+   "panel_modal_human_web_learn_more_bullet_5": {
+      "message": "Informace spojené s výskytem a výkonem trackerů"
+   },
+   "panel_modal_human_web_opt_in": {
+      "message": "Ano, prosím!"
+   },
+   "panel_modal_human_web_opt_out": {
+      "message": "Ne, díky."
+   },
+   "panel_modal_human_web_p1": {
+      "message": "Služba Ghostery nyní standardně implementuje údaje z webové stránky Human Web. Tato revoluční technologie využívá veřejně dostupné znalosti k vytvoření ještě soukromějšího internetu. Uživatelé se prostřednictvím této technologie podílejí na tvorbě anonymních statistických dat, které se používají ke stanovení relevantnosti a bezpečnosti trackerů, webových stránek a dotazů vyhledávání a brzy budou podporovat nové funkce, které dramaticky zlepší ochranu našich uživatelů. $LINK_START$Více informací$LINK_END$",
+      "placeholders": {
+         "link_end": {
+            "content": "\u003C/a>"
+         },
+         "link_start": {
+            "content": "\u003Ca class=\"modal-human-web-learn-more\">"
+         }
+      }
+   },
+   "panel_modal_human_web_p2": {
+      "message": "Čím více lidí se na webovou stránku Human Web zapojí, tím lépe pro všechny. Chcete se podílet?"
+   },
+   "panel_modal_human_web_title": {
+      "message": "Podílet se na webové stránce Human Web"
+   },
+   "panel_modal_learn_more_bullet_1": {
+      "message": "Trackery identifikované rozšířením prohlížeče Ghostery"
+   },
+   "panel_modal_learn_more_bullet_10": {
+      "message": "Časová značka pro web s požadavkem"
+   },
+   "panel_modal_learn_more_bullet_11": {
+      "message": "Váha trackeru (megabyty údajů přičítané jednotlivým trackerům)"
+   },
+   "panel_modal_learn_more_bullet_12": {
+      "message": "Vzhled trackeru na libovolné navštívené stránce"
+   },
+   "panel_modal_learn_more_bullet_2": {
+      "message": "Stav blokování trackerů"
+   },
+   "panel_modal_learn_more_bullet_3": {
+      "message": "Domény rozpoznané jako fungující trackery"
+   },
+   "panel_modal_learn_more_bullet_4": {
+      "message": "Čas nezbytný k načtení stránky a trackerů"
+   },
+   "panel_modal_learn_more_bullet_5": {
+      "message": "Poloha trackerů na webu"
+   },
+   "panel_modal_learn_more_bullet_6": {
+      "message": "Prohlížeč, do kterého bylo nainstalováno rozšíření prohlížeče Ghostery"
+   },
+   "panel_modal_learn_more_bullet_7": {
+      "message": "Jazyk prohlížeče"
+   },
+   "panel_modal_learn_more_bullet_8": {
+      "message": "Standardní informace protokolu webového serveru (tj. webový požadavek)"
+   },
+   "panel_modal_learn_more_bullet_9": {
+      "message": "Údaje odesílané v reakci na daný požadavek"
+   },
+   "panel_modal_learn_more_end": {
+      "message": "Další informace o našich zásadách týkajících se informací najdete v našem $LINK_START$Prohlášení o zásadách ochrany osobních údajů$LINK_END$.",
+      "placeholders": {
+         "link_end": {
+            "content": "\u003C/a>"
+         },
+         "link_start": {
+            "content": "\u003Ca class='modal-privacy-statement'>"
+         }
+      }
+   },
+   "panel_modal_learn_more_list_title": {
+      "message": "Pokud se rozhodnete sdílet své informace, služba Ghostery bude shromažďovat následující údaje:"
+   },
+   "panel_modal_learn_more_subtitle": {
+      "message": "Co služba Ghostery shromažďuje?"
+   },
+   "panel_modal_upgrade_account_blurb": {
+      "message": "Pokud chcete získat přístup k pokročilým funkcím, $CREATE_LINK_START$vytvořte si účet$CREATE_LINK_END$ nebo se $SIGNIN_LINK_START$přihlaste$SIGNIN_LINK_END$.",
+      "placeholders": {
+         "create_link_end": {
+            "content": "\u003C/a>"
+         },
+         "create_link_start": {
+            "content": "\u003Ca class='update-dismiss account-dismiss create-account'>"
+         },
+         "signin_link_end": {
+            "content": "\u003C/a>"
+         },
+         "signin_link_start": {
+            "content": "\u003Ca class='update-dismiss account-dismiss sign-in'>"
+         }
+      }
+   },
+   "panel_modal_upgrade_bullet_1": {
+      "message": "Možnost vytvářet silnější hesla"
+   },
+   "panel_modal_upgrade_bullet_2": {
+      "message": "Přidána možnost skrýt symbol s počtem trackerů na ikoně služby Ghostery"
+   },
+   "panel_modal_upgrade_bullet_3": {
+      "message": "Méně rušivé fialové pole"
+   },
+   "panel_modal_upgrade_bullet_4": {
+      "message": "Vyšší výkon"
+   },
+   "panel_modal_upgrade_continue": {
+      "message": "Pokračovat"
+   },
+   "panel_modal_upgrade_subtitle_1": {
+      "message": "Máme z těchto nových funkcí radost:"
+   },
+   "panel_modal_upgrade_title": {
+      "message": "Služba Ghostery byla aktualizována."
+   },
+   "panel_needs_reload_paused": {
+      "message": "Služba Ghostery je pozastavena. $SPAN_START$Kliknutím obnovte pro zobrazení změn.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_restrict": {
+      "message": "Trackery na této stránce jsou blokovány. $SPAN_START$Kliknutím obnovte pro zobrazení změn.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_resumed": {
+      "message": "Služba Ghostery je obnovena. $SPAN_START$Kliknutím obnovte pro zobrazení změn.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_tracker_qty_blocked": {
+      "message": "tracker blokován. $SPAN_START$Kliknutím obnovte pro zobrazení změn.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_tracker_qty_blocked_plural": {
+      "message": "trackery jsou blokovány. $SPAN_START$Kliknutím obnovte pro zobrazení změn.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_tracker_ss_allowed": {
+      "message": "tracker na této stránce je povolen. $SPAN_START$Kliknutím obnovte pro zobrazení změn.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_tracker_ss_allowed_plural": {
+      "message": "trackery na této stránce jsou povoleny. $SPAN_START$Kliknutím obnovte pro zobrazení změn.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_tracker_ss_blocked": {
+      "message": "tracker na této stránce je blokován. $SPAN_START$Kliknutím obnovte pro zobrazení změn.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_tracker_ss_blocked_plural": {
+      "message": "trackery na této stránce jsou blokovány. $SPAN_START$Kliknutím obnovte pro zobrazení změn.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_tracker_ss_unblocked": {
+      "message": "Tracker na této stránce byl odblokován. $SPAN_START$Kliknutím obnovte pro zobrazení změn.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_tracker_ss_untrusted": {
+      "message": "Tracker na této stránce není důvěryhodný. $SPAN_START$Kliknutím obnovte pro zobrazení změn.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_tracker_unblocked": {
+      "message": "Tracker odblokován. $SPAN_START$Kliknutím obnovte pro zobrazení změn.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_trackers_block_all": {
+      "message": "Trackery uvedené v tomto seznamu jsou blokovány. $SPAN_START$Kliknutím obnovte pro zobrazení změn.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_trackers_unblock_all": {
+      "message": "Trackery uvedené v tomto seznamu jsou odblokovány. $SPAN_START$Kliknutím obnovte pro zobrazení změn.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_trust": {
+      "message": "Trackery na této stránce jsou povoleny. $SPAN_START$Kliknutím obnovte pro zobrazení změn.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_undo_restrict": {
+      "message": "Vrátit zpět znepřístupnění webu. $SPAN_START$Kliknutím obnovte pro zobrazení změn.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_undo_trust": {
+      "message": "Vrátit zpět důvěřování webu. $SPAN_START$Kliknutím obnovte pro zobrazení změn.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_signin_success": {
+      "message": "Jste přihlášeni jako"
+   },
+   "panel_signin_success_title": {
+      "message": "Blahopřejeme! Váš účet služby Ghostery je připraven."
+   },
+   "panel_title_create_account": {
+      "message": "Vytvořit účet"
+   },
+   "panel_tracker_block_tooltip": {
+      "message": "Blokovat na všech webech"
+   },
+   "panel_tracker_breaking_page": {
+      "message": "$SPAN_START$$COUNT$ zablokován $TRACKERS$$SPAN_END$ narušuje chod stránky.",
+      "placeholders": {
+         "count": {
+            "content": "$1",
+            "example": "4"
+         },
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"filter-link compatibility\">"
+         },
+         "trackers": {
+            "content": "$2",
+            "example": "trackers"
+         }
+      }
+   },
+   "panel_tracker_found_sources_title": {
+      "message": "Zjištěné URL adresy trackerů:"
+   },
+   "panel_tracker_restrict_tooltip": {
+      "message": "Znepřístupnit na tomto webu"
+   },
+   "panel_tracker_slow_non_secure": {
+      "message": "$SPAN_START$$COUNT$ pomalé a/nebo nezabezpečené $TRACKERS$$SPAN_END$ na této stránce.",
+      "placeholders": {
+         "count": {
+            "content": "$1",
+            "example": "4"
+         },
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"filter-link slow-insecure\">"
+         },
+         "trackers": {
+            "content": "$2",
+            "example": "trackers"
+         }
+      }
+   },
+   "panel_tracker_trust_tooltip": {
+      "message": "Důvěřovat na tomto webu"
+   },
+   "panel_tracker_warning_compatibility_tooltip": {
+      "message": "Blokovaný tracker naruší stránku"
+   },
+   "panel_tracker_warning_nonsecure_tooltip": {
+      "message": "Tracker je nezabezpečený"
+   },
+   "panel_tracker_warning_slow_nonsecure_tooltip": {
+      "message": "Tracker je pomalý a nezabezpečený"
+   },
+   "panel_tracker_warning_slow_tooltip": {
+      "message": "Tracker je pomalý"
+   },
+   "panel_view_trackers": {
+      "message": "Zobrazit trackery"
+   },
+   "password_characters_requirements": {
+      "message": "Jsou povoleny pouze následující speciální znaky: !@#$%^&amp;*=+()&lt;>{}[];:,./?"
+   },
+   "password_field_label": {
+      "message": "Heslo"
+   },
+   "password_field_label_required": {
+      "message": "Je vyžadováno heslo."
+   },
+   "password_requirements": {
+      "message": "Použijte 8 až 50 znaků."
+   },
+   "refresh_and_try_again": {
+      "message": "Obnovte stránku a zkuste to znovu"
+   },
+   "select_file_for_import": {
+      "message": "Vyberte soubor .ghost, který chcete importovat"
+   },
+   "send_button_label": {
+      "message": "Odeslat"
+   },
+   "server_error_message": {
+      "message": "Zdá se, že máme technický problém. Zkuste to později znovu."
+   },
+   "settings_account": {
+      "message": "Účet"
+   },
+   "settings_account_email": {
+      "message": "E-mail"
+   },
+   "settings_account_name": {
+      "message": "Název"
+   },
+   "settings_allow_offers": {
+      "message": "Účastněte se programu Ghostery Rewards."
+   },
+   "settings_allow_trackers": {
+      "message": "Povolit trackery vytvořené vlastníky webu"
+   },
+   "settings_allow_trackers_tooltip": {
+      "message": "Například blokováním trackeru Facebook na adrese facebook.com může narušit chod stránky."
+   },
+   "settings_announcements": {
+      "message": "vydá oznámení"
+   },
+   "settings_auto_update": {
+      "message": "Povolit automatické aktualizace z knihovny trackerů služby Ghostery"
+   },
+   "settings_block_trackers": {
+      "message": "Standardně blokovat trackery přidané do služby Ghostery"
+   },
+   "settings_blocking": {
+      "message": "Blokování"
+   },
+   "settings_bottom_left_corner": {
+      "message": "Levém dolním rohu"
+   },
+   "settings_bottom_right_corner": {
+      "message": "Pravém dolním rohu"
+   },
+   "settings_defect_fixes": {
+      "message": "vydá opravy menších chyb"
+   },
+   "settings_dismiss_after": {
+      "message": "Odmítnout po"
+   },
+   "settings_display_in": {
+      "message": "Zobrazit v"
+   },
+   "settings_edit_account": {
+      "message": "Upravit účet"
+   },
+   "settings_export_error": {
+      "message": "Export vašeho nastavení se nezdařil. Zkuste to znovu."
+   },
+   "settings_export_header": {
+      "message": "Exportovat nastavení"
+   },
+   "settings_export_success": {
+      "message": "Vaše nastavení se podařilo exportovat do složky Stažené soubory v"
+   },
+   "settings_export_text": {
+      "message": "Uložte si kopii nastavení služby GHostery a přeneste ji do jiného počítače."
+   },
+   "settings_hide_alert_trusted": {
+      "message": "Skrýt fialové pole na důvěryhodných webech"
+   },
+   "settings_highlight_trackers": {
+      "message": "Označit interaktivní trackery"
+   },
+   "settings_highlight_trackers_tooltip": {
+      "message": "Je-li určitý tracker blokován, funkce, jako je sdílení, komentování nebo přehrávání videí na sociálních sítích, nemusejí fungovat. Chcete-li některou z těchto blokovaných funkcí povolit, klikněte na stránce na tuto ikonu:"
+   },
+   "settings_human_web_tooltip": {
+      "message": "Služba Ghostery nyní standardně implementuje údaje z webové stránky Human Web. Tato revoluční technologie využívá veřejně dostupné znalosti k vytvoření ještě soukromějšího internetu"
+   },
+   "settings_import_file_error": {
+      "message": "Jde o nesprávný typ souboru. Vyberte prosím soubor .ghost a zkuste to znovu."
+   },
+   "settings_import_header": {
+      "message": "Importovat nastavení"
+   },
+   "settings_import_success": {
+      "message": "Vaše nastavení se podařilo importovat do"
+   },
+   "settings_import_text": {
+      "message": "Vyberte soubor zálohy .ghost."
+   },
+   "settings_import_warning": {
+      "message": "VAROVÁNÍ: Tímto přepíšete své aktuální nastavení služby Ghostery."
+   },
+   "settings_individual_trackers": {
+      "message": "Důvěřovat a omezit jednotlivé trackery"
+   },
+   "settings_individual_trackers_tooltip": {
+      "message": "V rámci uživatelského řízení vyberte, které trackery budou na webu blokovány či povoleny"
+   },
+   "settings_last_update": {
+      "message": "Poslední synchronizace"
+   },
+   "settings_never": {
+      "message": "Nikdy"
+   },
+   "settings_new_features": {
+      "message": "vydá nové funkce"
+   },
+   "settings_new_trackers": {
+      "message": "přidá nové trackery do své knihovny trackerů"
+   },
+   "settings_notifications": {
+      "message": "Oznámení"
+   },
+   "settings_notify_me": {
+      "message": "Upozorněte mě, pokud služba Ghostery:"
+   },
+   "settings_notify_me_tooltip": {
+      "message": "Povolit službě Ghostery, aby v mém prohlížeči zobrazovala zprávy o nových funkcích, aktualizacích a zpětné vazby zákazníků."
+   },
+   "settings_offers_tooltip": {
+      "message": "Ghostery Rewards je funkce, která vám umožní získat slevy a speciální nabídky od našich partnerských firem."
+   },
+   "settings_purple_box": {
+      "message": "Fialové pole"
+   },
+   "settings_replace_social": {
+      "message": "Nahradit zablokovaná tlačítka sociálních médií ikonou Ghostery."
+   },
+   "settings_required_for_patterns": {
+      "message": "vyžadováno k povolení funkce"
+   },
+   "settings_required_trackers": {
+      "message": "Ukažte mi, kdy je nutné povolit tracker za účelem používání funkcí webu."
+   },
+   "settings_seconds": {
+      "message": "sekund"
+   },
+   "settings_share_data": {
+      "message": "Sdílení stránky a údajů o trackerech"
+   },
+   "settings_share_data_tooltip": {
+      "message": "Služba Ghostery je zdarma, protože někteří naši uživatelé se rozhodli anonymně a dobrovolně sdílet údaje o stránkách a trackerech, na které prohlížeč narazí."
+   },
+   "settings_share_human_web": {
+      "message": "Sdílení údajů z webové stránky Human Web"
+   },
+   "settings_share_usage": {
+      "message": "Sdílení analytiky o využití rozšíření"
+   },
+   "settings_share_usage_tooltip": {
+      "message": "Uplatňujeme analytiku o využívání, abychom lépe pochopili, které funkce uživatelé chtějí. Pokud například kliknete na tlačítko pauzy, dozvíme se, že jste tuto funkci použili."
+   },
+   "settings_show_patterns": {
+      "message": "Ukázat URL adresy trackeru"
+   },
+   "settings_show_patterns_tooltip": {
+      "message": "URL adresy trackerů se objevují pod popisem trackeru poté, co na daný tracker kliknete."
+   },
+   "settings_show_purple_box": {
+      "message": "Zobrazit fialové pole v rohu mého prohlížeče"
+   },
+   "settings_show_purple_box_tooltip": {
+      "message": "Fialové pole je seznam trackerů v reálném čase, který se zobrazuje v rohu vašeho prohlížeče. Tato funkce vám umožňuje zobrazovat trackery podle toho, jak jsou přidávány na web."
+   },
+   "settings_show_reload_banner": {
+      "message": "Zobrazit banner obnovení stránky s upozorněními na vrchu rozšíření"
+   },
+   "settings_show_tracker_count_badge": {
+      "message": "Zobrazit symbol s počtem trackerů na ikoně služby Ghostery v panelu nástrojů prohlížeče"
+   },
+   "settings_show_trackers_banner": {
+      "message": "Zobrazit banner upozornění trackeru s upozorněními na vrchu rozšíření"
+   },
+   "settings_sign_create_text": {
+      "message": "Nastavení vašeho účtu bude synchronizováno s tímto zařízením. Vytvořte si účet a synchronizujte snadno nastavení služby Ghostery se všemi zařízeními a platformami."
+   },
+   "settings_sign_in": {
+      "message": "Přihlásit se"
+   },
+   "settings_signin_create_header": {
+      "message": "Přihlásit se / Vytvořit účet"
+   },
+   "settings_support_ghostery": {
+      "message": "Podpořit službu Ghostery"
+   },
+   "settings_support_ghostery_by": {
+      "message": "Podpořit službu Ghostery"
+   },
+   "settings_top_left_corner": {
+      "message": "Levém horním rohu"
+   },
+   "settings_top_right_corner": {
+      "message": "Pravém horním rohu"
+   },
+   "settings_trackers": {
+      "message": "Trackery"
+   },
+   "settings_update_failed": {
+      "message": "Aktualizace se nezdařila. Zkuste to prosím později"
+   },
+   "settings_update_now": {
+      "message": "Aktualizovat nyní"
+   },
+   "settings_update_success": {
+      "message": "Dokončeno!"
+   },
+   "settings_update_up_to_date": {
+      "message": "Stále aktuální"
+   },
+   "short_description": {
+      "description": "A short description of this extension (Ghostery).",
+      "message": "Chraňte si své soukromí. Se službou Ghostery budete mít přehled o tom, kdo sleduje vaše prohlížení webu."
+   },
+   "summary_alert": {
+      "description": "as in '1 ALERT'",
+      "message": "Upozornění"
+   },
+   "summary_alerts": {
+      "description": "as in '5 ALERTS'",
+      "message": "Upozornění"
+   },
+   "summary_blocked": {
+      "description": "as in '5 (trackers) BLOCKED'",
+      "message": "Blokováno"
+   },
+   "summary_category_tracker": {
+      "message": "Tracker"
+   },
+   "summary_category_trackers": {
+      "message": "Trackery"
+   },
+   "summary_description_not_scanned_1": {
+      "message": "Služba Ghostery prohlíží pouze stránky „http“ a „https“."
+   },
+   "summary_description_not_scanned_2": {
+      "message": "Přejděte na jinou stránku a slibuji vám, že to bude v pořádku."
+   },
+   "summary_found_on": {
+      "description": "as in '5 trackers FOUND ON http://google.com'",
+      "message": "nalezeno na"
+   },
+   "summary_map_these_trackers": {
+      "message": "Mapovat tyto trackery"
+   },
+   "summary_page_not_scanned": {
+      "message": "Stránka neprohledána"
+   },
+   "summary_pause_ghostery": {
+      "message": "Pozastavit"
+   },
+   "summary_restrict_site": {
+      "message": "Zakázat"
+   },
+   "summary_resume_ghostery": {
+      "message": "Obnovit"
+   },
+   "summary_trust_site": {
+      "message": "Důvěřovat webu"
+   },
+   "summary_undo": {
+      "message": "Zpět"
+   },
+   "tracker_description_getting": {
+      "message": "Načítám popis trackeru..."
+   },
+   "tracker_description_learn_more": {
+      "message": "Pokračovat na úplný profil trackeru"
+   },
+   "tracker_description_none_found": {
+      "message": "Nenalezen žádný popis trackeru."
+   },
+   "tracker_plural": {
+      "message": "trackery"
+   },
+   "tracker_signular": {
+      "message": "tracker"
+   },
+   "unblocked": {
+      "description": "Select this to show only unblocked (unchecked) tags in the tag browser. Should read as 'Show unblocked'.",
+      "message": "neblokováno"
+   },
+   "white_black_list_error_invalid_url": {
+      "message": "Zadejte platnou adresu URL."
+   },
+   "whitelist_error_blacklist_url": {
+      "message": "Tento web byl odstraněn ze seznamu Nepřístupných webů a přidán na seznam Důvěryhodných webů."
+   },
+   "whitelist_error_duplicate_url": {
+      "description": "Options page site whitelisting error message shown when whitelisting a URL that is already in the whitelist.",
+      "message": "Tato stránka je již v seznamu povolených stránek."
+   }
+}

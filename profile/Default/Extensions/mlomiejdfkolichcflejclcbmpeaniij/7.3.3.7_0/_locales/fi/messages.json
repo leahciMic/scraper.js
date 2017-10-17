@@ -1,0 +1,1407 @@
+{
+   "account_creation_privacy_statement": {
+      "message": "Hyväksyn Ghosteryn $LINK_PS_START$Tietosuojalausunnossa$LINK_PS_END$ kuvatut tietokäytännöt sekä Ghosteryn $LINK_UA_START$Käyttöoikeussopimuksessa$LINK_UA_END$ kuvatut ehdot.",
+      "placeholders": {
+         "link_ps_end": {
+            "content": "\u003C/a>"
+         },
+         "link_ps_start": {
+            "content": "\u003Ca target=\"_blank\" href=\"https://www.ghostery.com/about-us/privacy-statements/ghostery-browser-extension/ghostery-browser-extension-privacy-statement/\">"
+         },
+         "link_ua_end": {
+            "content": "\u003C/a>"
+         },
+         "link_ua_start": {
+            "content": "\u003Ca target=\"_blank\" href=\"https://www.ghostery.com/about-us/privacy-statements/ghostery-browser-extension/ghostery-browser-extension-end-user-license-agreem/\">"
+         }
+      }
+   },
+   "account_signin_privacy_statement": {
+      "message": "Oma tili mahdollistaa lisäominaisuuksien käytön, eikä tiliäsi liitetä mihinkään seurantaohjelmien tietoihin, jotka olet päättänyt jakaa kanssamme. Jos haluat tarkempia tietoja siitä, miten Ghostery käyttää tilisi tietoja, tutustu $LINK_FAQ_START$UKK-osioomme$LINK_FAQ_END$.",
+      "placeholders": {
+         "link_faq_end": {
+            "content": "\u003C/a>"
+         },
+         "link_faq_start": {
+            "content": "\u003Ca target=\"_blank\" href=\"https://www.ghostery.com/support/faq/ghostery-add-on/\">"
+         }
+      }
+   },
+   "all": {
+      "description": "Default setting in the 'filter by type' dropdown for the tag browser. Doesn't filter anything out. Should read as 'Show all'.",
+      "message": "kaikki"
+   },
+   "banner_check_your_email_title": {
+      "message": "Tarkista sähköpostisi. Lähetimme sinulle salasanan vaihtolinkin."
+   },
+   "banner_no_such_account_message": {
+      "message": "Järjestelmästämme ei näyttäisi löytyvän tätä sähköpostiosoitteen ja salasanan yhdistelmää. Kokeile uudestaan."
+   },
+   "blacklist_error_duplicate_url": {
+      "message": "Tämä sivusto on jo rajoitettu."
+   },
+   "blacklist_error_whitelist_url": {
+      "message": "Tämä sivusto on poistettu luotettavien sivustojen listalta ja lisätty rajoitettujen sivustojen listalle"
+   },
+   "blocked": {
+      "description": "Select this to show only blocked (checked) tags in the tag browser. Should read as 'Show blocked'.",
+      "message": "estetty"
+   },
+   "blocked_redirect_action_always_title": {
+      "description": "Title for the 'Allow always and reload' button on the blocked redirect page.",
+      "message": "Salli ja lataa aina uudelleen."
+   },
+   "blocked_redirect_action_through_once_title": {
+      "description": "Title for the 'Allow once' button on the blocked redirect page.",
+      "message": "Salli tunnisteet kerran kunnes viimeinen määränpää on saavutettu."
+   },
+   "blocked_redirect_page_title": {
+      "description": "Page title for blocked_redirect.html which appears when a redirect is blocked.",
+      "message": "Ghostery esti uudelleenohjauksen."
+   },
+   "blocked_redirect_prevent": {
+      "description": "Text appearing on block_redirect.html when a redirect is blocked. Should appear inside \"redirect-prevent\" div.",
+      "message": "Ghostery esti uudelleenohjauksen kohteesta $BREAK$ $SP_O_START$$ORIGIN$$SP_END$ kohteeseen $SP_D_START$$DESTINATION$$SP_END$, $BREAK$joka on osa kohdetta $A_START$$APP$$A_END$. $BREAK$",
+      "placeholders": {
+         "a_end": {
+            "content": "\u003C/a>"
+         },
+         "a_start": {
+            "content": "\u003Ca id=\"name\" href=\"$4\" target=\"_blank\">"
+         },
+         "app": {
+            "content": "$3",
+            "example": "DoubleClick"
+         },
+         "break": {
+            "content": "\u003Cbr>"
+         },
+         "destination": {
+            "content": "$2"
+         },
+         "origin": {
+            "content": "$1"
+         },
+         "sp_d_start": {
+            "content": "\u003Cspan id=\"destination\">"
+         },
+         "sp_end": {
+            "content": "\u003C/span>"
+         },
+         "sp_o_start": {
+            "content": "\u003Cspan id=\"origin\">"
+         }
+      }
+   },
+   "blocked_redirect_url_content": {
+      "description": "Text appearing on block_redirect.html when a redirect is blocked and a final 'destination' URL is successfully found.",
+      "message": "Tämä tunniste näyttää uudelleenohjaavan osoitteeseen $BREAK$ $A_START$$REDIRECT_URL$$A_END$ Jos linkki ei näytä oikealta mutta haluat silti jatkaa, valtuuta $APP$ alla olevaa kuvaketta napsauttamalla ja lataa sivu uudelleen.",
+      "placeholders": {
+         "a_end": {
+            "content": "\u003C/a>"
+         },
+         "a_start": {
+            "content": "\u003Ca href=\"$1\" class=\"ellipsis\" title=\"$1\">"
+         },
+         "app": {
+            "content": "$2",
+            "example": "DoubleClick"
+         },
+         "break": {
+            "content": "\u003Cbr>"
+         },
+         "redirect_url": {
+            "content": "$1"
+         }
+      }
+   },
+   "blocking_block_all": {
+      "message": "Estä kaikki"
+   },
+   "blocking_block_shown": {
+      "message": "Estä näytetyt"
+   },
+   "blocking_category_blocked": {
+      "description": "as in '5 (trackers) BLOCKED'",
+      "message": "Estetty"
+   },
+   "blocking_category_tracker": {
+      "message": "Seurantaohjelma"
+   },
+   "blocking_category_trackers": {
+      "message": "Seurantaohjelmat"
+   },
+   "blocking_options_blocked": {
+      "message": "Estetty"
+   },
+   "blocking_options_blocked_all": {
+      "message": "Luokan kaikki seurantaohjelmat ovat estetty"
+   },
+   "blocking_options_trackers": {
+      "message": "Seurantaohjelmat"
+   },
+   "blocking_trackers": {
+      "message": "Seurantaohjelmat"
+   },
+   "box_dismiss_0s": {
+      "message": "Älä sulje $SPAN_START$koskaan$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan>"
+         }
+      }
+   },
+   "box_dismiss_15s": {
+      "message": "Sulje $SPAN_START$15 s päästä$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan>"
+         }
+      }
+   },
+   "box_dismiss_30s": {
+      "message": "Sulje $SPAN_START$30 s päästä$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan>"
+         }
+      }
+   },
+   "box_dismiss_5s": {
+      "message": "Sulje $SPAN_START$5 s päästä$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan>"
+         }
+      }
+   },
+   "box_display_bl": {
+      "message": "$SPAN_START$Vasen alakulma$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan>"
+         }
+      }
+   },
+   "box_display_br": {
+      "message": "$SPAN_START$Oikeassa alakulma$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan>"
+         }
+      }
+   },
+   "box_display_tl": {
+      "message": "$SPAN_START$Vasemmassa yläkulma$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan>"
+         }
+      }
+   },
+   "box_display_tr": {
+      "message": "$SPAN_START$Oikeassa yläkulma$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan>"
+         }
+      }
+   },
+   "box_hide": {
+      "message": "Piilota laatikko"
+   },
+   "box_hide_expanded": {
+      "message": "Piilota violetti laatikko"
+   },
+   "box_looking": {
+      "message": "Haetaan"
+   },
+   "box_options_expanded": {
+      "message": "Asetukset"
+   },
+   "box_settings": {
+      "message": "Asetukset"
+   },
+   "box_settings_expanded": {
+      "message": "Ghostery-asetukseni"
+   },
+   "box_tracker": {
+      "message": "Seurantaohjelma"
+   },
+   "box_trackers": {
+      "message": "Seurantaohjelmat"
+   },
+   "box_warning_compatibility": {
+      "message": "Toimimattomien sivujen seurantaohjelmat"
+   },
+   "box_warning_nonsecure": {
+      "message": "Ei-turvalliset seurantaohjelmat"
+   },
+   "box_warning_slow": {
+      "message": "Hitaat seurantaohjelmat"
+   },
+   "browse_button_label": {
+      "message": "Selaa..."
+   },
+   "browser_button_tooltip": {
+      "description": "Ghostery's browser button tooltip.",
+      "message": "Näytä Ghosteryn löydöt"
+   },
+   "button_cancel": {
+      "description": "Part of a confirmation dialog. Clicking this cancels the action.",
+      "message": "Peruuta"
+   },
+   "category_advertising": {
+      "description": "Ghostery organizes tags by category. This is one of several tag categories.",
+      "message": "Mainostus"
+   },
+   "category_advertising_desc": {
+      "description": "User-facing description for the Advertising tag category.",
+      "message": "Suorittaa mainontaa tai mainontaan liittyviä palveluita, kuten tietojen keräämistä, kävijöiden käytösmallien analysointia tai uudelleenkohdistusta."
+   },
+   "category_audio_video_player": {
+      "description": "Ghostery organizes tags by category. This is one of several tag categories.",
+      "message": "Audio-/videosoitin"
+   },
+   "category_audio_video_player_desc": {
+      "description": "User-facing description for the Audio/Video Player tag category.",
+      "message": "Sallii sivustojen julkaista, jakaa ja optimoida video- ja äänisisältöjä."
+   },
+   "category_comments": {
+      "description": "Ghostery organizes tags by category. This is one of several tag categories.",
+      "message": "Kommentit"
+   },
+   "category_comments_desc": {
+      "description": "User-facing description for the Comments tag category.",
+      "message": "Mahdollistaa artikkeleiden ja tuotearvioiden kommenttiosiot."
+   },
+   "category_customer_interaction": {
+      "description": "Ghostery organizes tags by category. This is one of several tag categories.",
+      "message": "Asiakkaan vuorovaikutus"
+   },
+   "category_customer_interaction_desc": {
+      "description": "User-facing description for the Customer Interaction tag category.",
+      "message": "Sisältää chatin, sähköpostiviestinnän, asiakastuen sekä muita vuorovaikutteisia työkaluja."
+   },
+   "category_essential": {
+      "description": "Ghostery organizes tags by category. This is one of several tag categories.",
+      "message": "Tarpeellinen"
+   },
+   "category_essential_desc": {
+      "description": "User-facing description for the Essential tag category.",
+      "message": "Sisältää tunnisteidenhallintasovellukset, tietosuojailmoitukset sekä sivuston toiminnan kannalta kriittiset tekniikat."
+   },
+   "category_pornvertising": {
+      "description": "Ghostery organizes tags by category. This is one of several tag categories.",
+      "message": "Aikuisviihdemainos"
+   },
+   "category_pornvertising_desc": {
+      "description": "User-facing description for the Adult Advertising tag category.",
+      "message": "Suorittaa erityisesti aikuisviihdesivustoille suunniteltuja mainoksiin liittyviä tekniikoita."
+   },
+   "category_site_analytics": {
+      "description": "Ghostery organizes tags by category. This is one of several tag categories.",
+      "message": "Sivuston analytiikka"
+   },
+   "category_site_analytics_desc": {
+      "description": "User-facing description for the Site Analytics tag category.",
+      "message": "Kerää ja analysoi sivuston käyttöön ja toimintaan liittyviä tietoja."
+   },
+   "category_social_media": {
+      "description": "Ghostery organizes tags by category. This is one of several tag categories.",
+      "message": "Sosiaalinen media"
+   },
+   "category_social_media_desc": {
+      "description": "User-facing description for the Social Media tag category.",
+      "message": "Integroi sosiaalisen median sivustoihin liittyviä ominaisuuksia."
+   },
+   "category_uncategorized": {
+      "message": "Luokittelematon"
+   },
+   "category_uncategorized_desc": {
+      "message": "Näitä seurantaohjelmia ei ole vielä luokiteltu."
+   },
+   "click2play_allow_always_tooltip": {
+      "description": "Tooltip that appears over the 'allow always' click2play button.",
+      "message": "Salli ja lataa uudelleen."
+   },
+   "click2play_allow_once_button_tooltip": {
+      "description": "Tooltip that appears over the click2play replacement for 'social' buttons.",
+      "message": "Ghostery esti ohjelman nimeltä $APP_NAME$. Anna sen ladata vain tämä kerta napsauttamalla tästä.",
+      "placeholders": {
+         "app_name": {
+            "content": "$1",
+            "example": "Twitter Button"
+         }
+      }
+   },
+   "click2play_allow_once_tooltip": {
+      "description": "Tooltip that appears over the 'allow once' click2play button.",
+      "message": "Salli kerran ja lataa uudelleen."
+   },
+   "click2play_blocked": {
+      "message": "Ghostery esti ohjelman nimeltä $APP_NAME$.",
+      "placeholders": {
+         "app_name": {
+            "content": "$1",
+            "example": "SoundCloud"
+         }
+      }
+   },
+   "click2play_comment_form": {
+      "message": "Ghostery esti ohjelman $NAME$ tuottamat kommentit.",
+      "placeholders": {
+         "name": {
+            "content": "$1",
+            "example": "Disqus"
+         }
+      }
+   },
+   "click2play_review_form": {
+      "message": "Ghostery esti ohjelman $NAME$ tuottamat arviot.",
+      "placeholders": {
+         "name": {
+            "content": "$1",
+            "example": "Disqus"
+         }
+      }
+   },
+   "click2play_survey_form": {
+      "message": "Ghostery esti ohjelmalla $NAME$ toteutetun kyselyn.",
+      "placeholders": {
+         "name": {
+            "content": "$1",
+            "example": "Disqus"
+         }
+      }
+   },
+   "click2play_video_form": {
+      "message": "Ghostery esti videosoittimen nimeltä $NAME$.",
+      "placeholders": {
+         "name": {
+            "content": "$1",
+            "example": "Disqus"
+         }
+      }
+   },
+   "consent_privacy": {
+      "message": "Edellyttää suostumusta."
+   },
+   "copyright": {
+      "description": "Copyright message, shown in page footers.",
+      "message": "$C$ $YEAR$ $GHOSTERY$, osa yritystä $COMPANY_ADDRESS$",
+      "placeholders": {
+         "c": {
+            "content": "&copy;"
+         },
+         "company_address": {
+            "content": "$1",
+            "example": "GHOSTERY, Inc., Such-and-such Street, Such-and-such Floor, New York, NY, Zip Code"
+         },
+         "ghostery": {
+            "content": "\u003Ca href='https://www.ghostery.com' target='_blank'>Ghostery\u003C/a>"
+         },
+         "year": {
+            "content": "2015"
+         }
+      }
+   },
+   "create_password_field_label": {
+      "message": "Salasana:"
+   },
+   "dismiss": {
+      "description": "Text for a button or link to close a notification.",
+      "message": "Hylkää"
+   },
+   "email_address_in_use": {
+      "message": "Sähköpostiosoite on jo käytössä. Valitse joku muu."
+   },
+   "email_confirm_field_label": {
+      "message": "Vahvista sähköpostiosoite:"
+   },
+   "email_field_label": {
+      "message": "Sähköposti:"
+   },
+   "error_email_forgot": {
+      "message": "Hmm, en löydä antamaasi sähköpostiosoitetta. Haluatko kokeilla toista osoitetta?"
+   },
+   "file_was_not_selected": {
+      "message": "Et valinnut mitään tiedostoa"
+   },
+   "first_name_field_label": {
+      "message": "Etunimi (valinnainen):"
+   },
+   "forgot_password_message": {
+      "message": "Unohditko salasanasi? Ei hätää, sellaista sattuu. Lähetämme sähköpostiisi ohjeet salasanasi vaihtamiseksi."
+   },
+   "invalid_email_confirmation": {
+      "message": "Sähköpostiosoitteesi eivät vastaa toisiaan."
+   },
+   "invalid_email_create": {
+      "message": "Anna toimiva sähköpostiosoite."
+   },
+   "invalid_email_forgot": {
+      "message": "Anna toimiva sähköpostiosoite."
+   },
+   "invalid_email_login": {
+      "message": "Anna toimiva sähköpostiosoite."
+   },
+   "last_name_field_label": {
+      "message": "Sukunimi (valinnainen):"
+   },
+   "library_never_updated": {
+      "description": "Text shown in the case when no tag library updates have yet happened.",
+      "message": "Automaattisia päivityksiä suositellaan."
+   },
+   "library_update_already_updated": {
+      "description": "Text shown in the case when the tag library did not need to be updated from remote servers since it's already the latest copy.",
+      "message": "Kirjasto on jo ajan tasalla."
+   },
+   "library_update_failed": {
+      "description": "Tag library update action failed.",
+      "message": "Päivitys epäonnistui. Yritä myöhemmin uudelleen."
+   },
+   "library_update_in_progress": {
+      "description": "Indicates an update is in progress (might have a spinner graphic next to it).",
+      "message": "Ladataan..."
+   },
+   "library_update_now_link": {
+      "message": "Päivitä nyt."
+   },
+   "library_update_successful": {
+      "description": "Tag library update action completed successfully.",
+      "message": "Onnistui!"
+   },
+   "library_updated_on": {
+      "description": "Text shown when a tag library update has happened at least once.",
+      "message": "Seurantaohjelmien kirjasto synkronoitiin viimeksi $DATE$",
+      "placeholders": {
+         "date": {
+            "content": "$1",
+            "example": "Wed Oct 12 2011"
+         }
+      }
+   },
+   "none": {
+      "description": "Used to say that this item does not belong to any of the groups, as in \"Groups: None\" (as opposed to \"Groups: Group A, Group B, Group C\").",
+      "message": "Ei mitään"
+   },
+   "not_http_page": {
+      "message": "Varmista, että avoinna olevassa välilehdessä on http- tai https-sivu avoinna"
+   },
+   "notification_reminder1": {
+      "description": "First line of the walkthrough reminder/notification. Sentence continued on next line.",
+      "message": "Katso Ghosteryn asetusten esittely, jos haluat tarkastella lähemmin joitakin Ghosteryn tärkeimpiä ominaisuuksia."
+   },
+   "notification_reminder2": {
+      "description": "Second line of the walkthrough reminder/notification. Continues the sentence from previous line.",
+      "message": "jos haluat tarkastella lähemmin joitakin Ghosteryn tärkeimpiä ominaisuuksia."
+   },
+   "notification_reminder_link": {
+      "description": "Link to the walkthrough/configuration wizard, part of the walkthrough reminder/notification.",
+      "message": "Määritä Ghostery"
+   },
+   "notification_update": {
+      "message": "Olemme löytäneet muutamia uusia seurantaohjelmia ja lisänneet ne Ghosteryn tietokantaan."
+   },
+   "notification_update_link": {
+      "message": "Tutustu uusiin ominaisuuksiin"
+   },
+   "notification_upgrade": {
+      "message": "Työllensä omistautunut ja omituisen mielenkiintoinen tiimimme on paiskinut töitä hullun lailla ja julkaissut Ghosteryn uuden version."
+   },
+   "notification_upgrade_link": {
+      "message": "Tutustu tämän version uusiin ominaisuuksiin ja ohjelmavirheiden korjauksiin."
+   },
+   "panel_blocking_verify_account_message": {
+      "message": "Tarkista sähköpostisi ja vahvista tilisi, jotta voit synkronoida asetuksesi ja käyttää Ghosteryn loistavia toimintoja."
+   },
+   "panel_blocking_verify_account_title": {
+      "message": "Vahvistamaton tili"
+   },
+   "panel_create_account": {
+      "message": "Luo tili"
+   },
+   "panel_email_verification_sent": {
+      "message": "$BOLD_HTML_STARTS$ Onnistui! $BOLD_HTML_END$ Tilin vahvistusviesti on lähetetty osoitteeseen $EMAIL$",
+      "placeholders": {
+         "bold_html_end": {
+            "content": "\u003C/strong>"
+         },
+         "bold_html_starts": {
+            "content": "\u003Cstrong>"
+         },
+         "email": {
+            "content": "$1",
+            "example": "info@ghostery.com"
+         }
+      }
+   },
+   "panel_forgot_password": {
+      "message": "Unohditko salasanasi?"
+   },
+   "panel_header_sign_in": {
+      "message": "Kirjaudu sisään"
+   },
+   "panel_header_verify_account": {
+      "message": "Vahvista tili"
+   },
+   "panel_help_contact_header": {
+      "message": "Näin voit ottaa yhteyttä meihin"
+   },
+   "panel_help_faq": {
+      "message": "Usein kysyttyä"
+   },
+   "panel_help_feedback": {
+      "message": "Osallistu kyselyymme"
+   },
+   "panel_help_license": {
+      "message": "Käyttöoikeussopimus"
+   },
+   "panel_help_panel_header": {
+      "message": "Ghosteryn selainlaajennuksen ohje"
+   },
+   "panel_help_privacy_statement": {
+      "message": "Tietosuojalausunto"
+   },
+   "panel_help_questions_header": {
+      "message": "Kysymykset ja kommentit"
+   },
+   "panel_help_support": {
+      "message": "Tuki"
+   },
+   "panel_help_version_header": {
+      "message": "Ghostery: selaimen $BROWSER$ versio $VERSION$",
+      "placeholders": {
+         "browser": {
+            "content": "$1",
+            "example": "Firefox"
+         },
+         "version": {
+            "content": "$2",
+            "example": "6.4"
+         }
+      }
+   },
+   "panel_human_web_learn_more_p1": {
+      "message": "Human Web rakentuu huippuluokan privacy-by-design-yksityisyyskäytännöistä, jotka varmistavat kaiken tiedon tulevan kerätyksi täysin nimettömänä ilman henkilöllisyyttä paljastavia tietoja.  Saavuttaaksen tämän tavoitteensa Human Web soveltaa kahta ydinkomponenttia: tiedonkeruukehikkoaan ja välityspalvelinverkostoaan."
+   },
+   "panel_human_web_learn_more_p2": {
+      "message": "Human Web -verkoston tiedonkeruukehikko edellyttää käyttäjien tuottamien datapisteiden arviointia vain yhtenä koostetapahtumana, purkaen näistä signaaleista kaikki henkilön tunnistavat tiedot, kuten aikaleimat ja käyttäjätunnusteet.  Tämän lisäksi Human Web poistaa kaikki henkilötiedot URL-osoitteista, jotka katsotaan harmillisiksi (esim. $SPAN_START$twitter.com/username$SPAN_END$), koska niistä voi tunnistaa yksittäisen henkilön.  Tämän johdosta emme joko pysty yhdistämään useista syötteistä tai verkkokäynneistä saatua tietoa tai emme pysty linkittämään näitä tietoja henkilötietoihin, kuten sähköpostiosoitteisiin tai käyttäjätunnuksiin, joista olisi mahdollista tunnistaa yksittäinen henkilö.",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_human_web_learn_more_p3": {
+      "message": "Lisäturvatoimena sovelletaan näiden tiedojen lähetettämistä Human Web -välityspalvelinverkoston kautta, joka koostuu tietoja, kuten käyttäjien IP-osotteita, poistavista vertaisjärjestelmistä tehden tietojen alkulähteen määrittämisen käytännöllisesti katsoen mahdottomaksi. Välityspalvelinverkosto itsessään on sokea lähettämänsä tiedon sisältöön nähden, mikä toimii vielä yhtenä prosessin turvallisuutta lisäävänä toimenpiteenä. Tämän johdosta kaikki keräämäämämme tieto ei käytännössä ole kenenkään, meidät mukaan lukien, tunnistettavissa; jos hakkerit tai ulkoinen organisaatio onnistuisi tietoturvaloukkauksessaan, tietojen yhdistäminen yksittäisiin henkilöihin olisi täysin mahdotonta."
+   },
+   "panel_human_web_learn_more_p4": {
+      "message": "Erityinen tieto, jota lähetetään Human Web -verkoston läpi:"
+   },
+   "panel_menu_advanced_settings": {
+      "message": "Edistynyt estäminen"
+   },
+   "panel_menu_help": {
+      "message": "Ohje"
+   },
+   "panel_menu_report_broken_site": {
+      "message": "Ilmoita toimimattomasta sivusta"
+   },
+   "panel_menu_settings": {
+      "message": "Asetukset"
+   },
+   "panel_menu_signin": {
+      "message": "Kirjaudu sisään"
+   },
+   "panel_menu_signout": {
+      "message": "Kirjaudu ulos"
+   },
+   "panel_menu_submit_tracker": {
+      "message": "Kirjaa uusi seurantaohjelma"
+   },
+   "panel_modal_account_button_create_account": {
+      "message": "Luo tili"
+   },
+   "panel_modal_account_button_maybe_later": {
+      "message": "Ehkä myöhemmin. Aloitetaan."
+   },
+   "panel_modal_account_button_sign_in": {
+      "message": "Onko sinulla jo tili? Kirjaudu sisään"
+   },
+   "panel_modal_account_subtitle_1": {
+      "message": "Ghostery-tilisi avulla voit synkata asetuksesi eri selainten ja laitteiden välillä eikä tiliäsi liitetä mihinkään seurantaohjelmien tietoihin, jotka olet päättänyt jakaa kanssamme."
+   },
+   "panel_modal_account_subtitle_2": {
+      "message": "Tarvitset vain sähköpostiosoitteen ja salasanan."
+   },
+   "panel_modal_account_title": {
+      "message": "Luo tili"
+   },
+   "panel_modal_ghostrank_opt_in": {
+      "message": "Kyllä, jaan tiedot."
+   },
+   "panel_modal_ghostrank_opt_out": {
+      "message": "Ei kiitos."
+   },
+   "panel_modal_ghostrank_p1": {
+      "message": "Ghostery on ilmainen, koska jotkut käyttäjät suostuvat antamaan meille nimettöminä ja vapaaehtoisesti tietoja heidän käyttämistään sivustoista ja selaimen niillä havaitsemista seurantaohjelmista."
+   },
+   "panel_modal_ghostrank_p2": {
+      "message": "Ghostery luo näiden tietojen avulla tuotteita, jotka auttavat tekemään internetistä puhtaamman, nopeamman ja turvallisemman paikan. $LINK_START$Lue lisää$LINK_END$",
+      "placeholders": {
+         "link_end": {
+            "content": "\u003C/a>"
+         },
+         "link_start": {
+            "content": "\u003Ca class='modal-learn-more'>"
+         }
+      }
+   },
+   "panel_modal_ghostrank_p3": {
+      "message": "Haluatko jakaa seurantaohjelman tiedot Ghosteryn kanssa?"
+   },
+   "panel_modal_ghostrank_title": {
+      "message": "Tervetuloa Ghosteryyn!"
+   },
+   "panel_modal_ghostrank_vc_header": {
+      "message": "Auta kehittämään Ghosterya"
+   },
+   "panel_modal_ghostrank_vc_p1": {
+      "message": "Kehitämme Ghosterya parhaamme mukaan joka päivä."
+   },
+   "panel_modal_ghostrank_vc_p2": {
+      "message": "Teemme tätä mm. keräämällä nimettömiä analytiikkatietoja, jotta pystymme selvittämään, miten käyttäjämme käyttävät Ghosterya ja mistä ominaisuuksista he pitävät ja mistä ominaisuuksista he eivät pidä. Jos esimerkiksi käytät keskeytystoimintoa, keräämme tiedon kyseisen toiminnon käyttämisestä. Nämä analytiikkatiedot ovat täysin nimettömiä, eikä niitä voida liittää tiliisi tai henkilökohtaisiin tietoihisi."
+   },
+   "panel_modal_ghostrank_vc_p3": {
+      "message": "Haluatko jakaa käytön analytiikkatietoja Ghosteryn kanssa?"
+   },
+   "panel_modal_human_web_learn_more_bullet_1": {
+      "message": "yleiset URL-osoitteet"
+   },
+   "panel_modal_human_web_learn_more_bullet_2": {
+      "message": "hakukyselyt sekä hakukoneen tulossivut"
+   },
+   "panel_modal_human_web_learn_more_bullet_3": {
+      "message": "epäilyttävät URL-osoitteet, jotka saattavat olla tietojenkalastelusivustoja"
+   },
+   "panel_modal_human_web_learn_more_bullet_4": {
+      "message": "turvallisiin ja epäluotettaviin seurantaohjelmiin liittyvät tiedot"
+   },
+   "panel_modal_human_web_learn_more_bullet_5": {
+      "message": "Seurantaohjelmien yleisyyteen ja suorituskykyyn liittyvät tiedot."
+   },
+   "panel_modal_human_web_opt_in": {
+      "message": "Kyllä, totta kai!"
+   },
+   "panel_modal_human_web_opt_out": {
+      "message": "Ei kiitos."
+   },
+   "panel_modal_human_web_p1": {
+      "message": "Ghostery soveltaa nyt Human Web (&quot;ihmisverkko&quot;) -verkostoa oletusarvoisesti. Human Web on ihmismassojen muodostaman tietoyhteiskunnan viisautta hyväksikäyttävä vallankumouksellinen tekniikka, jolla rakennetaan yksityisempi Internet. Käyttäjät tuottavat tämän tekniikan välityksellä nimetöntä tilastotietoa, jota käytetään määrittämään seurantaohjelmien, verkkosivujen ja hakupyyntöjen asiaankuuluvuus ja turvallisuus. Tekniikan odotetaan pian tukevan uusia ominaisuuksia, jotka parantavat merkittävästi sitä, kuinka me suojaamme käyttäjiämme. $LINK_START$Lue lisää$LINK_END$",
+      "placeholders": {
+         "link_end": {
+            "content": "\u003C/a>"
+         },
+         "link_start": {
+            "content": "\u003Ca class=\"modal-human-web-learn-more\">"
+         }
+      }
+   },
+   "panel_modal_human_web_p2": {
+      "message": "Mitä useampi liittyy Human Web -verkostoon, sitä paremmaksi se kehittyy kaikille. Haluaisitko ottaa osaa?"
+   },
+   "panel_modal_human_web_title": {
+      "message": "Tule osaksi Human Web -tietoyhteiskuntaan"
+   },
+   "panel_modal_learn_more_bullet_1": {
+      "message": "Ghosteryn selainlaajennuksen havaitsemat seurantaohjelmat"
+   },
+   "panel_modal_learn_more_bullet_10": {
+      "message": "Pyydetyn sivun aikaleima"
+   },
+   "panel_modal_learn_more_bullet_11": {
+      "message": "Seurantaohjelman paino (kuhunkin seurantaohjelmaan liitettävät tiedot megatavuina)"
+   },
+   "panel_modal_learn_more_bullet_12": {
+      "message": "Tieto, onko käydyillä sivuilla ollut seurantaohjelmia"
+   },
+   "panel_modal_learn_more_bullet_2": {
+      "message": "Seurantaohjelmien estotila"
+   },
+   "panel_modal_learn_more_bullet_3": {
+      "message": "Seurantaohjelmia tarjoavat toimialueet"
+   },
+   "panel_modal_learn_more_bullet_4": {
+      "message": "Sivun ja seurantaohjelmien lataamiseen kuluva aika"
+   },
+   "panel_modal_learn_more_bullet_5": {
+      "message": "Seurantaohjelmien sijainnit sivulla"
+   },
+   "panel_modal_learn_more_bullet_6": {
+      "message": "Selain, johon Ghosteryn selainlaajennus on asennettu"
+   },
+   "panel_modal_learn_more_bullet_7": {
+      "message": "Selaimen kieli"
+   },
+   "panel_modal_learn_more_bullet_8": {
+      "message": "Normaalit web-palvelimen lokitiedot (kuten web-pyyntösi)"
+   },
+   "panel_modal_learn_more_bullet_9": {
+      "message": "Kyseiseen pyyntöön vastauksena lähetetyt tiedot"
+   },
+   "panel_modal_learn_more_end": {
+      "message": "Jos haluat lisätietoja käytännöistämme, katso Ghosteryn $LINK_START$Tietosuojalausunto$LINK_END$.",
+      "placeholders": {
+         "link_end": {
+            "content": "\u003C/a>"
+         },
+         "link_start": {
+            "content": "\u003Ca class='modal-privacy-statement'>"
+         }
+      }
+   },
+   "panel_modal_learn_more_list_title": {
+      "message": "Jos liityt mukaan ja suostut jakamaan tietojasi, Ghostery kerää sinulta seuraavia tietoja:"
+   },
+   "panel_modal_learn_more_subtitle": {
+      "message": "Mitä tietoja Ghostery kerää?"
+   },
+   "panel_modal_upgrade_account_blurb": {
+      "message": "$CREATE_LINK_START$Luo tili$CREATE_LINK_END$ tai $SIGNIN_LINK_START$kirjaudu sisään$SIGNIN_LINK_END$ jotta voit käyttää edistyneitä toimintoja.",
+      "placeholders": {
+         "create_link_end": {
+            "content": "\u003C/a>"
+         },
+         "create_link_start": {
+            "content": "\u003Ca class='update-dismiss account-dismiss create-account'>"
+         },
+         "signin_link_end": {
+            "content": "\u003C/a>"
+         },
+         "signin_link_start": {
+            "content": "\u003Ca class='update-dismiss account-dismiss sign-in'>"
+         }
+      }
+   },
+   "panel_modal_upgrade_bullet_1": {
+      "message": "Mahdollisuus luoda vahvoja salasanoja"
+   },
+   "panel_modal_upgrade_bullet_2": {
+      "message": "Mahdollisuus piilottaa Ghostery-kuvakkeessa näytettävä seurantaohjelmien lukumäärä"
+   },
+   "panel_modal_upgrade_bullet_3": {
+      "message": "Ei niin häiritsevä violetti laatikko"
+   },
+   "panel_modal_upgrade_bullet_4": {
+      "message": "Parempi suorituskyky"
+   },
+   "panel_modal_upgrade_continue": {
+      "message": "Jatka"
+   },
+   "panel_modal_upgrade_subtitle_1": {
+      "message": "Uudessa versiossa on todella hienoja ominaisuuksia:"
+   },
+   "panel_modal_upgrade_title": {
+      "message": "Ghostery on päivitetty!"
+   },
+   "panel_needs_reload_paused": {
+      "message": "Ghostery keskeytetty. $SPAN_START$Päivitä nähdäksesi muutokset.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_restrict": {
+      "message": "Tämän sivuston seurantaohjelmat on estetty. $SPAN_START$Päivitä nähdäksesi muutokset.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_resumed": {
+      "message": "Ghostery otettu uudelleen käyttöön. $SPAN_START$Päivitä nähdäksesi muutokset.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_tracker_qty_blocked": {
+      "message": "seurantaohjelma estetty. $SPAN_START$Päivitä nähdäksesi muutokset.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_tracker_qty_blocked_plural": {
+      "message": "seurantaohjelmaa estetty. $SPAN_START$Päivitä nähdäksesi muutokset.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_tracker_ss_allowed": {
+      "message": "seurantaohjelma sallittu tällä sivustolla. $SPAN_START$Päivitä nähdäksesi muutokset.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_tracker_ss_allowed_plural": {
+      "message": "seurantaohjelmat on sallittu tällä sivustolla. $SPAN_START$Päivitä nähdäksesi muutokset.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_tracker_ss_blocked": {
+      "message": "seurantaohjelma on estetty tällä sivustolla. $SPAN_START$Päivitä nähdäksesi muutokset.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_tracker_ss_blocked_plural": {
+      "message": "seurantaohjelmat on estetty tällä sivustolla. $SPAN_START$Päivitä nähdäksesi muutokset.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_tracker_ss_unblocked": {
+      "message": "Seurantaohjelman esto on peruttu tällä sivustolla. $SPAN_START$Päivitä nähdäksesi muutokset.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_tracker_ss_untrusted": {
+      "message": "Tämän sivuston seurantaohjelma on merkitty ei-luotettavaksi. $SPAN_START$Päivitä nähdäksesi muutokset.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_tracker_unblocked": {
+      "message": "Seurantaohjelman esto on poistettu. $SPAN_START$Päivitä nähdäksesi muutokset.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_trackers_block_all": {
+      "message": "Tässä luetellut seurantaohjelmat on estetty. $SPAN_START$Päivitä nähdäksesi muutokset.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_trackers_unblock_all": {
+      "message": "Tässä lueteltujen seurantaohjelmien esto on peruttu. $SPAN_START$Päivitä nähdäksesi muutokset.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_trust": {
+      "message": "Tämän sivuston seurantaohjelmat on sallittu. $SPAN_START$Päivitä nähdäksesi muutokset.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_undo_restrict": {
+      "message": "Peru sivuston rajoitus. $SPAN_START$Päivitä nähdäksesi muutokset.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_needs_reload_undo_trust": {
+      "message": "Poista sivusto luotetuista sivustoista. $SPAN_START$Päivitä nähdäksesi muutokset.$SPAN_END$",
+      "placeholders": {
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"needs-reload-link\">"
+         }
+      }
+   },
+   "panel_signin_success": {
+      "message": "Olet kirjautunut nyt käyttäjänä"
+   },
+   "panel_signin_success_title": {
+      "message": "Onneksi olkoon! Ghostery-tilisi on käyttövalmiina!"
+   },
+   "panel_title_create_account": {
+      "message": "Luo tili"
+   },
+   "panel_tracker_block_tooltip": {
+      "message": "Estä kaikilla sivustoilla"
+   },
+   "panel_tracker_breaking_page": {
+      "message": "$SPAN_START$$COUNT$ estettyä $TRACKERS$$SPAN_END$ estävät sivua toimimasta oikein.",
+      "placeholders": {
+         "count": {
+            "content": "$1",
+            "example": "4"
+         },
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"filter-link compatibility\">"
+         },
+         "trackers": {
+            "content": "$2",
+            "example": "trackers"
+         }
+      }
+   },
+   "panel_tracker_found_sources_title": {
+      "message": "Poista seurantaohjelmien URLit:"
+   },
+   "panel_tracker_restrict_tooltip": {
+      "message": "Rajoita tällä sivustolla"
+   },
+   "panel_tracker_slow_non_secure": {
+      "message": "Tällä sivulla on $SPAN_START$$COUNT$ hidasta ja/tai ei-turvallista $TRACKERS$$SPAN_END$.",
+      "placeholders": {
+         "count": {
+            "content": "$1",
+            "example": "4"
+         },
+         "span_end": {
+            "content": "\u003C/span>"
+         },
+         "span_start": {
+            "content": "\u003Cspan class=\"filter-link slow-insecure\">"
+         },
+         "trackers": {
+            "content": "$2",
+            "example": "trackers"
+         }
+      }
+   },
+   "panel_tracker_trust_tooltip": {
+      "message": "Luota tällä sivustolla"
+   },
+   "panel_tracker_warning_compatibility_tooltip": {
+      "message": "Estetty seurantaohjelma rikkoo sivun"
+   },
+   "panel_tracker_warning_nonsecure_tooltip": {
+      "message": "Seurantaohjelma ei ole turvallinen"
+   },
+   "panel_tracker_warning_slow_nonsecure_tooltip": {
+      "message": "Seurantaohjelma on hidas ja ei-turvallinen"
+   },
+   "panel_tracker_warning_slow_tooltip": {
+      "message": "Seurantaohjelma on hidas"
+   },
+   "panel_view_trackers": {
+      "message": "Näytä seurantaohjelmat"
+   },
+   "password_characters_requirements": {
+      "message": "Sallitut erikoismerkit: !@#$%^&amp;*=+()&lt;>{}[];:,./?"
+   },
+   "password_field_label": {
+      "message": "Salasana"
+   },
+   "password_field_label_required": {
+      "message": "Salasana on pakollinen tieto."
+   },
+   "password_requirements": {
+      "message": "8–50 merkkiä."
+   },
+   "refresh_and_try_again": {
+      "message": "Päivitä sivu ja yritä uudelleen"
+   },
+   "select_file_for_import": {
+      "message": "Valitse tuotava .ghost-tiedosto"
+   },
+   "send_button_label": {
+      "message": "Lähetä"
+   },
+   "server_error_message": {
+      "message": "Meillä vaikuttaisi olevan teknisiä ongelmia. Yritä myöhemmin uudelleen."
+   },
+   "settings_account": {
+      "message": "Tili"
+   },
+   "settings_account_email": {
+      "message": "Sähköposti"
+   },
+   "settings_account_name": {
+      "message": "Nimi"
+   },
+   "settings_allow_offers": {
+      "message": "Osallistu Ghostery Rewards -ohjelmaan"
+   },
+   "settings_allow_trackers": {
+      "message": "Salli sivustojen omistajien luomat seurantaohjelmat"
+   },
+   "settings_allow_trackers_tooltip": {
+      "message": "Esimerkiksi sivustolla facebook.com oleva Facebookin seurantaohjelma kannattaa ohittaa, jotta sivusto toimii oikein."
+   },
+   "settings_announcements": {
+      "message": "julkaisee tiedotteita"
+   },
+   "settings_auto_update": {
+      "message": "Salli Ghosteryn seurantaohjelmien kirjaston automaattiset päivitykset"
+   },
+   "settings_block_trackers": {
+      "message": "Estä uudet Ghosteryn kirjastoon lisätyt seurantaohjelmat oletusarvoisesti"
+   },
+   "settings_blocking": {
+      "message": "esto"
+   },
+   "settings_bottom_left_corner": {
+      "message": "Vasemmassa alakulmassa"
+   },
+   "settings_bottom_right_corner": {
+      "message": "Oikeassa alakulmassa"
+   },
+   "settings_defect_fixes": {
+      "message": "julkaisee pieniä ohjelmavirheiden korjauksia"
+   },
+   "settings_dismiss_after": {
+      "message": "Sulje kun on kulunut"
+   },
+   "settings_display_in": {
+      "message": "Näytä"
+   },
+   "settings_edit_account": {
+      "message": "Muokkaa tiliä"
+   },
+   "settings_export_error": {
+      "message": "Asetuksiesi vienti ei onnistunut. Yritä uudelleen."
+   },
+   "settings_export_header": {
+      "message": "Vientiasetukset"
+   },
+   "settings_export_success": {
+      "message": "Asetuksesi on viety latauskansioosi kohteeseen"
+   },
+   "settings_export_text": {
+      "message": "Tallenna kopio Ghosteryn asetuksista varmuuskopiointia tai toiselle tietokoneelle siirtämistä varten."
+   },
+   "settings_hide_alert_trusted": {
+      "message": "Piilota violetti laatikko luotetuilla sivustoilla"
+   },
+   "settings_highlight_trackers": {
+      "message": "Korosta interaktiiviset seurantaohjelmat"
+   },
+   "settings_highlight_trackers_tooltip": {
+      "message": "Joidenkin sivustojen tietyt ominaisuudet, kuten sosiaalisen median jakopainikkeet, kommenttiosiot tai videosoittimet eivät toimi, jos tietty seurantaohjelma on estetty. Jos haluat käyttää jotain tällaista estettyä ominaisuutta, napsauta tätä kuvaketta sivulla:"
+   },
+   "settings_human_web_tooltip": {
+      "message": "Ghostery soveltaa nyt Human Web (&quot;ihmisverkko&quot;) -verkostoa oletusarvoisesti. Human Web on ihmismassojen muodostaman tietoyhteiskunnan viisautta hyväksikäyttävä vallankumouksellinen tekniikka, jolla rakennetaan yksityisempi Internet."
+   },
+   "settings_import_file_error": {
+      "message": "Tiedostotyyppi on virheellinen. Valitse .ghost-päätteinen tiedosto ja yritä uudelleen."
+   },
+   "settings_import_header": {
+      "message": "Tuo asetukset"
+   },
+   "settings_import_success": {
+      "message": "Asetuksesi tuotiin onnistuneesti"
+   },
+   "settings_import_text": {
+      "message": "Valitse .ghost-päätteinen varmuuskopiointitiedosto."
+   },
+   "settings_import_warning": {
+      "message": "VAROITUS: Tämä korvaa Ghosteryn nykyiset asetuksesi."
+   },
+   "settings_individual_trackers": {
+      "message": "Luota ja rajoita yksittäisiä seurantaohjelmia"
+   },
+   "settings_individual_trackers_tooltip": {
+      "message": "Valitse, mitkä sivuston seurantaohjelmat haluat estää ja sallia"
+   },
+   "settings_last_update": {
+      "message": "Synkronoitu viimeksi"
+   },
+   "settings_never": {
+      "message": "Ei koskaan"
+   },
+   "settings_new_features": {
+      "message": "julkaisee uusia ominaisuuksia"
+   },
+   "settings_new_trackers": {
+      "message": "lisää seurantaohjelmien kirjastoon uusia seurantaohjelmia"
+   },
+   "settings_notifications": {
+      "message": "Ilmoitukset"
+   },
+   "settings_notify_me": {
+      "message": "Ilmoita minulle, kun Ghostery:"
+   },
+   "settings_notify_me_tooltip": {
+      "message": "Anna Ghosteryn lähettää minulle selaimen kautta Ghosteryn tuotteisiin, päivityksiin ja asiakaspalautteisiin liittyviä viestejä."
+   },
+   "settings_offers_tooltip": {
+      "message": "Ghostery Rewards on ominaisuus, jonka avulla voit ansaita alennuksia ja erikoistarjouksia kumppaniyrityksiltä."
+   },
+   "settings_purple_box": {
+      "message": "Violetti laatikko"
+   },
+   "settings_replace_social": {
+      "message": "Korvaa estetyt sosiaalisen median painikkeet Ghostery-kuvakkeella"
+   },
+   "settings_required_for_patterns": {
+      "message": "tarvitaan, jotta voidaan käyttää ominaisuutta"
+   },
+   "settings_required_trackers": {
+      "message": "Näytä minulle, milloin minun täytyy sallia jokin seurantaohjelma sivuston toimintojen käyttämistä varten"
+   },
+   "settings_seconds": {
+      "message": "sekuntia"
+   },
+   "settings_share_data": {
+      "message": "Jakamalla sivujen ja seurantaohjelmien tietoja"
+   },
+   "settings_share_data_tooltip": {
+      "message": "Ghostery on ilmainen, koska jotkut käyttäjät suostuvat antamaan meille nimettöminä ja vapaaehtoisesti tietoja heidän käyttämistään sivustoista ja selaimen niillä havaitsemista seurantaohjelmista."
+   },
+   "settings_share_human_web": {
+      "message": "Jakamalla Human Web -tietoja"
+   },
+   "settings_share_usage": {
+      "message": "Jakamalla laajennuksen käyttötietoja"
+   },
+   "settings_share_usage_tooltip": {
+      "message": "Keräämme analytiikkatietoja, jotta pystymme selvittämään, mistä ominaisuuksista käyttäjämme pitävät. Jos esimerkiksi käytät keskeytystoimintoa, keräämme tiedon kyseisen toiminnon käyttämisestä."
+   },
+   "settings_show_patterns": {
+      "message": "Näytä seurantaohjelmien URLit"
+   },
+   "settings_show_patterns_tooltip": {
+      "message": "Seurantaohjelman URLit näkyvät seurantaohjelman kuvauksen alapuolella kun napsautat seurantaohjelmaa."
+   },
+   "settings_show_purple_box": {
+      "message": "Näytä violetti laatikko selaimen kulmassa"
+   },
+   "settings_show_purple_box_tooltip": {
+      "message": "Selaimesi kulmassa näkyvä violetti laatikko sisältää seurantaohjelmien reaaliaikaisen luettelon. Tämän ominaisuuden avulla näet heti sivustolle lisätyt seurantaohjelmat."
+   },
+   "settings_show_reload_banner": {
+      "message": "Näytä sivun uudelleenlatauksen banneri-ilmoitukset laajennuksen yläreunassa"
+   },
+   "settings_show_tracker_count_badge": {
+      "message": "Näytä seurantaohjelmien lukumäärä selaimen työkalurivin Ghostery-kuvakkeessa"
+   },
+   "settings_show_trackers_banner": {
+      "message": "Näytä seurantaohjelman hälytyksen banneri-ilmoitukset laajennuksen yläreunassa"
+   },
+   "settings_sign_create_text": {
+      "message": "Tilisi asetukset synkronoidaan tähän laitteeseen. Luo tili, jotta voit synkronoida Ghosteryn asetuksesi helposti kaikkiin laitteisiisi alustasta riippumatta."
+   },
+   "settings_sign_in": {
+      "message": "Kirjaudu sisään"
+   },
+   "settings_signin_create_header": {
+      "message": "Kirjaudu sisään / Luo tili"
+   },
+   "settings_support_ghostery": {
+      "message": "Tue Ghosterya"
+   },
+   "settings_support_ghostery_by": {
+      "message": "Tue Ghosterya:"
+   },
+   "settings_top_left_corner": {
+      "message": "Vasemmassa yläkulmassa"
+   },
+   "settings_top_right_corner": {
+      "message": "Oikeassa yläkulmassa"
+   },
+   "settings_trackers": {
+      "message": "Seurantaohjelmat"
+   },
+   "settings_update_failed": {
+      "message": "Päivitys epäonnistui. Yritä myöhemmin uudelleen."
+   },
+   "settings_update_now": {
+      "message": "Päivitä nyt"
+   },
+   "settings_update_success": {
+      "message": "Onnistui!"
+   },
+   "settings_update_up_to_date": {
+      "message": "Edelleen ajan tasalla"
+   },
+   "short_description": {
+      "description": "A short description of this extension (Ghostery).",
+      "message": "Suojaa yksityisyytesi. Katso Ghosteryn avulla, kuka seuraa verkkoselailuasi."
+   },
+   "summary_alert": {
+      "description": "as in '1 ALERT'",
+      "message": "Hälytys"
+   },
+   "summary_alerts": {
+      "description": "as in '5 ALERTS'",
+      "message": "Hälytykset"
+   },
+   "summary_blocked": {
+      "description": "as in '5 (trackers) BLOCKED'",
+      "message": "Estetty"
+   },
+   "summary_category_tracker": {
+      "message": "Seurantaohjelma"
+   },
+   "summary_category_trackers": {
+      "message": "Seurantaohjelmat"
+   },
+   "summary_description_not_scanned_1": {
+      "message": "Ghostery tutkii vain http- ja https-sivuja."
+   },
+   "summary_description_not_scanned_2": {
+      "message": "Siirry jollekin toiselle sivulle niin lupaan näyttää, mitä osaan."
+   },
+   "summary_found_on": {
+      "description": "as in '5 trackers FOUND ON http://google.com'",
+      "message": "löytyi kohteesta"
+   },
+   "summary_map_these_trackers": {
+      "message": "Selvitä näiden seurantaohjelmien sijainti"
+   },
+   "summary_page_not_scanned": {
+      "message": "Sivua ei ole tarkistettu"
+   },
+   "summary_pause_ghostery": {
+      "message": "Keskeytä"
+   },
+   "summary_restrict_site": {
+      "message": "Rajoita"
+   },
+   "summary_resume_ghostery": {
+      "message": "Jatka"
+   },
+   "summary_trust_site": {
+      "message": "Luota"
+   },
+   "summary_undo": {
+      "message": "Kumoa"
+   },
+   "tracker_description_getting": {
+      "message": "Haetaan seurantaohjelman kuvausta..."
+   },
+   "tracker_description_learn_more": {
+      "message": "Jatka seurantaohjelman täydelliseen profiiliin"
+   },
+   "tracker_description_none_found": {
+      "message": "Seurantaohjelman kuvausta ei löytynyt."
+   },
+   "tracker_plural": {
+      "message": "seurantaohjelmaa"
+   },
+   "tracker_signular": {
+      "message": "seurantaohjelma"
+   },
+   "unblocked": {
+      "description": "Select this to show only unblocked (unchecked) tags in the tag browser. Should read as 'Show unblocked'.",
+      "message": "esto poistettu"
+   },
+   "white_black_list_error_invalid_url": {
+      "message": "Anna kelvollinen URL."
+   },
+   "whitelist_error_blacklist_url": {
+      "message": "Tämä sivusto on poistettu rajoitettujen sivustojen listaltasi ja lisätty luotettavien sivustojen listallesi."
+   },
+   "whitelist_error_duplicate_url": {
+      "description": "Options page site whitelisting error message shown when whitelisting a URL that is already in the whitelist.",
+      "message": "Tämä sivusto on jo hyväksyttyjen listalla"
+   }
+}

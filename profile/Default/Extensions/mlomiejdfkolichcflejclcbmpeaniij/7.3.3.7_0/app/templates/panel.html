@@ -1,0 +1,40 @@
+<!doctype html>
+<!--
+ * Ghostery Panel
+ *
+ * Ghostery Browser Extension
+ * https://www.ghostery.com/
+ *
+ * Copyright 2017 Ghostery, Inc. All rights reserved.
+ * See https://www.ghostery.com/eula for license.
+-->
+<html>
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
+<link href="../../dist/css/vendor/foundation.css" media="screen" rel="stylesheet" type="text/css">
+<link href="../../dist/css/panel.css" media="screen" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<div class="callout-container">
+		<div class="callout" data-closable style="display: none;">
+			<svg width="15px" height="15px" viewBox="0 0 15 15"
+					class="close-button" data-close>
+				<g>
+					<path stroke-width="3" stroke-linecap="round" d="M3,3 L12,12 M3,12 L12,3"></path>
+				</g>
+			</svg>
+			<span class="callout-text"></span>
+		</div>
+	</div>
+	<div id="ghostery-app">
+		<header id="ghostery-header"></header>
+		<div id="ghostery-content"></div>
+		<div class="large reveal" id="ghostrank-modal"
+				data-reveal data-close-on-click="false" data-close-on-esc="false"
+				data-v-offset="80" data-options="showDelay:50" data-animation-in="fade-in">
+		</div>
+	</div>
+	<script src="../../dist/panel.js"></script>
+</body>
+</html>

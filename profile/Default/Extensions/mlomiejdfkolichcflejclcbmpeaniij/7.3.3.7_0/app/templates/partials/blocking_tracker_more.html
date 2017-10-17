@@ -1,0 +1,14 @@
+<div class="clear"></div>
+<div class="trk-moreinfo" style="display: none;">
+	<div class="trk-description"></div>
+	<div class="trk-srcs-title"><%= data.panel_tracker_found_sources_title %></div>
+	<div class="trk-srcs">
+		<% data.sources.forEach(function (source) { %>
+			<a target="_blank" class="trk-src-link"
+					title="<%= source.src %>"
+					href="https://<%= encodeURIComponent(window.App.GCACHE_SUB_DOMAIN) %>.ghostery.com/<%= encodeURIComponent(data.language) %>/gcache/?n=<%= encodeURIComponent(data.name) %>&s=<%= encodeURIComponent(source.src) %>&v=2&t=<%= source.type %>">
+				<%= source.src %>
+			</a>
+		<% }) %>
+	</div>
+</div>

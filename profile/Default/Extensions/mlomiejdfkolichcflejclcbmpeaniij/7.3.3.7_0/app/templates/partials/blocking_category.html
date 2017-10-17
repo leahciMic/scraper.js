@@ -1,0 +1,21 @@
+<div class="flex sticky-category">
+	<img class="cat-image" src="/app/images/panel/<%= data.img_name %>.svg">
+	<div class="flex vertical">
+		<div class="cat-name">
+			<%= data.name %>
+		</div>
+		<div class="counts flex">
+			<div class="total-count">
+				<span class="count"><%= data.num_total %></span>
+				<span class="text">
+					<%= (data.num_total === 1) ? data.blocking_category_tracker : data.blocking_category_trackers %>
+				</span>
+			</div>
+			<div class="blocked-count" style="display:none;">
+				<span class="count"></span>
+				<span class="text"><%= data.blocking_category_blocked %></span>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="trackers-list"></div>

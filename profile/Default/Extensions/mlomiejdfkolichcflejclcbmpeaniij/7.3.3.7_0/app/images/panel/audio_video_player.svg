@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.8.3 (29802) - http://www.bohemiancoding.com/sketch -->
+    <title>AudioVideo Player</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="13.2134831" height="9.83982787" rx="3"></rect>
+    </defs>
+    <g id="Week-4" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Tracker-List-View" transform="translate(-2120.000000, -1098.000000)">
+            <g id="AudioVideo-Player" transform="translate(2121.000000, 1099.000000)">
+                <ellipse id="Oval-375-Copy-15" stroke="#EB3C34" fill="#F86B4F" cx="11.8651685" cy="11.8651685" rx="11.8651685" ry="11.8651685"></ellipse>
+                <g id="Rectangle-4031" transform="translate(5.760000, 7.200000)">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="Mask" fill="#4A4A4A" xlink:href="#path-1"></use>
+                    <rect fill="#3B3B3B" mask="url(#mask-2)" x="6.72" y="-0.48" width="7.02844848" height="11.2455176"></rect>
+                </g>
+                <polygon id="Triangle-53" fill="#FFFFFF" points="15.5757304 11.892681 10.7321474 14.5296567 10.56 9.6"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>
