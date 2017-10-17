@@ -1,34 +1,3 @@
-2017/10/17-10:29:03.432 39427 Reusing MANIFEST /Users/michael/Projects/scraperjs/profile/Default/Local Extension Settings/gighmmpiobklfepjocnamgkkbiglidom/MANIFEST-000001
-2017/10/17-10:29:12.915 154007 Level-0 table #5: started
-2017/10/17-10:29:12.939 154007 Level-0 table #5: 2085837 bytes OK
-2017/10/17-10:29:12.941 154007 Delete type=0 #3
-2017/10/17-10:29:16.802 154007 Level-0 table #7: started
-2017/10/17-10:29:16.836 154007 Level-0 table #7: 2862470 bytes OK
-2017/10/17-10:29:16.837 154007 Delete type=0 #4
-2017/10/17-10:29:49.033 154007 Level-0 table #9: started
-2017/10/17-10:29:49.075 154007 Level-0 table #9: 2862349 bytes OK
-2017/10/17-10:29:49.076 154007 Delete type=0 #6
-2017/10/17-10:30:05.545 154007 Level-0 table #11: started
-2017/10/17-10:30:05.582 154007 Level-0 table #11: 2862699 bytes OK
-2017/10/17-10:30:05.583 154007 Delete type=0 #8
-2017/10/17-10:30:05.885 154007 Level-0 table #13: started
-2017/10/17-10:30:05.921 154007 Level-0 table #13: 2862546 bytes OK
-2017/10/17-10:30:05.922 154007 Delete type=0 #10
-2017/10/17-10:30:38.241 154007 Level-0 table #15: started
-2017/10/17-10:30:38.260 154007 Level-0 table #15: 2062916 bytes OK
-2017/10/17-10:30:38.261 154007 Delete type=0 #12
-2017/10/17-10:30:38.262 154007 Compacting 4@0 + 1@1 files
-2017/10/17-10:30:38.308 154007 Generated table #16@0: 6 keys, 1031703 bytes
-2017/10/17-10:30:38.308 154007 Compacted 4@0 + 1@1 files => 1031703 bytes
-2017/10/17-10:30:38.308 154007 compacted to: files[ 0 1 1 0 0 0 0 ]
-2017/10/17-10:30:38.309 154007 Delete type=2 #7
-2017/10/17-10:30:38.309 154007 Delete type=2 #9
-2017/10/17-10:30:38.310 154007 Delete type=2 #11
-2017/10/17-10:30:38.310 154007 Delete type=2 #13
-2017/10/17-10:30:38.310 154007 Delete type=2 #15
-2017/10/17-10:30:39.765 154007 Level-0 table #18: started
-2017/10/17-10:30:39.784 154007 Level-0 table #18: 2062639 bytes OK
-2017/10/17-10:30:39.784 154007 Delete type=0 #14
-2017/10/17-10:30:43.124 154007 Level-0 table #20: started
-2017/10/17-10:30:43.143 154007 Level-0 table #20: 2062635 bytes OK
-2017/10/17-10:30:43.144 154007 Delete type=0 #17
+2017/10/17-10:42:02.880 39683 Reusing MANIFEST /Users/michael/Projects/scraperjs/profile/Default/Local Extension Settings/gighmmpiobklfepjocnamgkkbiglidom/MANIFEST-000001
+2017/10/17-10:42:02.881 39683 Recovering log #19
+2017/10/17-10:42:02.895 39683 Reusing old log /Users/michael/Projects/scraperjs/profile/Default/Local Extension Settings/gighmmpiobklfepjocnamgkkbiglidom/000019.log 
