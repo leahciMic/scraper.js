@@ -30,7 +30,7 @@ if (process.env.STATSD) {
 
 const program = require('./lib/parse-cli-options.js');
 
-const threads = Array(program.concurrency).map((_ignore, key) => ({
+const threads = Array(program.concurrency).fill(undefined).map((_ignore, key) => ({
   id: key,
   status: 'Idle',
   pages: 0,
