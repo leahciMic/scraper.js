@@ -30,7 +30,8 @@ if (process.env.STATSD) {
 
 const program = require('./lib/parse-cli-options.js');
 
-const threads = Array(program.concurrency).fill({
+const threads = Array(program.concurrency).map((_ignore, key) => ({
+  id: key,
   status: 'Idle',
   pages: 0,
   startTime: Date.now(),
@@ -39,14 +40,13 @@ const threads = Array(program.concurrency).fill({
   logs: [],
   log(...args) {
     this.logs.push(args);
-    this.lastStatus = Date.now();
   },
   update(type, value) {
     this[type] = value;
 
     statusServer.update({
       threads: {
-        [threads.indexOf(this)]: {
+        [this.id]: {
           [type]: value,
         },
       },
@@ -54,6 +54,7 @@ const threads = Array(program.concurrency).fill({
   },
   updateStatus(status) {
     this.update('status', status);
+    this.update('lastStatus', Date.now());
   },
   addPages(increment = 1) {
     this.update('pages', this.pages += increment);
@@ -61,7 +62,7 @@ const threads = Array(program.concurrency).fill({
   updateScraper(scraper) {
     this.update('scraper', scraper);
   },
-});
+}));
 
 statusServer.on('sync', (send) => {
   const obj = {

@@ -1,6 +1,5 @@
 const puppeteer = require('puppeteer');
 const genericPool = require('generic-pool');
-const path = require('path');
 
 class Browser {
   constructor(page) {
@@ -25,15 +24,10 @@ class Browser {
   }
 }
 
-console.log('use datadir', path.resolve(__dirname, '../../profile/'));
 
 const launchBrowser = () => puppeteer.launch({
   headless: process.env.HEADLESS === 'true',
   ignoreHTTPSErrors: true,
-  args: [
-  //   '--proxy-server=http://localhost:4113',
-  ],
-  userDataDir: path.resolve(__dirname, '../../profile/'),
 });
 
 const instantiatePool = async ({ min, max }) => {
