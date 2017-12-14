@@ -10,7 +10,9 @@ class Browser {
     // this.page.on('console', console.log.bind(console));
   }
   goto(url) {
-    return this.page.goto(url);
+    return this.page.goto(url, {
+      timeout: 60 * 1000, // 1 minute is a long time, but heh.
+    });
   }
   waitForNavigation(...args) {
     return this.page.waitForNavigation(...args);
@@ -28,7 +30,6 @@ console.log('use datadir', path.resolve(__dirname, '../../profile/'));
 const launchBrowser = () => puppeteer.launch({
   headless: process.env.HEADLESS === 'true',
   ignoreHTTPSErrors: true,
-  dumpio: true,
   args: [
   //   '--proxy-server=http://localhost:4113',
   ],
