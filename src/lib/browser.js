@@ -8,6 +8,9 @@ class Browser {
     // this.page.on('pageerror', console.error.bind(console));
     // this.page.on('console', console.log.bind(console));
   }
+  setContent(html) {
+    return this.page.setContent(html);
+  }
   goto(url) {
     return this.page.goto(url, {
       timeout: 60 * 1000, // 1 minute is a long time, but heh.

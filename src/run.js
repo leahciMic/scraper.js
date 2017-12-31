@@ -153,14 +153,14 @@ async function startQueue(scraper, threadId) {
 
   thread.updateScraper(scraper.name);
 
-  scraper.log('Start with ', thread.id);
+  // scraper.log.verbose('Start with ', thread.id);
 
   const scraperAPI = loadScraper(scraper);
 
-  scraper.log('Add start item to the queue');
+  // scraper.log.verbose('Add start item to the queue');
   await scraperAPI.addStartItem();
 
-  scraper.log('Waiting for 20ms');
+  // scraper.log.verbose('Waiting for 20ms');
   await timeout(20);
 
   let end;
@@ -171,7 +171,7 @@ async function startQueue(scraper, threadId) {
 
   function resetFinishTimeout() {
     finishedTimeout = setTimeout(() => {
-      scraper.log('hit finishedTimeout');
+      // scraper.log.verbose('hit finishedTimeout');
       scraperAPI.close();
       end();
     }, 20);
@@ -264,7 +264,7 @@ async function start() {
 
     while (true) { // eslint-disable-line no-constant-condition
       if (i >= scrapers.length) { i = 0; }
-      log('nextScraper', i);
+      // log('nextScraper', i);
       yield scrapers[i];
       i += 1;
     }
@@ -273,10 +273,10 @@ async function start() {
   await promiseEach(
     nextScraper(),
     async (scraper, threadId) => {
-      scraper.log('start processing queue');
+      // scraper.log.verbose('start processing queue');
       try {
         const result = await startQueue(scraper, threadId);
-        scraper.log('finished processing queue');
+        // scraper.log.verbose('finished processing queue');
         return result;
       } catch (error) {
         scraper.error('BIGERR: A caught error below');

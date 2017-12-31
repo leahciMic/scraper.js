@@ -1,6 +1,6 @@
 {
   "name": "scraper.js",
-  "version": "1.2.5",
+  "version": "1.3.0",
   "description": "A scraping platform",
   "main": "./src/index.js",
   "bin": {
@@ -13,6 +13,7 @@
   "author": "Michael Leaney <leahcimic@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.17.1",
     "cheerio": "github:leahcimic/cheerio#add-baseHref-option-and-have-prop-resolve-src-and-href",
     "commander": "^2.12.2",
     "debug": "^3.1.0",
@@ -35,7 +36,9 @@
     "sanitize-html": "^1.16.3",
     "scraper.js-queue-bull": "^5.0.4",
     "uber-statsd-client": "^1.7.3",
-    "ws": "^3.3.2"
+    "uglify-js": "^3.3.3",
+    "ws": "^3.3.2",
+    "zepto": "^1.2.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",

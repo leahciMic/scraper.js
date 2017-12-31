@@ -1,8 +1,8 @@
 const cheerio = require('cheerio');
 const request = require('request-promise');
 const cloneDeep = require('lodash/cloneDeep');
-const queueUtil = require('./lib/queue-util.js');
-const dataUtil = require('./lib/data-util.js');
+const queueUtil = require('./lib/injectables/queue-util.js');
+const dataUtil = require('./lib/injectables/data-util.js');
 
 module.exports = async function processCheerio({ queueItem, scraper, switchUse }) {
   try {

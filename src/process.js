@@ -1,24 +1,27 @@
 const processBrowser = require('./processBrowser.js');
 const processCheerio = require('./processCheerio.js');
+const processBrowserLite = require('./processBrowserLite');
 const processRegex = require('./processRegex.js');
 
 module.exports = async function process({
   queueItem, scraper,
 }) {
-  // @todo move the url filtering logic here so it's shared amongst the different
-  // process functions
+  if (!queueItem.url.match(/^https?/)) {
+    throw new Error(`refusing to navigate to ${queueItem.url}`);
+  }
+
   function processWith(use) {
     scraper.log(`Using ${use} for ${queueItem.url}`);
     switch (use) {
       case 'browser':
       default:
-        return processBrowser({ queueItem, scraper });
+        return processBrowserLite({ queueItem, scraper, loadAll: true });
       case 'cheerio':
         return processCheerio({
           queueItem, scraper,
         });
       case 'browser-lite':
-        return processBrowserLite({ queueItem, scraper });
+        return processBrowserLite({ queueItem, scraper, loadAll: false });
       case 'regex':
         return processRegex({ queueItem, scraper });
     }

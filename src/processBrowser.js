@@ -6,15 +6,15 @@ const fs = require('fs');
 const path = require('path');
 
 const Injectable = require('./lib/Injectable.js');
-const queueUtil = require('./lib/queue-util.js');
-const dataUtil = require('./lib/data-util.js');
-const within = require('./lib/within.js');
-const during = require('./lib/during.js');
+const queueUtil = require('./lib/injectables/queue-util.js');
+const dataUtil = require('./lib/injectables/data-util.js');
+const within = require('./lib/injectables/within.js');
+const during = require('./lib/injectables/during.js');
 const createPool = require('./lib/browser.js');
 
 let futurePool = createPool({ min: 0, max: 20 });
 
-const atomsSrc = fs.readFileSync(path.join(__dirname, './lib/atoms.js'), 'utf8');
+// const atomsSrc = fs.readFileSync(path.join(__dirname, './lib/atoms.js'), 'utf8');
 
 const getSourceForModule = _.memoize(moduleName =>
   fs.readFileSync(require.resolve(moduleName), 'utf8'));
@@ -30,15 +30,16 @@ async function injectJQuery(browser) {
   `);
 }
 
-async function injectAtoms(browser) {
-  await browser.evaluate(`${atomsSrc}; window.bot = bot;`);
-}
+// async function injectAtoms(browser) {
+//   await browser.evaluate(`${atomsSrc}; window.bot = bot;`);
+// }
 
 async function fixClickHandlers(browser) {
   await browser.evaluate(() => {
     window.__SCRAPERJS_JQUERY.fn.extend({ // eslint-disable-line no-underscore-dangle
       click() {
-        bot.action.click(this.get(0));
+        this.get(0).click();
+        // bot.action.click(this.get(0));
       },
     });
   });
@@ -131,7 +132,7 @@ async function addToolsToBrowser(browser, log) {
   log('Injecting jQuery...');
   await injectJQuery(browser);
   log('Injecting Selenium Atoms...');
-  await injectAtoms(browser);
+  // await injectAtoms(browser);
   log('Fixing $.click()');
   await fixClickHandlers(browser);
 }
@@ -139,10 +140,6 @@ async function addToolsToBrowser(browser, log) {
 module.exports = async function processBrowser({ queueItem, scraper }) {
   const currentPool = futurePool;
   const pool = await currentPool;
-
-  if (!queueItem.url.match(/^https?/)) {
-    throw new Error(`refusing to navigate to ${queueItem.url}`);
-  }
 
   const browser = await pool.acquire();
 
