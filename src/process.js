@@ -17,6 +17,8 @@ module.exports = async function process({
         return processCheerio({
           queueItem, scraper,
         });
+      case 'browser-lite':
+        return processBrowserLite({ queueItem, scraper });
       case 'regex':
         return processRegex({ queueItem, scraper });
     }

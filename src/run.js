@@ -153,6 +153,8 @@ async function startQueue(scraper, threadId) {
 
   thread.updateScraper(scraper.name);
 
+  scraper.log('Start with ', thread.id);
+
   const scraperAPI = loadScraper(scraper);
 
   scraper.log('Add start item to the queue');
