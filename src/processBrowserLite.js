@@ -1,8 +1,8 @@
+const axios = require('axios');
 const setupClickHandler = require('./lib/setupClickHandler');
 const createPool = require('./lib/browser');
 const createInjectableUtils = require('./lib/createInjectableUtils');
 const injectJQuery = require('./lib/injectJQuery');
-const axios = require('axios');
 
 let futurePool = createPool({ min: 0, max: 20 });
 
@@ -62,9 +62,9 @@ module.exports = async function processBrowserLite({ queueItem, scraper, loadAll
     if (loadAll === true) {
       await browser.goto(queueItem.url);
     } else {
-      const UA = queueItem.userAgent ||
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 ' +
-        '(KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36';
+      const UA = queueItem.userAgent
+        || 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 '
+        + '(KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36';
       const response = await axios.get(queueItem.url, {
         headers: {
           'user-agent': UA,

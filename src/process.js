@@ -1,4 +1,5 @@
-const processBrowser = require('./processBrowser.js');
+// const processBrowser = require('./processBrowser.js');
+
 const processCheerio = require('./processCheerio.js');
 const processBrowserLite = require('./processBrowserLite');
 const processRegex = require('./processRegex.js');
@@ -27,12 +28,10 @@ module.exports = async function process({
     }
   }
 
-  return processWith(queueItem.use || scraper.use || 'browser')
-    .then((data) => {
-      if (data.data && data.data.finalUrl) {
-        // eslint-disable-next-line no-param-reassign
-        data.finalUrl = data.data.finalUrl;
-      }
-      return data;
-    });
+  const data = await processWith(queueItem.use || scraper.use || 'browser');
+  if (data.data && data.data.finalUrl) {
+    // eslint-disable-next-line no-param-reassign
+    data.finalUrl = data.data.finalUrl;
+  }
+  return data;
 };

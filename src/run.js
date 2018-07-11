@@ -3,12 +3,12 @@
 const _ = require('lodash/fp');
 const path = require('path');
 const promiseEach = require('promise-each-concurrency');
+const createStatsD = require('uber-statsd-client');
 const requireES6 = require('./lib/requireES6.js');
 const getScrapers = require('./getScrapers.js');
 const processItem = require('./process.js');
 const timeout = require('./lib/timeout.js');
 const log = require('./lib/log.js');
-const createStatsD = require('uber-statsd-client');
 const statusServer = require('./lib/statusServer');
 
 let sdc;
@@ -189,7 +189,7 @@ async function startQueue(scraper, threadId) {
     scraper.log('process', queueItem.url);
 
     // wrap this and catch errors!
-    const { queue, data, finalUrl } = await scraperAPI.processQueueItem(queueItem)
+    const { queue, data, finalUrl } = await scraperAPI.processQueueItem(queueItem);
 
     scraper.log('finished', queueItem.url);
 

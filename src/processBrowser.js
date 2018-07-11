@@ -1,9 +1,7 @@
-/* globals bot */
 /* eslint-disable no-underscore-dangle */
 
 const _ = require('lodash');
 const fs = require('fs');
-const path = require('path');
 
 const Injectable = require('./lib/Injectable.js');
 const queueUtil = require('./lib/injectables/queue-util.js');
@@ -16,8 +14,7 @@ let futurePool = createPool({ min: 0, max: 20 });
 
 // const atomsSrc = fs.readFileSync(path.join(__dirname, './lib/atoms.js'), 'utf8');
 
-const getSourceForModule = _.memoize(moduleName =>
-  fs.readFileSync(require.resolve(moduleName), 'utf8'));
+const getSourceForModule = _.memoize(moduleName => fs.readFileSync(require.resolve(moduleName), 'utf8'));
 
 async function injectJQuery(browser) {
   await browser.evaluate(`
@@ -29,10 +26,6 @@ async function injectJQuery(browser) {
     window.jQuery = _oldjQuery;
   `);
 }
-
-// async function injectAtoms(browser) {
-//   await browser.evaluate(`${atomsSrc}; window.bot = bot;`);
-// }
 
 async function fixClickHandlers(browser) {
   await browser.evaluate(() => {
