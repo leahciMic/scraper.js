@@ -4,7 +4,7 @@ const debug = require('debug');
 module.exports = (content) => {
   const transformEs6Export = (x => x.default || x);
   // eslint-disable-next-line global-require, import/no-dynamic-require
-  const scraper = transformEs6Export(require(content));
+  const scraper = transformEs6Export(content);
 
   if (typeof scraper !== 'function') {
     throw new Error(`Scraper must be a factory function that returns a scraper definition. See ${file}`);
