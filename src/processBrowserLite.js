@@ -1,4 +1,3 @@
-const axios = require('axios');
 const setupClickHandler = require('./lib/setupClickHandler');
 const createPool = require('./lib/browser');
 const createInjectableUtils = require('./lib/createInjectableUtils');
@@ -45,13 +44,13 @@ function runWithInjectables(browser, constructScraper, injectables) {
   );
 }
 
-module.exports = async function processBrowserLite({ queueItem, scraper, loadAll = false }) {
+module.exports = async function processBrowserLite({ queueItem, scraper, takeScreenshot = false }) {
   const currentPool = futurePool;
   const pool = await currentPool;
 
   const browser = await pool.acquire();
 
-  const data = {
+  const emptyData = {
     queue: [],
     data: undefined,
     finalUrl: queueItem.url,
@@ -59,22 +58,7 @@ module.exports = async function processBrowserLite({ queueItem, scraper, loadAll
 
   try {
     // scraper.log.verbose(`navigate to ${queueItem.url}`);
-    if (loadAll === true) {
-      await browser.goto(queueItem.url);
-    } else {
-      const UA = queueItem.userAgent
-        || 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 '
-        + '(KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36';
-      const response = await axios.get(queueItem.url, {
-        headers: {
-          'user-agent': UA,
-          accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-          'accept-language': 'en-AU,en-GB;q=0.9,en-US;q=0.8,en;q=0.7',
-        },
-      });
-
-      await browser.setContent(response.data);
-    }
+    await browser.goto(queueItem.url);
 
     // scraper.log.verbose('Injecting Zepto...')
     await injectJQuery(browser);
@@ -82,10 +66,17 @@ module.exports = async function processBrowserLite({ queueItem, scraper, loadAll
     // scraper.log.verbose('Injecting click handler...');
     await setupClickHandler(browser);
 
-    return await runWithInjectables(browser, scraper.construct, createInjectableUtils(queueItem));
+    const data = await runWithInjectables(browser, scraper.construct, createInjectableUtils(queueItem));
+
+    if (takeScreenshot) {
+      const screenshot = await browser.screenshot({ fullPage: false });
+      return { ...data, screenshot };
+    }
+
+    return data;
   } catch (err) {
     if (err.message.match(/Execution context was destroyed/)) {
-      return data;
+      return emptyData;
     }
 
     if (err.message.match(/Promise was collected/)) {

@@ -6,6 +6,11 @@ const within = require('./injectables/within');
 const during = require('./injectables/during');
 const timeout = require('./injectables/timeout');
 const queueAll = require('./injectables/queueAll');
+const visibleClone = require('./injectables/visibleClone');
+const getLDJSON = require('./injectables/getLDJSON');
+const getSchema = require('./injectables/getSchema');
+const getOpenGraph = require('./injectables/getOpenGraph');
+const pathTo = require('./injectables/pathTo');
 
 module.exports = function createInjectableUtils(queueItem) {
   const injectable = new Injectable();
@@ -18,6 +23,11 @@ module.exports = function createInjectableUtils(queueItem) {
     data,
     within,
     during,
+    visibleClone,
+    getLDJSON,
+    getSchema,
+    getOpenGraph,
+    pathTo,
     $() {
       return window.$scraperJS;
     },

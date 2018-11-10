@@ -26,7 +26,7 @@ module.exports = {
   filterParams,
   initializeScraper,
   async scrape({
-    url, userAgent, scraper, method, use,
+    url, userAgent, scraper, method, use, takeScreenshot = false,
   } = {}) {
     if (!url) {
       throw new Error('Scrape() requires a valid url to be passed in');
@@ -38,7 +38,9 @@ module.exports = {
       throw new Error('Scrape() requires a valid method to be passed in');
     }
 
-    const { queue, data, finalUrl } = await process({
+    const {
+      queue, data, finalUrl, screenshot,
+    } = await process({
       queueItem: {
         url,
         userAgent,
@@ -46,8 +48,11 @@ module.exports = {
         use,
       },
       scraper,
+      takeScreenshot,
     });
 
-    return { queue, data, finalUrl };
+    return {
+      queue, data, finalUrl, screenshot,
+    };
   },
 };

@@ -16,9 +16,11 @@ class StatusServer extends Events {
       });
     });
   }
+
   sync(ws) {
     this.emit('sync', ws.send.bind(ws));
   }
+
   update(data) {
     this.socket.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
