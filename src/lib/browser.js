@@ -115,7 +115,7 @@ const instantiatePool = async ({ min, max }) => {
 
       const userAgent = await browser.userAgent();
 
-      page.setUserAgent(userAgent.replace('ChromeHeadless', 'Chrome'));
+      page.setUserAgent(userAgent.replace('HeadlessChrome', 'Chrome'));
 
       // this currently causes a lot of chrome crashes
 
