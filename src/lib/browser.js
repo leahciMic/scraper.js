@@ -91,6 +91,7 @@ class Browser {
 
 const launchBrowser = () => puppeteer.launch({
   headless: process.env.HEADLESS === 'true',
+  devtools: process.env.DEVTOOLS,
   ignoreHTTPSErrors: true,
   args: [
     '--disable-notifications',
