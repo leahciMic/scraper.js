@@ -132,6 +132,7 @@ const instantiatePool = async ({ min, max }) => {
       //     console.log('could not intercept request', e);
       //   }
       // });
+      return new Browser(page);
     },
     destroy() {
       return browser.close();
