@@ -105,11 +105,17 @@ const instantiatePool = async ({ min, max }) => {
     async create() {
       // hopefully we can catch the errors here, and launch a new browser.
 
+      let page;
       if (isFirst) {
         isFirst = false;
-        return new Browser((await browser.pages())[0]);
+        [page] = await browser.pages();
       }
-      return new Browser(await browser.newPage());
+
+      page = await browser.newPage();
+
+      const userAgent = await browser.userAgent();
+
+      page.setUserAgent(userAgent.replace('ChromeHeadless', 'Chrome'));
 
       // this currently causes a lot of chrome crashes
 
