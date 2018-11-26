@@ -63,17 +63,17 @@ class Browser {
       width: 1280,
     };
 
-    const bodyHandle = await this.page.$('body');
-    const boundingBox = await bodyHandle.boundingBox();
+    // const bodyHandle = await this.page.$('body');
+    // const boundingBox = await bodyHandle.boundingBox();
 
-    const newViewport = {
-      width: Math.max(defaultViewport.width, Math.ceil(boundingBox.width)),
-      height: Math.max(defaultViewport.height, Math.ceil(boundingBox.height)),
-    };
+    // const newViewport = {
+    //   width: Math.max(defaultViewport.width, Math.ceil(boundingBox.width)),
+    //   height: Math.max(defaultViewport.height, Math.ceil(boundingBox.height)),
+    // };
 
-    console.log('set viewport to', newViewport);
+    console.log('set viewport to', defaultViewport);
 
-    await this.page.setViewport(newViewport);
+    await this.page.setViewport(defaultViewport);
   }
 
   waitForNavigation(...args) {
