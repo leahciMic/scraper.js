@@ -1,93 +1,17 @@
-/* eslint-disable no-underscore-dangle */
-
-const _ = require('lodash');
-const fs = require('fs');
-
-const Injectable = require('./lib/Injectable.js');
-const queueUtil = require('./lib/injectables/queue-util.js');
-const dataUtil = require('./lib/injectables/data-util.js');
-const within = require('./lib/injectables/within.js');
-const during = require('./lib/injectables/during.js');
-const createPool = require('./lib/browser.js');
+const setupClickHandler = require('./lib/setupClickHandler');
+const createPool = require('./lib/browser');
+const createInjectableUtils = require('./lib/createInjectableUtils');
+const injectJQuery = require('./lib/injectJQuery');
 
 let futurePool = createPool({ min: 0, max: 20 });
 
-// const atomsSrc = fs.readFileSync(path.join(__dirname, './lib/atoms.js'), 'utf8');
+function runWithInjectables(browser, constructScraper, injectables) {
+  // The following function will bootstrap the scraper, and the injectables
+  // inside the browser context. It does not run in the same context as this
+  // function, so you will not be able to share variables etc.
 
-const getSourceForModule = _.memoize(moduleName => fs.readFileSync(require.resolve(moduleName), 'utf8'));
-
-async function injectJQuery(browser) {
-  await browser.evaluate(`
-    var _old$ = window.$;
-    var _oldjQuery = window.jQuery;
-    ${getSourceForModule('jquery')};
-    window.__SCRAPERJS_JQUERY = window.jQuery;
-    window.$ = _old$;
-    window.jQuery = _oldjQuery;
-  `);
-}
-
-async function fixClickHandlers(browser) {
-  await browser.evaluate(() => {
-    window.__SCRAPERJS_JQUERY.fn.extend({ // eslint-disable-line no-underscore-dangle
-      click() {
-        this.get(0).click();
-        // bot.action.click(this.get(0));
-      },
-    });
-  });
-}
-
-function constructUtils(queueItem) {
-  const injectable = new Injectable();
-
-  injectable.register({ queueItem });
-  injectable.register({ queue: queueUtil });
-  injectable.register({ data: dataUtil });
-  injectable.register({ within });
-  injectable.register({ during });
-  injectable.register({
-    timeout() {
-      return function timeout(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-      };
-    },
-    onRedirect() {
-      const onRedirect = (method) => {
-        onRedirect.redirectMethod = method;
-      };
-      onRedirect.redirectMethod = undefined;
-      return onRedirect;
-    },
-  });
-  injectable.register({
-    queueAll() {
-      return function queueAll(firstParam, conf = {}) {
-        let $els;
-
-        if (typeof firstParam === 'string') {
-          $els = $(firstParam); // eslint-disable-line no-undef
-        } else {
-          $els = firstParam;
-        }
-
-        $els
-          .map((i, x) => $(x).prop('href')).get() // eslint-disable-line no-undef
-          // eslint-disable-next-line no-undef
-          .forEach(href => queue(Object.assign({ url: href }, conf)));
-      };
-    },
-  });
-  injectable.register({
-    $() { return window.__SCRAPERJS_JQUERY; }, // eslint-disable-line no-underscore-dangle
-  });
-  return injectable;
-}
-
-function runWithUtils(browser, constructScraper, injectable) {
-  // @todo clean this confusion up
-  const runTheFunction = (constructScraperStr, utilsStr) => {
-    const main = async function main() {
+  const bootstrapInBrowser = (constructScraperStr, utilsStr) => {
+    async function main() {
       const utils = eval(utilsStr); // eslint-disable-line no-eval
 
       const fnFromString = (fnStr) => {
@@ -103,89 +27,67 @@ function runWithUtils(browser, constructScraper, injectable) {
           queue: utils.queue.getQueue(),
           data: utils.data.getData(),
           finalUrl: window.location.href,
-          onRedirect: utils.onRedirect.redirectMethod,
         };
       } catch (error) {
         error.from = 'user function';
         throw error;
       }
-    };
+    }
 
     return main();
   };
 
   return browser.evaluate(
-    runTheFunction,
+    bootstrapInBrowser,
     constructScraper.toString(),
-    injectable.build(),
+    injectables.build(),
   );
 }
 
-async function addToolsToBrowser(browser, log) {
-  log('Injecting jQuery...');
-  await injectJQuery(browser);
-  log('Injecting Selenium Atoms...');
-  // await injectAtoms(browser);
-  log('Fixing $.click()');
-  await fixClickHandlers(browser);
-}
-
-module.exports = async function processBrowser({ queueItem, scraper }) {
+module.exports = async function processBrowserLite({ queueItem, scraper, takeScreenshot = false }) {
   const currentPool = futurePool;
   const pool = await currentPool;
 
   const browser = await pool.acquire();
 
-  let data = [];
-  const noop = x => x;
+  const emptyData = {
+    queue: [],
+    data: undefined,
+    finalUrl: queueItem.url,
+  };
 
   try {
-    scraper.log(`navigate to ${queueItem.url}`);
+    // scraper.log.verbose(`navigate to ${queueItem.url}`);
+    await browser.goto(queueItem.url);
 
-    await browser.goto((scraper.filterUrl || noop)(queueItem.url));
-    await addToolsToBrowser(browser, scraper.log);
+    // scraper.log.verbose('Injecting Zepto...')
+    await injectJQuery(browser);
 
-    data = await runWithUtils(browser, scraper.construct, constructUtils(queueItem));
+    // scraper.log.verbose('Injecting click handler...');
+    await setupClickHandler(browser);
 
-    console.log(data);
-    if (data.onRedirect) {
-      console.log('waiting for navigation');
-      await browser.waitForNavigation();
-      console.log('Changing the method to', data.onRedirect);
-      queueItem.method = data.onRedirect;
-      data = await runWithUtils(browser, scraper.construct, constructUtils(queueItem));
-    }
+    const data = await runWithInjectables(browser, scraper.construct, createInjectableUtils(queueItem));
 
-    try {
-      await pool.release(browser);
-    } catch (e) {
-      console.error('could not release browser', e);
+    if (takeScreenshot) {
+      const screenshot = await browser.screenshot({ fullPage: false });
+      return { ...data, screenshot };
     }
 
     return data;
   } catch (err) {
     if (err.message.match(/Execution context was destroyed/)) {
-      // page redirected whilst executing function, this is all good
-      console.log('Page redirected');
-      return { queue: [], data: undefined, finalUrl: queueItem.url };
-    }
-
-    console.log(err);
-
-    try {
-      await pool.release(browser);
-    } catch (e) {
-      console.error('could not release browser', e);
+      return emptyData;
     }
 
     if (err.message.match(/Promise was collected/)) {
-      console.log('Promise was collected???', err);
+      console.log('Promise was collected?', err);
       throw err;
     }
 
     if (err.message.match(/^Navigation Timeout Exceeded/)) {
+      // @todo Need to manage this so it doesn't end in endless cycle
       console.log('Retrying because of navigation error');
-      return processBrowser({ queueItem, scraper });
+      return processBrowserLite({ queueItem, scraper });
     }
 
     if (
@@ -202,11 +104,13 @@ module.exports = async function processBrowser({ queueItem, scraper }) {
         console.log('pool already changed, just retry');
       }
 
-      return processBrowser({ queueItem, scraper });
+      return processBrowserLite({ queueItem, scraper });
     }
 
     console.log('rethrow err', err);
 
     throw err;
+  } finally {
+    await pool.release(browser);
   }
 };

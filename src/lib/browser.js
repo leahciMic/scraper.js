@@ -94,17 +94,22 @@ const launchBrowser = () => puppeteer.launch({
   ignoreHTTPSErrors: true,
   args: [
     '--disable-notifications',
-
   ],
 });
 
 const instantiatePool = async ({ min, max }) => {
   const browser = await launchBrowser();
+  let isFirst = true;
 
   const factory = {
     async create() {
       // hopefully we can catch the errors here, and launch a new browser.
-      const page = await browser.newPage();
+
+      if (isFirst) {
+        isFirst = false;
+        return new Browser((await browser.pages())[0]);
+      }
+      return new Browser(await browser.newPage());
 
       // this currently causes a lot of chrome crashes
 
@@ -121,8 +126,6 @@ const instantiatePool = async ({ min, max }) => {
       //     console.log('could not intercept request', e);
       //   }
       // });
-
-      return new Browser(page);
     },
     destroy() {
       return browser.close();

@@ -1,6 +1,6 @@
 const uniqBy = require('lodash/uniqBy');
 const processCheerio = require('./processCheerio.js');
-const processBrowserLite = require('./processBrowserLite');
+const processBrowserLite = require('./processBrowser');
 const processRegex = require('./processRegex.js');
 
 module.exports = async function process({

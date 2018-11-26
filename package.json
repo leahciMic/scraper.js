@@ -1,6 +1,6 @@
 {
   "name": "scraper.js",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "A scraping platform",
   "main": "./src/index.js",
   "bin": {
@@ -35,7 +35,6 @@
     "request-promise": "^4.2.2",
     "resolve": "^1.8.1",
     "sanitize-html": "^1.19.1",
-    "scraper.js": "2.0.0-rc.24",
     "scraper.js-queue-bull": "^5.0.5",
     "uber-statsd-client": "^1.7.3",
     "uglify-js": "^3.4.9",
@@ -48,6 +47,6 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
     "mocha": "^5.2.0",
-    "sinon": "^6.3.5"
+    "sinon": "^7.1.1"
   }
 }
