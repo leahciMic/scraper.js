@@ -26,6 +26,7 @@ function runWithInjectables(browser, constructScraper, injectables) {
         return {
           queue: utils.queue.getQueue(),
           data: utils.data.getData(),
+          onRedirect: utils.onRedirect.redirectMethod,
           finalUrl: window.location.href,
         };
       } catch (error) {
