@@ -27,6 +27,13 @@ module.exports = function createInjectableUtils(queueItem) {
     getLDJSON,
     getSchema,
     getOpenGraph,
+    onRedirect() {
+      const onRedirect = (method) => {
+        onRedirect.redirectMethod = method;
+      };
+      onRedirect.redirectMethod = undefined;
+      return onRedirect;
+    },
     pathTo,
     $() {
       return window.$scraperJS;

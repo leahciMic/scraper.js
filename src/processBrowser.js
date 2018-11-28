@@ -66,7 +66,15 @@ module.exports = async function processBrowserLite({ queueItem, scraper, takeScr
     // scraper.log.verbose('Injecting click handler...');
     await setupClickHandler(browser);
 
-    const data = await runWithInjectables(browser, scraper.construct, createInjectableUtils(queueItem));
+    let data = await runWithInjectables(browser, scraper.construct, createInjectableUtils(queueItem));
+
+    if (data.onRedirect) {
+      console.log('waiting for navigation');
+      await browser.waitForNavigation();
+      console.log('Changing the method to', data.onRedirect);
+      queueItem.method = data.onRedirect;
+      data = await runWithInjectables(browser, scraper.construct, createInjectableUtils(queueItem));
+    }
 
     if (takeScreenshot) {
       const screenshot = await browser.screenshot({ fullPage: false });
