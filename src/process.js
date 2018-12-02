@@ -11,7 +11,6 @@ module.exports = async function process({
   }
 
   function processWith(use) {
-    scraper.log(`Using ${use} for ${queueItem.url}`);
     switch (use) {
       case 'browser':
       case 'browser-lite':

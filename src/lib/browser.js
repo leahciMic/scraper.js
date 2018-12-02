@@ -45,10 +45,8 @@ class Browser {
         });
       });
       if (!isAllSameColour) {
-        console.log('Image has various colours');
         return screenshot;
       }
-      console.log('image seems to be all one colour, go around');
     }
     throw new Error('Could not get screenshot');
   }
@@ -70,8 +68,6 @@ class Browser {
     //   width: Math.max(defaultViewport.width, Math.ceil(boundingBox.width)),
     //   height: Math.max(defaultViewport.height, Math.ceil(boundingBox.height)),
     // };
-
-    console.log('set viewport to', defaultViewport);
 
     await this.page.setViewport(defaultViewport);
   }

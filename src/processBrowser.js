@@ -58,13 +58,10 @@ module.exports = async function processBrowserLite({ queueItem, scraper, takeScr
   };
 
   try {
-    // scraper.log.verbose(`navigate to ${queueItem.url}`);
     await browser.goto(queueItem.url);
 
-    // scraper.log.verbose('Injecting Zepto...')
     await injectJQuery(browser);
 
-    // scraper.log.verbose('Injecting click handler...');
     await setupClickHandler(browser);
 
     let data = await runWithInjectables(browser, scraper.construct, createInjectableUtils(queueItem));
@@ -115,8 +112,6 @@ module.exports = async function processBrowserLite({ queueItem, scraper, takeScr
 
       return processBrowserLite({ queueItem, scraper });
     }
-
-    console.log('rethrow err', err);
 
     throw err;
   } finally {

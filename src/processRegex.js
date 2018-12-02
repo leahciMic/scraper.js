@@ -6,7 +6,6 @@ const dataUtil = require('./lib/injectables/data-util.js');
 
 module.exports = async function processRegex({ queueItem, scraper }) {
   try {
-    scraper.log('Downloading page');
     const noop = x => x;
     const content = await request({
       uri: (scraper.filterUrl || noop)(queueItem.url),
@@ -15,14 +14,12 @@ module.exports = async function processRegex({ queueItem, scraper }) {
         'User-Agent': queueItem.userAgent || 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.59 Safari/537.36',
       },
     });
-    scraper.log('Downloaded page');
     const utils = {
       body: content.body,
       queue: queueUtil(),
       data: dataUtil(),
       queueItem: cloneDeep(queueItem),
     };
-    scraper.log('Calling user function');
     scraper[queueItem.method](utils);
 
     return {

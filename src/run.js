@@ -89,6 +89,8 @@ statusServer.on('sync', (send) => {
 const dataPlugin = requireES6(path.resolve(program.data));
 const { createQueue } = requireES6(path.resolve(program.queue));
 
+const sanitizeName = name => name.replace(/[. ]/g, '-');
+
 function loadScraper(scraper) {
   logger.log({
     level: 'info',
@@ -100,7 +102,6 @@ function loadScraper(scraper) {
   const addToQueue = (queueItem) => {
     // @todo queueTotal could be wrong, as the queue will not add items that
     // already exist.
-    sdc.increment(`queue.${scraper.name.replace(/\./g, '-')}`);
 
     logger.log({
       level: 'debug',
@@ -126,6 +127,7 @@ function loadScraper(scraper) {
     filterQueueItems,
     addToQueue,
     addStartItem() {
+      sdc.increment(`queue.${sanitizeName(scraper.name)}`);
       return addToQueue(filterQueueItems(scraper.start));
     },
     close() {
@@ -143,14 +145,14 @@ function loadScraper(scraper) {
 
       try {
         data = await processItem({ queueItem, scraper });
-        sdc.increment(`scrape.${scraper.name.replace(/\./g, '-')}`);
+        sdc.increment(`scrape.${sanitizeName(scraper.name)}`);
       } catch (e) {
-        sdc.increment(`error.${scraper.name.replace(/\./g, '-')}`);
+        sdc.increment(`error.${sanitizeName(scraper.name)}`);
         console.error('Fatal processItem unhandled error', e);
         console.error(queueItem, scraper);
         throw e;
       } finally {
-        sdc.timing(`duration.${scraper.name.replace(/\./g, '-')}`, startTime);
+        sdc.timing(`duration.${sanitizeName(scraper.name)}`, startTime);
       }
 
       return data;
@@ -170,14 +172,10 @@ async function startQueue(scraper, threadId) {
 
   const errorRateLimiter = new RateLimiter(10, 'minute');
 
-  // scraper.log.verbose('Start with ', thread.id);
-
   const scraperAPI = loadScraper(scraper);
 
-  // scraper.log.verbose('Add start item to the queue');
   await scraperAPI.addStartItem();
 
-  // scraper.log.verbose('Waiting for 20ms');
   await timeout(20);
 
   let end;
@@ -188,7 +186,11 @@ async function startQueue(scraper, threadId) {
 
   function resetFinishTimeout() {
     finishedTimeout = setTimeout(() => {
-      // scraper.log.verbose('hit finishedTimeout');
+      logger.log({
+        level: 'info',
+        scraper: scraper.name,
+        message: 'Hit finished timeout',
+      });
       scraperAPI.close();
       end();
     }, 20);
@@ -204,7 +206,6 @@ async function startQueue(scraper, threadId) {
       }
 
       thread.updateStatus(`Process ${queueItem.url}`);
-      scraper.log('process', queueItem.url);
 
       logger.log({
         level: 'verbose',
@@ -216,7 +217,6 @@ async function startQueue(scraper, threadId) {
 
       const { queue, data, finalUrl } = await scraperAPI.processQueueItem(queueItem);
 
-      scraper.log('finished', queueItem.url);
       logger.log({
         level: 'verbose',
         message: 'Finished queueItem',
@@ -238,7 +238,6 @@ async function startQueue(scraper, threadId) {
           });
 
         thread.updateStatus(`Adding ${refinedQueue.length} queue items`);
-        scraper.log(`Adding ${refinedQueue.length} queue items`);
 
         logger.log({
           level: 'verbose',
@@ -252,11 +251,8 @@ async function startQueue(scraper, threadId) {
         for (const qi of refinedQueue) {
           await scraperAPI.addToQueue(qi);
         }
-      } else {
-        scraper.log('0 items to queue');
+        sdc.increment(`queue.${sanitizeName(scraper.name)}`, refinedQueue.length);
       }
-
-      scraper.log('Done');
 
       logger.log({
         level: 'verbose',
@@ -267,17 +263,6 @@ async function startQueue(scraper, threadId) {
       });
 
       if (data) {
-        if (Array.isArray(data)) {
-          scraper.log(`Data ${data.length} items`);
-        } else {
-          const keys = Object.keys(data).reduce(
-            (prev, curr) => `${prev} ${curr}: ${typeof data[curr] === 'string' ? data[curr].length : ''}`,
-            '',
-          );
-          scraper.log(`Data${keys}`);
-        }
-
-        scraper.log({ name: data.name, price: data.price });
         const startTime = new Date();
         thread.updateStatus('Saving data');
         await dataPlugin({
@@ -288,9 +273,7 @@ async function startQueue(scraper, threadId) {
           timestamp: +new Date(),
           data,
         });
-        sdc.timing(`saveDuration.${scraper.name.replace(/\./g, '-')}`, startTime);
-      } else {
-        scraper.log('No data received');
+        sdc.timing(`saveDuration.${sanitizeName(scraper.name)}`, startTime);
       }
 
       thread.updateStatus(`Finished ${queueItem.url}`);
@@ -310,7 +293,8 @@ async function startQueue(scraper, threadId) {
       });
 
       if (!errorRateLimiter.tryRemoveTokens(1)) {
-        sdc.increment(`errorLimitReached.${scraper.name.replace(/\./g, '-')}`);
+        scraper.enabled = false;
+        sdc.increment(`errorLimitReached.${sanitizeName(scraper.name)}`);
         logger.log({
           level: 'error',
           message: 'Error rate limit reached, closing queue...',
@@ -321,7 +305,7 @@ async function startQueue(scraper, threadId) {
         end();
         // @todo probably should not process this queue for awhile...
       }
-      sdc.increment(`error.${scraper.name.replace(/\./g, '-')}`);
+      sdc.increment(`error.${sanitizeName(scraper.name)}`);
     }
   });
 
@@ -337,8 +321,9 @@ async function start() {
 
     while (true) { // eslint-disable-line no-constant-condition
       if (i >= scrapers.length) { i = 0; }
-      // log('nextScraper', i);
-      yield scrapers[i];
+      if (scrapers[i].enabled !== false) {
+        yield scrapers[i];
+      }
       i += 1;
     }
   }
@@ -346,11 +331,9 @@ async function start() {
   await promiseEach(
     nextScraper(),
     async (scraper, threadId) => {
-      sdc.increment(`started.${scraper.name.replace(/\./g, '-')}`);
-      // scraper.log.verbose('start processing queue');
+      sdc.increment(`started.${sanitizeName(scraper.name)}`);
       try {
         const result = await startQueue(scraper, threadId);
-        // scraper.log.verbose('finished processing queue');
         return result;
       } catch (err) {
         scraper.error('BIGERR: A caught error below');
