@@ -2,6 +2,7 @@ const uniqBy = require('lodash/uniqBy');
 const processCheerio = require('./processCheerio.js');
 const processBrowserLite = require('./processBrowser');
 const processRegex = require('./processRegex.js');
+const processStream = require('./processStream');
 
 module.exports = async function process({
   queueItem, scraper, takeScreenshot = false,
@@ -22,6 +23,8 @@ module.exports = async function process({
         });
       case 'regex':
         return processRegex({ queueItem, scraper });
+      case 'stream':
+        return processStream({ queueItem, scraper });
     }
   }
 
