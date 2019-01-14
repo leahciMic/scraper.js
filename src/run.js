@@ -300,6 +300,7 @@ async function startQueue(scraper, threadId) {
       });
 
       if (!errorRateLimiter.tryRemoveTokens(1)) {
+        // eslint-disable-next-line no-param-reassign
         scraper.enabled = false;
         sdc.increment(`errorLimitReached.${sanitizeName(scraper.name)}`);
         logger.log({
@@ -340,8 +341,7 @@ async function start() {
     async (scraper, threadId) => {
       sdc.increment(`started.${sanitizeName(scraper.name)}`);
       try {
-        const result = await startQueue(scraper, threadId);
-        return result;
+        await startQueue(scraper, threadId);
       } catch (err) {
         scraper.error('BIGERR: A caught error below');
         scraper.error(err);

@@ -1,7 +1,14 @@
 module.exports = function visibleCloneFactory() {
-  const isNodeVisible = elem => Boolean(elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length);
+  const isNodeVisible = elem => Boolean(
+    elem.offsetWidth
+    || elem.offsetHeight
+    || elem.getClientRects().length,
+  );
 
-  const cloneChildrenIfVisible = (/** @type {HTMLElement} */ from, /** @type {HTMLElement} */ to) => {
+  const cloneChildrenIfVisible = (
+    /** @type {HTMLElement} */ from,
+    /** @type {HTMLElement} */ to,
+  ) => {
     if (from.nodeType === Node.ELEMENT_NODE && !isNodeVisible(from)) {
       return;
     }

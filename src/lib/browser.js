@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 const genericPool = require('generic-pool');
-const PNG = require('pngjs').PNG;
+const { PNG } = require('pngjs');
 
 class Browser {
   constructor(page) {
@@ -19,7 +19,7 @@ class Browser {
   }
 
   async screenshot(options) {
-    for (let i = 0; i < 100; i += 1) {
+    for (let attempt = 0; attempt < 100; attempt += 1) {
       // eslint-disable-next-line no-await-in-loop
       const screenshot = await this.page.screenshot(options);
       const png = new PNG();
@@ -27,16 +27,15 @@ class Browser {
       const isAllSameColour = await new Promise((resolve, reject) => {
         png.parse(screenshot, (err, { data, width, height }) => {
           if (err) {
-            return reject(err);
+            reject(err);
+            return;
           }
           for (let i = 0; i < data.length; i += 1) {
             const y = Math.floor(i / 3 / width);
             const x = (Math.floor(i / 4) % width) + 1;
-            if (x > width - 50 || y > height - 50) {
-              // ignore scrollbars
-              continue;
-            }
-            if (data[i] !== data[i % 4]) {
+            const isScrollbar = x > width - 50 || y > height - 50;
+
+            if (!isScrollbar && data[i] !== data[i % 4]) {
               resolve(false);
               break;
             }

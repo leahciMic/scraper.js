@@ -1,7 +1,6 @@
 const { expect } = require('chai');
-const sinon = require('sinon');
 
-const dataUtil = require('../src/lib/data-util.js');
+const dataUtil = require('../src/lib/injectables/data-util');
 const Injectable = require('../src/lib/Injectable.js');
 
 describe('Data utility', () => {

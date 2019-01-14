@@ -1,7 +1,6 @@
 const { expect } = require('chai');
-const sinon = require('sinon');
 
-const queueUtil = require('../src/lib/queue-util.js');
+const queueUtil = require('../src/lib/injectables/queue-util');
 const Injectable = require('../src/lib/Injectable.js');
 
 describe('Queue utility', () => {

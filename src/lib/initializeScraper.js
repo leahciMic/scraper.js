@@ -7,7 +7,7 @@ module.exports = (content) => {
   const scraper = transformEs6Export(content);
 
   if (typeof scraper !== 'function') {
-    throw new Error(`Scraper must be a factory function that returns a scraper definition. See ${file}`);
+    throw new Error('Scraper must be a factory function that returns a scraper definition.');
   }
 
   const scraperInstance = scraper();

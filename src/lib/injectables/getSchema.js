@@ -75,6 +75,7 @@ function getSchemaFactory() {
     const buildValuesObject = (scope, obj) => {
       const type = removeSchemaUrl(scope.type);
       if (obj[type] && !Array.isArray(obj[type])) {
+        // eslint-disable-next-line no-param-reassign
         obj[type] = [obj[type]];
       }
       if (Array.isArray(obj[type])) {

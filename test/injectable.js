@@ -40,6 +40,7 @@ describe('injectable', () => {
       expect(foobar()).to.deep.equal({ foo: 'bar' });
     });
     injectable.register({
+      // eslint-disable-next-line no-undef
       foobar() { return () => baz; },
       baz: { foo: 'bar' },
     });

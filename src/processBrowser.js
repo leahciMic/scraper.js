@@ -64,12 +64,17 @@ module.exports = async function processBrowserLite({ queueItem, scraper, takeScr
 
     await setupClickHandler(browser);
 
-    let data = await runWithInjectables(browser, scraper.construct, createInjectableUtils(queueItem));
+    let data = await runWithInjectables(
+      browser,
+      scraper.construct,
+      createInjectableUtils(queueItem),
+    );
 
     if (data.onRedirect) {
       console.log('waiting for navigation');
       await browser.waitForNavigation();
       console.log('Changing the method to', data.onRedirect);
+      // eslint-disable-next-line no-param-reassign
       queueItem.method = data.onRedirect;
       data = await runWithInjectables(browser, scraper.construct, createInjectableUtils(queueItem));
     }
