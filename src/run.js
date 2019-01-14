@@ -12,6 +12,7 @@ const timeout = require('./lib/timeout.js');
 const log = require('./lib/log.js');
 const statusServer = require('./lib/statusServer');
 const logger = require('./lib/getLogger');
+const urlLogger = require('./lib/urlLogger')();
 
 let sdc;
 
@@ -193,7 +194,7 @@ async function startQueue(scraper, threadId) {
       });
       scraperAPI.close();
       end();
-    }, 20);
+    }, 300);
   }
 
   thread.updateStatus('Waiting for items');
@@ -216,6 +217,12 @@ async function startQueue(scraper, threadId) {
       });
 
       const { queue, data, finalUrl } = await scraperAPI.processQueueItem(queueItem);
+
+      urlLogger({
+        scraper: scraper.name,
+        url: queueItem.url,
+        finalUrl,
+      });
 
       logger.log({
         level: 'verbose',
