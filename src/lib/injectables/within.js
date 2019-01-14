@@ -3,7 +3,7 @@ module.exports = function withinFactory() {
     expression,
     timeout = 45500,
     delay = 30,
-    errorMessage = `Timeout after ${timeout}ms waiting for expression to be true`
+    errorMessage = `Timeout after ${timeout}ms waiting for expression to be true`,
   ) {
     const startTime = performance.now();
     return new Promise((resolve, reject) => {
@@ -23,4 +23,4 @@ module.exports = function withinFactory() {
       checkExpression();
     });
   };
-}
+};

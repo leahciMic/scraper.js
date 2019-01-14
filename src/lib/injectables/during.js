@@ -2,7 +2,7 @@ module.exports = function duringFactory() {
   return function during(
     expression,
     delay = 100,
-    errorMessage = `Expression was not true after ${delay}ms`
+    errorMessage = `Expression was not true after ${delay}ms`,
   ) {
     return new Promise((resolve, reject) => {
       window.setTimeout(() => {
@@ -14,4 +14,4 @@ module.exports = function duringFactory() {
       }, delay);
     });
   };
-}
+};

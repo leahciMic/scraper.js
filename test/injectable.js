@@ -1,6 +1,6 @@
-const Injectable = require('../src/lib/Injectable.js');
 const { expect } = require('chai');
 const sinon = require('sinon');
+const Injectable = require('../src/lib/Injectable.js');
 
 const foobarFixture = {
   name: 'foobar',
