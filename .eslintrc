@@ -4,9 +4,8 @@
     "browser": true
   },
   "rules": {
-    // "generator-star-spacing": ["off"],
-    // "no-underscore-dangle": ["error", { "allowAfterThis": true }],
-    // "no-unsafe-negation": ["error"],
-    "import/no-extraneous-dependencies": ["error", {"devDependencies": ['test/**/*.js']}]
+    "no-restricted-syntax": "off",
+    "no-await-in-loop": "off",
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["test/**/*.js"]}]
   }
 }
