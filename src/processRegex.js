@@ -7,9 +7,8 @@ const dataUtil = require('./lib/injectables/data-util');
 
 module.exports = async function processRegex({ queueItem, scraper }) {
   try {
-    const noop = x => x;
     const content = await request({
-      uri: (scraper.filterUrl || noop)(queueItem.url),
+      uri: queueItem.url,
       resolveWithFullResponse: true,
       headers: {
         'User-Agent': queueItem.userAgent || scraper.userAgent || config.USER_AGENT,

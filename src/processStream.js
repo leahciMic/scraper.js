@@ -11,12 +11,10 @@ const dataUtil = require('./lib/injectables/data-util.js');
 
 module.exports = async function processStream({ queueItem, scraper }) {
   try {
-    const noop = x => x;
-
     const response = await axios({
       // @todo filtering should happen when adding to the queue, not when processing
       // the queue.
-      url: (scraper.filterUrl || noop)(queueItem.url),
+      url: queueItem.url,
       responseType: 'stream',
       headers: {
         'User-Agent': queueItem.userAgent || scraper.userAgent || config.USER_AGENT,
