@@ -1,6 +1,8 @@
 const cheerio = require('cheerio');
 const request = require('request-promise');
 const cloneDeep = require('lodash/cloneDeep');
+
+const config = require('./lib/config');
 const queueUtil = require('./lib/injectables/queue-util.js');
 const dataUtil = require('./lib/injectables/data-util.js');
 
@@ -11,7 +13,7 @@ module.exports = async function processCheerio({ queueItem, scraper, switchUse }
       uri: (scraper.filterUrl || noop)(queueItem.url),
       resolveWithFullResponse: true,
       headers: {
-        'User-Agent': queueItem.userAgent || 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.59 Safari/537.36',
+        'User-Agent': queueItem.userAgent || scraper.userAgent || config.USER_AGENT,
       },
     });
 
