@@ -45,10 +45,13 @@ function runWithInjectables(browser, constructScraper, injectables) {
   );
 }
 
-module.exports = async function processBrowserLite({ queueItem, scraper, takeScreenshot = false }) {
+module.exports = async function processBrowserLite({
+  queueItem, scraper, takeScreenshot = false, log,
+}) {
   const currentPool = futurePool;
   const pool = await currentPool;
 
+  log.debug('acquire browser window');
   const browser = await pool.acquire();
 
   const emptyData = {
@@ -58,12 +61,14 @@ module.exports = async function processBrowserLite({ queueItem, scraper, takeScr
   };
 
   try {
+    log.info({ url: queueItem.url }, 'navigate');
     await browser.goto(queueItem.url);
 
+    log.trace('inject tools');
     await injectJQuery(browser);
-
     await setupClickHandler(browser);
 
+    log.info({ method: queueItem.method }, 'run method');
     let data = await runWithInjectables(
       browser,
       typeof scraper === 'string' ? scraper : scraper.construct,
@@ -71,15 +76,16 @@ module.exports = async function processBrowserLite({ queueItem, scraper, takeScr
     );
 
     if (data.onRedirect) {
-      console.log('waiting for navigation');
+      log.info('redirected, wait for new page');
       await browser.waitForNavigation();
-      console.log('Changing the method to', data.onRedirect);
       // eslint-disable-next-line no-param-reassign
       queueItem.method = data.onRedirect;
+      log.info({ method: queueItem.method }, 'run method');
       data = await runWithInjectables(browser, typeof scraper === 'string' ? scraper : scraper.construct, createInjectableUtils(queueItem));
     }
 
     if (takeScreenshot) {
+      log.info('take screenshot');
       const screenshot = await browser.screenshot({ fullPage: false });
       return { ...data, screenshot };
     }

@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # redis-cli FLUSHALL
-# HEADLESS=false DEBUG=scraper* node ../src/run.js --concurrency 2 --queue scraper.js-queue-bull --data data.js ./reddit.js
+HEADLESS=true DEBUG=scraper* node ../src/run.js --concurrency 1 --queue scraper.js-queue-bull --data data.js ./bash.js | npx bunyan

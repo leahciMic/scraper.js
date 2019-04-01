@@ -5,7 +5,7 @@ const processRegex = require('./processRegex.js');
 const processStream = require('./processStream');
 
 module.exports = async function process({
-  queueItem, scraper, takeScreenshot = false,
+  queueItem, scraper, takeScreenshot = false, log,
 }) {
   if (!queueItem.url.match(/^https?/)) {
     throw new Error(`Invalid protocol in ${queueItem.url}`);
@@ -16,15 +16,17 @@ module.exports = async function process({
       case 'browser':
       case 'browser-lite':
       default:
-        return processBrowserLite({ queueItem, scraper, takeScreenshot });
+        return processBrowserLite({
+          queueItem, scraper, takeScreenshot, log,
+        });
       case 'cheerio':
         return processCheerio({
           queueItem, scraper,
         });
       case 'regex':
-        return processRegex({ queueItem, scraper });
+        return processRegex({ queueItem, scraper, log });
       case 'stream':
-        return processStream({ queueItem, scraper });
+        return processStream({ queueItem, scraper, log });
     }
   }
 

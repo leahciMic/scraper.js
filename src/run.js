@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const nanoid = require('nanoid/non-secure');
 const _ = require('lodash/fp');
 const path = require('path');
 const { RateLimiter } = require('limiter');
@@ -9,9 +10,7 @@ const requireES6 = require('./lib/requireES6.js');
 const getScrapers = require('./getScrapers.js');
 const processItem = require('./process.js');
 const timeout = require('./lib/timeout.js');
-const log = require('./lib/log.js');
-const logger = require('./lib/getLogger');
-const urlLogger = require('./lib/urlLogger')();
+const baseLog = require('./lib/log.js');
 
 let sdc;
 
@@ -37,26 +36,12 @@ const { createQueue } = requireES6(path.resolve(program.queue));
 
 const sanitizeName = name => name.replace(/[. ]/g, '-');
 
-function loadScraper(scraper) {
-  logger.log({
-    level: 'info',
-    message: 'Create queue',
-    scraper: scraper.name,
-  });
+function loadScraper(scraper, log) {
+  log.info('open queue');
   const scraperQueue = createQueue(`scraperjs:${scraper.name}`, { expiry: scraper.timeBetween });
 
-  const addToQueue = (queueItem) => {
-    // @todo queueTotal could be wrong, as the queue will not add items that
-    // already exist.
-
-    logger.log({
-      level: 'debug',
-      message: 'Add item to queue',
-      scraper: scraper.name,
-      url: queueItem.url,
-      method: queueItem.method,
-    });
-
+  const addToQueue = (queueItem, taskLog) => {
+    taskLog.trace({ queueItem }, 'queue');
     return scraperQueue.add(queueItem);
   };
 
@@ -72,25 +57,21 @@ function loadScraper(scraper) {
     scraperQueue,
     filterQueueItems,
     addToQueue,
-    addStartItem() {
+    addStartItem(taskLog) {
       sdc.increment(`queue.${sanitizeName(scraper.name)}`);
-      return addToQueue(filterQueueItems(scraper.start));
+      return addToQueue(filterQueueItems(scraper.start), taskLog || log);
     },
     close() {
-      logger.log({
-        level: 'info',
-        message: 'Closed scraper queue',
-        scraper: scraper.name,
-      });
+      log.info('close queue');
       scraperQueue.close();
     },
-    async processQueueItem(queueItem) {
+    async processQueueItem(queueItem, taskLog) {
       let data;
 
       const startTime = new Date();
 
       try {
-        data = await processItem({ queueItem, scraper });
+        data = await processItem({ queueItem, scraper, log: taskLog });
         sdc.increment(`scrape.${sanitizeName(scraper.name)}`);
       } catch (e) {
         sdc.increment(`error.${sanitizeName(scraper.name)}`);
@@ -111,12 +92,12 @@ process.on('SIGINT', () => {
   process.exit();
 });
 
-async function startQueue(scraper) {
+async function startQueue(scraper, log) {
   const errorRateLimiter = new RateLimiter(10, 'minute');
 
-  const scraperAPI = loadScraper(scraper);
+  const scraperAPI = loadScraper(scraper, log);
 
-  await scraperAPI.addStartItem();
+  await scraperAPI.addStartItem(log);
 
   await timeout(20);
 
@@ -128,46 +109,25 @@ async function startQueue(scraper) {
 
   function resetFinishTimeout() {
     finishedTimeout = setTimeout(() => {
-      logger.log({
-        level: 'info',
-        scraper: scraper.name,
-        message: 'Hit finished timeout',
-      });
+      log.info('timeout waiting for job');
       scraperAPI.close();
       end();
     }, 300);
   }
 
   scraperAPI.scraperQueue.process(async (queueItem) => {
+    const taskLog = log.child({
+      taskId: nanoid(),
+    });
     try {
       if (finishedTimeout) {
         clearTimeout(finishedTimeout);
         finishedTimeout = undefined;
       }
 
-      logger.log({
-        level: 'verbose',
-        message: 'Process queueItem',
-        url: queueItem.url,
-        method: queueItem.method,
-        scraper: scraper.name,
-      });
-
-      const { queue, data, finalUrl } = await scraperAPI.processQueueItem(queueItem);
-
-      urlLogger({
-        scraper: scraper.name,
-        url: queueItem.url,
-        finalUrl,
-      });
-
-      logger.log({
-        level: 'verbose',
-        message: 'Finished queueItem',
-        url: queueItem.url,
-        method: queueItem.method,
-        scraper: scraper.name,
-      });
+      taskLog.info({ queueItem }, 'process queueItem');
+      const { queue, data, finalUrl } = await scraperAPI.processQueueItem(queueItem, taskLog);
+      taskLog.info('finished processing');
 
       if (queue && queue.length) {
         const refinedQueue = _.uniqBy('url')(queue.map(scraperAPI.filterQueueItems))
@@ -179,30 +139,17 @@ async function startQueue(scraper) {
             return true;
           });
 
-        logger.log({
-          level: 'verbose',
-          message: 'Adding queueItems',
-          count: refinedQueue.length,
-          scraper: scraper.name,
-          url: queueItem.url,
-          method: queueItem.method,
-        });
+        taskLog.info({ count: refinedQueue.length }, 'queue tasks');
 
         for (const qi of refinedQueue) {
-          await scraperAPI.addToQueue(qi);
+          await scraperAPI.addToQueue(qi, taskLog);
         }
+
+        taskLog.info('queued tasks');
         sdc.increment(`queue.${sanitizeName(scraper.name)}`, refinedQueue.length);
       }
-
-      logger.log({
-        level: 'verbose',
-        message: 'Saving any data',
-        scraper: scraper.name,
-        url: queueItem.url,
-        method: queueItem.method,
-      });
-
       if (data) {
+        taskLog.info('save data');
         const startTime = new Date();
         await dataPlugin({
           url: queueItem.url,
@@ -212,31 +159,19 @@ async function startQueue(scraper) {
           timestamp: +new Date(),
           data,
         });
+        taskLog.info('saved data');
         sdc.timing(`saveDuration.${sanitizeName(scraper.name)}`, startTime);
       }
 
       resetFinishTimeout();
     } catch (err) {
-      logger.log({
-        level: 'error',
-        message: err.message || 'Error',
-        stack: err.stack,
-        name: err.name,
-        code: err.code,
-        scraper: scraper.name,
-        url: queueItem.url,
-        method: queueItem.method,
-      });
+      taskLog.error(err);
 
       if (!errorRateLimiter.tryRemoveTokens(1)) {
         // eslint-disable-next-line no-param-reassign
         scraper.enabled = false;
         sdc.increment(`errorLimitReached.${sanitizeName(scraper.name)}`);
-        logger.log({
-          level: 'error',
-          message: 'Error rate limit reached, closing queue...',
-          scraper: scraper.name,
-        });
+        log.error('scraper had too many errors');
         clearTimeout(finishedTimeout);
         scraperAPI.close();
         end();
@@ -269,20 +204,15 @@ async function start() {
     nextScraper(),
     async (scraper, threadId) => {
       sdc.increment(`started.${sanitizeName(scraper.name)}`);
+      const log = baseLog.child({
+        scraper: scraper.name,
+        threadId: nanoid(22),
+      });
+
       try {
-        await startQueue(scraper, threadId);
+        await startQueue(scraper, log);
       } catch (err) {
-        scraper.error('BIGERR: A caught error below');
-        scraper.error(err);
-        scraper.error(err.stack);
-        logger.log({
-          level: 'error',
-          message: err.message || 'Error',
-          stack: err.stack,
-          name: err.name,
-          code: err.code,
-          scraper: scraper.name,
-        });
+        log.error(err);
       }
     },
     { concurrency: program.concurrency },
@@ -291,13 +221,5 @@ async function start() {
 
 start()
   .catch((err) => {
-    log.error('BIGERR: A caught error', err);
-    log.error(err.stack);
-    logger.log({
-      level: 'error',
-      message: err.message || 'Error',
-      name: err.name,
-      code: err.code,
-      stack: err.stack,
-    });
+    baseLog.error('BIGERR: A caught error', err);
   });
