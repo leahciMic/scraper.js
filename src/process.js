@@ -8,7 +8,7 @@ module.exports = async function process({
   queueItem, scraper, takeScreenshot = false,
 }) {
   if (!queueItem.url.match(/^https?/)) {
-    throw new Error(`refusing to navigate to ${queueItem.url}`);
+    throw new Error(`Invalid protocol in ${queueItem.url}`);
   }
 
   function processWith(use) {
@@ -28,13 +28,18 @@ module.exports = async function process({
     }
   }
 
-  const data = await processWith(queueItem.use || scraper.use || 'browser');
+  const data = await processWith(
+    typeof scraper === 'string' ? 'browser'
+      : queueItem.use || scraper.use || 'browser',
+  );
   if (data.data && data.data.finalUrl) {
     // eslint-disable-next-line no-param-reassign
     data.finalUrl = data.data.finalUrl;
   }
 
-  if (data.queue && data.queue.length) {
+  if (typeof scraper === 'string') {
+    data.queue = uniqBy(data.queue, 'url');
+  } else if (data.queue && data.queue.length) {
     if (scraper.filterQueueItem) {
       data.queue = uniqBy(data.queue.map((qi) => {
         Object.assign(qi, { url: scraper.filterQueueItem(qi) });

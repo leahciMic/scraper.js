@@ -1,4 +1,5 @@
 const program = require('commander');
+const log = require('./log');
 
 program
   .version(require('../../package.json').version)
@@ -8,12 +9,12 @@ program
   .parse(process.argv);
 
 if (!program.queue) {
-  console.warn('--queue not specified, defaulting to pre-installed scraper.js-queue-bull');
+  log.warn('--queue not specified, defaulting to pre-installed scraper.js-queue-bull');
   program.queue = 'scraper.js-queue-bull';
 }
 
 if (!program.data) {
-  console.warn('--data not specified, defaulting to ./data.js');
+  log.warn('--data not specified, defaulting to ./data.js');
   program.data = './data.js';
 }
 

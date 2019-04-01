@@ -10,7 +10,6 @@ const getScrapers = require('./getScrapers.js');
 const processItem = require('./process.js');
 const timeout = require('./lib/timeout.js');
 const log = require('./lib/log.js');
-const statusServer = require('./lib/statusServer');
 const logger = require('./lib/getLogger');
 const urlLogger = require('./lib/urlLogger')();
 
@@ -32,60 +31,6 @@ if (process.env.STATSD_HOST && process.env.STATSD_PORT) {
 }
 
 const program = require('./lib/parse-cli-options.js');
-
-const threads = Array(program.concurrency).fill(undefined).map((_ignore, key) => ({
-  id: key,
-  status: 'Idle',
-  pages: 0,
-  startTime: Date.now(),
-  lastStatus: Date.now(),
-  scraper: 'Unknown',
-  logs: [],
-  log(...args) {
-    this.logs.push(args);
-  },
-  update(type, value) {
-    this[type] = value;
-
-    statusServer.update({
-      threads: {
-        [this.id]: {
-          [type]: value,
-        },
-      },
-    });
-  },
-  updateStatus(status) {
-    this.update('status', status);
-    this.update('lastStatus', Date.now());
-  },
-  addPages(increment = 1) {
-    this.update('pages', this.pages += increment);
-  },
-  updateScraper(scraper) {
-    this.update('scraper', scraper);
-  },
-}));
-
-statusServer.on('sync', (send) => {
-  const obj = {
-    threads: {},
-  };
-
-  threads.forEach((value, id) => {
-    obj.threads[id] = {
-      status: value.status,
-      lastStatus: value.lastStatus,
-      pages: value.pages,
-      scraper: value.scraper,
-    };
-  });
-
-  send(JSON.stringify({
-    type: 'SYNC',
-    data: obj,
-  }));
-});
 
 const dataPlugin = requireES6(path.resolve(program.data));
 const { createQueue } = requireES6(path.resolve(program.queue));
@@ -166,11 +111,7 @@ process.on('SIGINT', () => {
   process.exit();
 });
 
-async function startQueue(scraper, threadId) {
-  const thread = threads[threadId];
-
-  thread.updateScraper(scraper.name);
-
+async function startQueue(scraper) {
   const errorRateLimiter = new RateLimiter(10, 'minute');
 
   const scraperAPI = loadScraper(scraper);
@@ -197,16 +138,12 @@ async function startQueue(scraper, threadId) {
     }, 300);
   }
 
-  thread.updateStatus('Waiting for items');
-
   scraperAPI.scraperQueue.process(async (queueItem) => {
     try {
       if (finishedTimeout) {
         clearTimeout(finishedTimeout);
         finishedTimeout = undefined;
       }
-
-      thread.updateStatus(`Process ${queueItem.url}`);
 
       logger.log({
         level: 'verbose',
@@ -232,8 +169,6 @@ async function startQueue(scraper, threadId) {
         scraper: scraper.name,
       });
 
-      // let promises = [];
-
       if (queue && queue.length) {
         const refinedQueue = _.uniqBy('url')(queue.map(scraperAPI.filterQueueItems))
           .filter(({ url }) => {
@@ -243,8 +178,6 @@ async function startQueue(scraper, threadId) {
             }
             return true;
           });
-
-        thread.updateStatus(`Adding ${refinedQueue.length} queue items`);
 
         logger.log({
           level: 'verbose',
@@ -271,7 +204,6 @@ async function startQueue(scraper, threadId) {
 
       if (data) {
         const startTime = new Date();
-        thread.updateStatus('Saving data');
         await dataPlugin({
           url: queueItem.url,
           finalUrl,
@@ -282,9 +214,6 @@ async function startQueue(scraper, threadId) {
         });
         sdc.timing(`saveDuration.${sanitizeName(scraper.name)}`, startTime);
       }
-
-      thread.updateStatus(`Finished ${queueItem.url}`);
-      thread.addPages();
 
       resetFinishTimeout();
     } catch (err) {

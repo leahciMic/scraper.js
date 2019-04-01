@@ -66,7 +66,7 @@ module.exports = async function processBrowserLite({ queueItem, scraper, takeScr
 
     let data = await runWithInjectables(
       browser,
-      scraper.construct,
+      typeof scraper === 'string' ? scraper : scraper.construct,
       createInjectableUtils(queueItem),
     );
 
@@ -76,7 +76,7 @@ module.exports = async function processBrowserLite({ queueItem, scraper, takeScr
       console.log('Changing the method to', data.onRedirect);
       // eslint-disable-next-line no-param-reassign
       queueItem.method = data.onRedirect;
-      data = await runWithInjectables(browser, scraper.construct, createInjectableUtils(queueItem));
+      data = await runWithInjectables(browser, typeof scraper === 'string' ? scraper : scraper.construct, createInjectableUtils(queueItem));
     }
 
     if (takeScreenshot) {

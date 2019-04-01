@@ -1,7 +1,6 @@
-const debug = require('debug');
+const bunyan = require('bunyan');
 
-const log = debug('scraperjs:log');
-log.error = debug('scraperjs:error');
-log.warn = debug('scraperjs:warn');
-
-module.exports = log;
+module.exports = bunyan.createLogger({
+  name: 'Scraper.JS',
+  level: 'debug',
+});
